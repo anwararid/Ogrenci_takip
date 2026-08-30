@@ -5,117 +5,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متابع الدراسة الذكي</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen pb-10">
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-12 selection:bg-indigo-500 selection:text-white">
 
-    <!-- شريط العلوي ومعلومات المستخدم -->
-    <header class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-40">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl">📚</span>
-                <h1 class="text-lg font-bold text-indigo-400">متابع الدراسة الذكي</h1>
+    <!-- الهيدر العلوي -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 py-3.5 mb-6">
+        <div class="max-w-5xl mx-auto flex justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl">
+                    📚
+                </div>
+                <div>
+                    <h1 class="text-base font-extrabold text-white leading-tight">متابع الدراسة الذكي</h1>
+                    <p class="text-[11px] text-slate-400">نظام التكرار المتباعد & Pomodoro</p>
+                </div>
             </div>
-            <!-- مدخل اسم المستخدم -->
-            <div class="flex items-center gap-2">
-                <input type="text" id="usernameInput" placeholder="اكتب اسمك..." class="bg-slate-800 border border-slate-700 text-xs px-3 py-1.5 rounded-lg focus:outline-none focus:border-indigo-500 w-32 sm:w-40">
-                <button id="saveUserBtn" class="bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold px-3 py-1.5 rounded-lg transition">دخول</button>
+
+            <!-- سجل المستخدم -->
+            <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-xl">
+                <input type="text" id="usernameInput" placeholder="ادخل اسمك..." class="bg-transparent text-xs px-2.5 py-1 text-slate-200 focus:outline-none w-28 sm:w-36">
+                <button id="saveUserBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition shadow-lg shadow-indigo-600/20">
+                    دخول
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 mt-6">
+    <main class="max-w-5xl mx-auto px-4 space-y-6">
 
-        <!-- ترحيب وتنبيه -->
-        <div id="welcomeBanner" class="bg-indigo-950/40 border border-indigo-800/60 rounded-2xl p-4 mb-6 flex justify-between items-center">
-            <div>
-                <h2 class="font-bold text-indigo-200 text-sm sm:text-base">مرحباً بك <span id="currentUserNameDisplay" class="text-amber-400">زائر</span> 👋</h2>
-                <p class="text-xs text-slate-400 mt-0.5">اختر درساً من قائمتك للبدء بالمراجعة أو إضافة دراسة جديدة.</p>
+        <!-- بطاقة الترحيب والتطبيق -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-950 border border-indigo-800/30 p-5">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 relative z-10">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-2">
+                        ✨ جلسة دراسية جديدة
+                    </div>
+                    <h2 class="text-lg font-bold text-white">مرحباً بك، <span id="currentUserNameDisplay" class="text-amber-400 font-extrabold">زائر</span> 👋</h2>
+                    <p class="text-xs text-slate-400 mt-1">اضغط على أي درس للبدء بمراجعته أو تشغيل المؤقت المخصص له.</p>
+                </div>
             </div>
         </div>
 
         <!-- إضافة درس جديد -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 mb-8">
-            <h3 class="font-bold text-sm text-slate-200 mb-3 flex items-center gap-1.5">
-                <span>➕</span> إضافة درس جديد لقائمتك
+        <section class="glass-card rounded-2xl p-5 border border-slate-800/80 shadow-xl">
+            <h3 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                إضافة درس جديد للقائمة
             </h3>
-            <form id="addLessonForm" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <input type="text" placeholder="اسم المادة (مثلاً: الدارات المنطقية)" required class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500">
-                <input type="text" placeholder="عنوان الدرس (مثلاً: 74181 ALU)" required class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500">
-                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs py-2 rounded-xl transition">إضافة للقائمة 🚀</button>
+            <form id="addLessonForm" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                <div class="sm:col-span-5">
+                    <input type="text" placeholder="اسم المادة (مثال: الدارات المنطقية)" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="sm:col-span-5">
+                    <input type="text" placeholder="عنوان الدرس (مثال: 74181 ALU)" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="sm:col-span-2">
+                    <button type="submit" class="w-full h-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-1">
+                        <span>إضافة</span>
+                        <span>🚀</span>
+                    </button>
+                </div>
             </form>
-        </div>
+        </section>
 
-        <!-- قائمة دروس المستخدم -->
-        <div>
-            <h3 class="font-bold text-base text-slate-200 mb-4 flex items-center justify-between">
-                <span>📋 قائمة دروسك الخاصة</span>
-                <span id="lessonCountBadge" class="text-xs bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full text-indigo-300">0 دروس</span>
-            </h3>
-
-            <div id="lessonsList" class="space-y-3">
-                <!-- يتم تحميل الدروس هنا ديناميكياً -->
-                <p class="text-xs text-slate-500 text-center py-8">قم بتسجيل اسمك بالشرائح أعلاه لعرض قائمة دروسك الخاصة.</p>
+        <!-- قائمة الدروس -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between gap-4">
+                <h3 class="font-bold text-base text-white flex items-center gap-2">
+                    <span>📋 دروسك المسجلة</span>
+                </h3>
+                <span id="lessonCountBadge" class="text-xs bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-indigo-400 font-bold">
+                    0 دروس
+                </span>
             </div>
-        </div>
+
+            <!-- شبكة بطاقات الدروس -->
+            <div id="lessonsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- يتم التحميل هنا ديناميكياً -->
+            </div>
+        </section>
 
     </main>
 
-    <!-- النافذة التفاعلية للدرس (Lesson Detail Modal) -->
-    <div id="lessonModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+    <!-- النافذة التفاعلية للدرس (Modal) -->
+    <div id="lessonModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform transition-all">
+            
             <!-- رأس النافذة -->
-            <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-start">
+            <div class="bg-slate-800/50 p-5 border-b border-slate-800 flex justify-between items-start">
                 <div>
-                    <span id="modalCourseName" class="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-900/60 text-indigo-300">اسم المادة</span>
-                    <h2 id="modalLessonTitle" class="text-lg font-bold text-white mt-1">عنوان الدرس</h2>
+                    <span id="modalCourseName" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                        المادة
+                    </span>
+                    <h2 id="modalLessonTitle" class="text-lg font-extrabold text-white mt-2">عنوان الدرس</h2>
                 </div>
-                <button id="closeModalBtn" class="text-slate-400 hover:text-white text-xl font-bold px-2">✕</button>
+                <button id="closeModalBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    ✕
+                </button>
             </div>
 
             <!-- محتوى النافذة -->
-            <div class="p-5 space-y-6">
+            <div class="p-6 space-y-6">
 
-                <!-- 1. مؤقت التركيز الخاص بالدرس -->
-                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-center">
-                    <span class="text-xs text-slate-400 font-semibold block mb-1">⏱️ مؤقت التركيز والمراجعة</span>
-                    <div id="modalTimerDisplay" class="text-4xl font-mono font-bold text-indigo-400 tracking-wider my-2">25:00</div>
-                    <div class="flex justify-center gap-2 mt-3">
-                        <button id="modalStartTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">بدء الجلسة</button>
-                        <button id="modalResetTimerBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold px-3 py-2 rounded-lg transition">إعادة ضبط</button>
+                <!-- المؤقت -->
+                <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-5 text-center">
+                    <span class="text-xs text-slate-400 font-semibold">⏱️ مؤقت التركيز (Pomodoro)</span>
+                    <div id="modalTimerDisplay" class="text-5xl font-mono font-black text-indigo-400 my-3 tracking-wider">
+                        25:00
+                    </div>
+                    <div class="flex justify-center gap-2">
+                        <button id="modalStartTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20">
+                            بدء الجلسة
+                        </button>
+                        <button id="modalResetTimerBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition">
+                            إعادة ضبط
+                        </button>
                     </div>
                 </div>
 
-                <!-- 2. إحصائيات التكرار والفهم -->
+                <!-- معلومات السجل -->
                 <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-xl">
-                        <span class="text-xs text-slate-400 block">عدد التكرارات</span>
-                        <span id="modalRepetitionCount" class="text-lg font-bold text-amber-400 mt-1 block">0</span>
+                    <div class="bg-slate-950/50 border border-slate-800 p-3.5 rounded-2xl">
+                        <span class="text-[11px] text-slate-400 block">مرات التكرار</span>
+                        <span id="modalRepetitionCount" class="text-lg font-bold text-amber-400 mt-0.5 block">0</span>
                     </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-xl">
-                        <span class="text-xs text-slate-400 block">المراجعة القادمة</span>
-                        <span id="modalNextReviewDate" class="text-xs font-bold text-emerald-400 mt-2 block">-</span>
+                    <div class="bg-slate-950/50 border border-slate-800 p-3.5 rounded-2xl">
+                        <span class="text-[11px] text-slate-400 block">المراجعة القادمة</span>
+                        <span id="modalNextReviewDate" class="text-xs font-bold text-emerald-400 mt-1 block">-</span>
                     </div>
                 </div>
 
-                <!-- 3. تقييم مستوى الفهم الحالي -->
+                <!-- أزرار التقييم -->
                 <div>
-                    <label class="text-xs text-slate-300 font-semibold block mb-2">كيف كان مستواك في هذا الدرس اليوم؟</label>
+                    <label class="text-xs font-bold text-slate-300 block mb-2.5">ما مدى استيعابك للمادة اليوم؟</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button data-level="HARD" class="rate-btn bg-red-950/40 hover:bg-red-900/60 border border-red-800 text-red-300 text-xs py-2.5 rounded-xl font-semibold transition flex flex-col items-center gap-1">
+                        <button data-level="HARD" class="rate-btn bg-red-950/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 py-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-1">
                             <span>🔴 صعب</span>
-                            <span class="text-[10px] text-red-400/80">(تكرار غداً)</span>
+                            <span class="text-[10px] text-red-400/70">غداً</span>
                         </button>
-                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800 text-amber-300 text-xs py-2.5 rounded-xl font-semibold transition flex flex-col items-center gap-1">
+                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 py-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-1">
                             <span>🟡 متوسط</span>
-                            <span class="text-[10px] text-amber-400/80">(بعد 3 أيام)</span>
+                            <span class="text-[10px] text-amber-400/70">بعد 3 أيام</span>
                         </button>
-                        <button data-level="EASY" class="rate-btn bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-800 text-emerald-300 text-xs py-2.5 rounded-xl font-semibold transition flex flex-col items-center gap-1">
+                        <button data-level="EASY" class="rate-btn bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-800/50 text-emerald-300 py-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-1">
                             <span>🟢 ممتاز</span>
-                            <span class="text-[10px] text-emerald-400/80">(مضاعفة المدى)</span>
+                            <span class="text-[10px] text-emerald-400/70">مضاعفة</span>
                         </button>
                     </div>
                 </div>
@@ -124,7 +167,6 @@
         </div>
     </div>
 
-    <!-- السكربت البرمجي -->
-    <script type="module" src="app.js?v=3"></script>
+    <script type="module" src="app.js?v=4"></script>
 </body>
 </html>
