@@ -23,8 +23,8 @@ let timeLeftSeconds = 25 * 60;
 let isTimerRunning = false;
 let currentFilter = 'ALL';
 let searchQuery = '';
+let isCardFlipped = false;
 
-// حساب الـ SRS
 function calculateNextReview(difficulty, srsData = { intervalDays: 1, repetitionCount: 0, easeFactor: 2.5 }) {
     let { intervalDays, repetitionCount, easeFactor } = srsData;
 
@@ -58,7 +58,6 @@ function updateUIUser() {
     if (userInput) userInput.value = currentUser === 'زائر' ? '' : currentUser;
 }
 
-// تحميل وعرض البطاقات
 async function loadUserLessons() {
     const listContainer = document.getElementById('lessonsList');
     const badge = document.getElementById('lessonCountBadge');
@@ -86,7 +85,6 @@ async function loadUserLessons() {
     }
 }
 
-// فلترة وتصصير البطاقات
 function renderLessons() {
     const listContainer = document.getElementById('lessonsList');
     const badge = document.getElementById('lessonCountBadge');
@@ -95,8 +93,7 @@ function renderLessons() {
         const matchQuery = lesson.title.toLowerCase().includes(searchQuery) || lesson.courseName.toLowerCase().includes(searchQuery);
         if (currentFilter === 'DUE') {
             const nextDate = new Date(lesson.srs?.nextReviewDate || new Date());
-            const isDue = nextDate <= new Date();
-            return matchQuery && isDue;
+            return matchQuery && (nextDate <= new Date());
         }
         return matchQuery;
     });
@@ -127,7 +124,7 @@ function renderLessons() {
                     <button class="delete-btn text-slate-500 hover:text-red-400 text-xs px-1" data-id="${lesson.id}">🗑️</button>
                 </div>
                 <h4 class="font-extrabold text-slate-100 text-sm group-hover:text-indigo-400 transition">${lesson.title}</h4>
-                ${lesson.notes ? `<p class="text-[11px] text-slate-400 mt-1 line-clamp-1">📝 ${lesson.notes}</p>` : ''}
+                ${lesson.cardQuestion ? `<p class="text-[11px] text-amber-400/90 mt-1 line-clamp-1">🃏 ${lesson.cardQuestion}</p>` : ''}
             </div>
             
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
@@ -149,7 +146,6 @@ function renderLessons() {
     });
 }
 
-// إضافة وحذف درس
 async function addLesson(courseName, lessonTitle) {
     if (!currentUser || currentUser === 'زائر') return alert("اكتب اسمك أولاً!");
 
@@ -159,7 +155,9 @@ async function addLesson(courseName, lessonTitle) {
             user: currentUser,
             courseName: courseName,
             title: lessonTitle,
-            notes: '',
+            cardQuestion: '',
+            cardAnswer: '',
+            sourceLink: '',
             srs: initialSRS,
             createdAt: new Date().toISOString()
         });
@@ -180,19 +178,29 @@ async function deleteLesson(id) {
     }
 }
 
-// إعداد النافذة التفاعلية والملاحظات
 function openLessonModal(id, lessonData) {
     activeLesson = { id, ...lessonData };
     document.getElementById('modalCourseName').textContent = lessonData.courseName;
     document.getElementById('modalLessonTitle').textContent = lessonData.title;
-    document.getElementById('modalRepetitionCount').textContent = lessonData.srs ? lessonData.srs.repetitionCount : 0;
-    document.getElementById('lessonNotesInput').value = lessonData.notes || '';
-    
-    const nextDate = lessonData.srs && lessonData.srs.nextReviewDate 
-        ? new Date(lessonData.srs.nextReviewDate).toLocaleDateString('ar-EG') 
-        : 'اليوم';
-    document.getElementById('modalNextReviewDate').textContent = nextDate;
 
+    // ضبط الـ Flashcards
+    document.getElementById('cardQuestionDisplay').textContent = lessonData.cardQuestion || 'اضغط بالأسفل لإضافة سؤال لهذه البطاقة.';
+    document.getElementById('cardAnswerDisplay').textContent = lessonData.cardAnswer || 'اضغط بالأسفل لإضافة إجابة الشرح.';
+    document.getElementById('cardQuestionInput').value = lessonData.cardQuestion || '';
+    document.getElementById('cardAnswerInput').value = lessonData.cardAnswer || '';
+
+    // ضبط الرابط
+    const linkInput = document.getElementById('lessonLinkInput');
+    const openBtn = document.getElementById('openLinkBtn');
+    linkInput.value = lessonData.sourceLink || '';
+    if (lessonData.sourceLink) {
+        openBtn.href = lessonData.sourceLink;
+        openBtn.classList.remove('hidden');
+    } else {
+        openBtn.classList.add('hidden');
+    }
+
+    resetCardFlip();
     resetModalTimer();
     document.getElementById('lessonModal').classList.remove('hidden');
 }
@@ -204,18 +212,60 @@ function closeLessonModal() {
     activeLesson = null;
 }
 
-// حفظ الملاحظات
-async function saveNotes() {
+// تقليب وقفظ الـ Flashcards
+function toggleCardFlip() {
+    const inner = document.getElementById('flashcardInner');
+    isCardFlipped = !isCardFlipped;
+    if (isCardFlipped) {
+        inner.classList.add('rotate-y-180');
+    } else {
+        inner.classList.remove('rotate-y-180');
+    }
+}
+
+function resetCardFlip() {
+    const inner = document.getElementById('flashcardInner');
+    isCardFlipped = false;
+    inner.classList.remove('rotate-y-180');
+}
+
+async function saveFlashcard() {
     if (!activeLesson) return;
-    const notesText = document.getElementById('lessonNotesInput').value.trim();
+    const q = document.getElementById('cardQuestionInput').value.trim();
+    const a = document.getElementById('cardAnswerInput').value.trim();
+
     try {
         const lessonRef = doc(db, "lessons", activeLesson.id);
-        await updateDoc(lessonRef, { notes: notesText });
-        activeLesson.notes = notesText;
-        alert("✅ تم حفظ الملاحظات بنجاح!");
+        await updateDoc(lessonRef, { cardQuestion: q, cardAnswer: a });
+        activeLesson.cardQuestion = q;
+        activeLesson.cardAnswer = a;
+        document.getElementById('cardQuestionDisplay').textContent = q || 'لا يوجد سؤال محدد بعد.';
+        document.getElementById('cardAnswerDisplay').textContent = a || 'لا توجد إجابة محددة بعد.';
+        alert("✅ تم حفظ بطاقة الاستذكار بنجاح!");
         loadUserLessons();
     } catch (e) {
-        console.error("خطأ حفظ الملاحظات:", e);
+        console.error("خطأ حفظ البطاقة:", e);
+    }
+}
+
+// حفظ رابط المصدر
+async function saveSourceLink() {
+    if (!activeLesson) return;
+    const link = document.getElementById('lessonLinkInput').value.trim();
+    try {
+        const lessonRef = doc(db, "lessons", activeLesson.id);
+        await updateDoc(lessonRef, { sourceLink: link });
+        activeLesson.sourceLink = link;
+        const openBtn = document.getElementById('openLinkBtn');
+        if (link) {
+            openBtn.href = link;
+            openBtn.classList.remove('hidden');
+        } else {
+            openBtn.classList.add('hidden');
+        }
+        alert("✅ تم حفظ رابط المصدر بنجاح!");
+    } catch (e) {
+        console.error("خطأ حفظ الرابط:", e);
     }
 }
 
@@ -248,12 +298,12 @@ function startModalTimer() {
     if (isTimerRunning) {
         clearInterval(timerInterval);
         isTimerRunning = false;
-        if (btn) btn.textContent = 'استئناف الجلسة';
+        if (btn) btn.textContent = 'استئناف';
         return;
     }
 
     isTimerRunning = true;
-    if (btn) btn.textContent = 'إيقاف مؤقت';
+    if (btn) btn.textContent = 'إيقاف';
     timerInterval = setInterval(() => {
         if (timeLeftSeconds > 0) {
             timeLeftSeconds--;
@@ -261,7 +311,7 @@ function startModalTimer() {
         } else {
             clearInterval(timerInterval);
             isTimerRunning = false;
-            alert(`🎉 أحسنت! أنهيت جلسة التركيز للدرس (${activeLesson ? activeLesson.title : ''})`);
+            alert(`🎉 أحسنت! أنهيت الجلسة للدرس (${activeLesson ? activeLesson.title : ''})`);
             resetModalTimer();
         }
     }, 1000);
@@ -273,10 +323,9 @@ function resetModalTimer() {
     timeLeftSeconds = 25 * 60;
     updateModalTimerDisplay();
     const btn = document.getElementById('modalStartTimerBtn');
-    if (btn) btn.textContent = 'بدء الجلسة';
+    if (btn) btn.textContent = 'بدء';
 }
 
-// الأحداث الرئيسية
 document.addEventListener('DOMContentLoaded', () => {
     updateUIUser();
     loadUserLessons();
@@ -302,7 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // أحداث البحث والتصفية
     document.getElementById('searchInput').addEventListener('input', (e) => {
         searchQuery = e.target.value.toLowerCase().trim();
         renderLessons();
@@ -319,10 +367,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    document.getElementById('flashcardContainer').addEventListener('click', toggleCardFlip);
+    document.getElementById('saveFlashcardBtn').addEventListener('click', saveFlashcard);
+    document.getElementById('saveLinkBtn').addEventListener('click', saveSourceLink);
     document.getElementById('closeModalBtn').addEventListener('click', closeLessonModal);
     document.getElementById('modalStartTimerBtn').addEventListener('click', startModalTimer);
     document.getElementById('modalResetTimerBtn').addEventListener('click', resetModalTimer);
-    document.getElementById('saveNotesBtn').addEventListener('click', saveNotes);
 
     document.querySelectorAll('.rate-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
