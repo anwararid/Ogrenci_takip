@@ -1,36 +1,22 @@
-// ==========================================
-// 1. خوارزمية التكرار المتباعد (Spaced Repetition System)
-// ==========================================
+import { db, collection, addDoc, getDocs } from "./firebase-config.js";
 
-/**
- * حساب تاريخ المراجعة القادمة استناداً لمستوى استيعاب الطالب
- * @param {string} difficulty - مستوى الفهم ('EASY', 'MEDIUM', 'HARD')
- * @param {object} srsData - البيانات الحالية للتكرار
- */
+// ==========================================
+// 1. خوارزمية التكرار المتباعد (Spaced Repetition)
+// ==========================================
 function calculateNextReview(difficulty, srsData = { intervalDays: 1, repetitionCount: 0, easeFactor: 2.5 }) {
     let { intervalDays, repetitionCount, easeFactor } = srsData;
 
     if (difficulty === 'HARD') {
-        // إذا كان الفهم صعباً (🔴): إعادة من البداية وتكرار غداً
         repetitionCount = 0;
         intervalDays = 1;
     } else if (difficulty === 'MEDIUM') {
-        // إذا كان الفهم متوسطاً (🟡): تكرار بعد 3 أيام
         repetitionCount += 1;
         intervalDays = Math.round(intervalDays * 1.5) || 3;
     } else if (difficulty === 'EASY') {
-        // إذا كان الفهم ممتازاً (🟢): تضاعف الفترة المتباعدة
         repetitionCount += 1;
-        if (repetitionCount === 1) {
-            intervalDays = 3;
-        } else if (repetitionCount === 2) {
-            intervalDays = 6;
-        } else {
-            intervalDays = Math.round(intervalDays * easeFactor);
-        }
+        intervalDays = repetitionCount === 1 ? 3 : (repetitionCount === 2 ? 6 : Math.round(intervalDays * easeFactor));
     }
 
-    // حساب التاريخ القادم
     const nextReviewDate = new Date();
     nextReviewDate.setDate(nextReviewDate.getDate() + intervalDays);
 
@@ -44,10 +30,67 @@ function calculateNextReview(difficulty, srsData = { intervalDays: 1, repetition
 }
 
 // ==========================================
-// 2. مؤقت البومودورو (Pomodoro Timer)
+// 2. جلب وتسجيل الدروس في Firestore
+// ==========================================
+const lessonsCollection = collection(db, "lessons");
+
+// إضافة درس جديد
+async function addLesson(courseName, lessonTitle) {
+    try {
+        const initialSRS = calculateNextReview('HARD'); // البداية تكرار قريب
+        await addDoc(lessonsCollection, {
+            courseName,
+            title: lessonTitle,
+            understandingLevel: 'MEDIUM',
+            srs: initialSRS,
+            createdAt: new Date().toISOString()
+        });
+        alert("تم حفظ الدرس بنجاح في السحاب! 🚀");
+        loadLessons(); // إعادة تحميل القائمة
+    } catch (error) {
+        console.error("خطأ في حفظ الدرس: ", error);
+    }
+}
+
+// عرض الدروس في الصفحة
+async function loadLessons() {
+    const lessonsListContainer = document.getElementById('lessonsList');
+    if (!lessonsListContainer) return;
+
+    try {
+        const querySnapshot = await getDocs(lessonsCollection);
+        if (querySnapshot.empty) return;
+
+        lessonsListContainer.innerHTML = ''; // مسح المحتوى القديم
+
+        querySnapshot.forEach((doc) => {
+            const lesson = doc.data();
+            const lessonCard = `
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-900/60 text-blue-300">${lesson.courseName}</span>
+                        <h3 class="font-bold text-slate-100 mt-1">${lesson.title}</h3>
+                        <p class="text-xs text-slate-400 mt-1">تاريخ المراجعة القادمة: ${new Date(lesson.srs.nextReviewDate).toLocaleDateString('ar-EG')}</p>
+                    </div>
+                    <div class="flex gap-1.5 w-full sm:w-auto justify-end">
+                        <button class="px-3 py-1.5 text-xs bg-red-950/40 border border-red-800 text-red-300 rounded-lg">🔴 صعب</button>
+                        <button class="px-3 py-1.5 text-xs bg-amber-950/40 border border-amber-800 text-amber-300 rounded-lg">🟡 متوسط</button>
+                        <button class="px-3 py-1.5 text-xs bg-emerald-950/40 border border-emerald-800 text-emerald-300 rounded-lg">🟢 ممتاز</button>
+                    </div>
+                </div>
+            `;
+            lessonsListContainer.innerHTML += lessonCard;
+        });
+    } catch (e) {
+        console.error("خطأ في جلب البيانات: ", e);
+    }
+}
+
+// ==========================================
+// 3. مؤقت البومودورو والأحداث
 // ==========================================
 let timerInterval = null;
-let timeLeftSeconds = 25 * 60; // 25 دقيقة
+let timeLeftSeconds = 25 * 60;
 let isTimerRunning = false;
 
 function updateTimerDisplay() {
@@ -63,48 +106,40 @@ function startTimer() {
         clearInterval(timerInterval);
         isTimerRunning = false;
         document.getElementById('startTimerBtn').textContent = 'بدء';
-        document.getElementById('startTimerBtn').classList.replace('bg-amber-600', 'bg-indigo-600');
         return;
     }
-
     isTimerRunning = true;
     document.getElementById('startTimerBtn').textContent = 'إيقاف مؤقت';
-    document.getElementById('startTimerBtn').classList.replace('bg-indigo-600', 'bg-amber-600');
-
     timerInterval = setInterval(() => {
         if (timeLeftSeconds > 0) {
             timeLeftSeconds--;
             updateTimerDisplay();
         } else {
             clearInterval(timerInterval);
-            isTimerRunning = false;
-            alert('🎉 انتهت جلسة التركيز! خذ استراحة لمدة 5 دقائق.');
-            resetTimer();
+            alert('🎉 انتهت جلسة التركيز!');
         }
     }, 1000);
 }
 
-function resetTimer() {
-    clearInterval(timerInterval);
-    isTimerRunning = false;
-    timeLeftSeconds = 25 * 60;
-    updateTimerDisplay();
-    const startBtn = document.getElementById('startTimerBtn');
-    if (startBtn) {
-        startBtn.textContent = 'بدء';
-        startBtn.className = 'bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2 rounded-xl transition';
-    }
-}
-
-// ==========================================
-// 3. إدارة الأحداث وتجهيز الصفحة
-// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     updateTimerDisplay();
+    loadLessons();
 
     const startBtn = document.getElementById('startTimerBtn');
-    const resetBtn = document.getElementById('resetTimerBtn');
-
     if (startBtn) startBtn.addEventListener('click', startTimer);
-    if (resetBtn) resetBtn.addEventListener('click', resetTimer);
+
+    // ربط نموذج الإضافة
+    const form = document.getElementById('addLessonForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const inputs = form.querySelectorAll('input');
+            const courseName = inputs[0].value;
+            const lessonTitle = inputs[1].value;
+            if (courseName && lessonTitle) {
+                addLesson(courseName, lessonTitle);
+                form.reset();
+            }
+        });
+    }
 });
