@@ -225,7 +225,7 @@ async function saveLessonContent() {
     }
 }
 
-// دالة الاتصال الموحدة بدون تكرار
+// دالة الاتصال المحدثة والمصححة بـ Gemini API
 async function askGeminiAI(promptText) {
     let apiKey = localStorage.getItem('gemini_api_key');
     
@@ -243,7 +243,7 @@ async function askGeminiAI(promptText) {
     const fullPrompt = `أنت مساعد تعليمي لدرس (${activeLesson?.title || ''}) في مادة (${activeLesson?.courseName || ''}).\nمحتوى الدرس الحالي:\n${content}\n\nسؤال الطالب: ${promptText}`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -257,9 +257,9 @@ async function askGeminiAI(promptText) {
 
         if (!response.ok || data.error) {
             console.error("Gemini Error API Response:", data);
-            if (data.error?.code === 400 || data.error?.code === 403 || data.error?.status === "UNAUTHENTICATED") {
+            if (data.error?.code === 400 || data.error?.code === 404 || data.error?.code === 403 || data.error?.status === "UNAUTHENTICATED") {
                 localStorage.removeItem('gemini_api_key');
-                return "المفتاح غير صحيح أو منتهي الصلاحية. أعد إرسال الرسالة لكتابة المفتاح الصحيح.";
+                return "حدث خطأ في المفتاح أو الطلب. تم مسح المفتاح المخزن، أعد إرسال الرسالة لكتابة المفتاح الصحيح.";
             }
             return `خطأ من السيرفر: ${data.error?.message || 'تعذر الاتصال بالخدمة'}`;
         }
