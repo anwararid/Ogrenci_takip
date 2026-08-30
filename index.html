@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>StudyLoop | نظم دراستك</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>StudyLoop | نظم دراستك بذكاء</title>
 
     <meta
         name="description"
@@ -14,133 +19,514 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
 
-    <!-- التطبيق -->
-    <div id="app">
+    <!-- =====================================
+         شاشة تسجيل الدخول وإنشاء الحساب
+    ====================================== -->
 
-        <!-- الشريط العلوي -->
+    <div
+        id="authScreen"
+        class="auth-screen"
+    >
+
+        <div class="auth-card">
+
+            <!-- الشعار -->
+
+            <div class="auth-logo">
+                S
+            </div>
+
+            <h1>
+                StudyLoop
+            </h1>
+
+            <p class="auth-subtitle">
+                ادرس بذكاء، وتذكّر لفترة أطول.
+            </p>
+
+
+            <!-- =================================
+                 تسجيل الدخول
+            ================================== -->
+
+            <div id="loginFormContainer">
+
+                <div class="auth-heading">
+
+                    <h2>
+                        أهلاً بعودتك 👋
+                    </h2>
+
+                    <p>
+                        سجّل الدخول للمتابعة إلى خطتك الدراسية.
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm">
+
+                    <!-- البريد -->
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            البريد الإلكتروني
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="example@email.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- كلمة المرور -->
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            كلمة المرور
+                        </label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- زر الدخول -->
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        تسجيل الدخول
+                    </button>
+
+                </form>
+
+
+                <!-- الانتقال لإنشاء حساب -->
+
+                <p class="auth-switch">
+
+                    ليس لديك حساب؟
+
+                    <button
+                        type="button"
+                        id="showRegisterButton"
+                    >
+                        إنشاء حساب
+                    </button>
+
+                </p>
+
+            </div>
+
+
+            <!-- =================================
+                 إنشاء حساب
+            ================================== -->
+
+            <div
+                id="registerFormContainer"
+                hidden
+            >
+
+                <div class="auth-heading">
+
+                    <h2>
+                        أنشئ حسابك 🚀
+                    </h2>
+
+                    <p>
+                        ابدأ بتنظيم دراستك من اليوم.
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+                    <!-- الاسم -->
+
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            الاسم
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            placeholder="مثال: أحمد"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- البريد -->
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            البريد الإلكتروني
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="example@email.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- كلمة المرور -->
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            كلمة المرور
+                        </label>
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            placeholder="6 أحرف على الأقل"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- زر إنشاء الحساب -->
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        إنشاء الحساب
+                    </button>
+
+                </form>
+
+
+                <!-- الانتقال لتسجيل الدخول -->
+
+                <p class="auth-switch">
+
+                    لديك حساب بالفعل؟
+
+                    <button
+                        type="button"
+                        id="showLoginButton"
+                    >
+                        تسجيل الدخول
+                    </button>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         التطبيق الرئيسي
+    ====================================== -->
+
+    <div
+        id="app"
+        hidden
+    >
+
+        <!-- =================================
+             الشريط العلوي
+        ================================== -->
+
         <header class="topbar">
 
             <div class="brand">
-                <div class="brand-icon">S</div>
+
+                <div class="brand-icon">
+                    S
+                </div>
 
                 <div>
-                    <h1>StudyLoop</h1>
-                    <span>نظم دراستك بذكاء</span>
+
+                    <h1>
+                        StudyLoop
+                    </h1>
+
+                    <span>
+                        نظم دراستك بذكاء
+                    </span>
+
                 </div>
+
             </div>
 
-            <button class="profile-button" id="profileButton">
-                <span class="profile-avatar">👤</span>
-            </button>
+
+            <!-- معلومات المستخدم -->
+
+            <div class="user-area">
+
+                <span id="userName">
+                    المستخدم
+                </span>
+
+                <button
+                    class="profile-button"
+                    id="logoutButton"
+                    type="button"
+                    title="تسجيل الخروج"
+                >
+                    🚪
+                </button>
+
+            </div>
 
         </header>
 
 
-        <!-- المحتوى الرئيسي -->
+
+        <!-- =================================
+             المحتوى الرئيسي
+        ================================== -->
+
         <main class="main-content">
 
+
             <!-- الترحيب -->
+
             <section class="welcome-section">
 
                 <div>
-                    <p class="welcome-label">مرحبًا بك 👋</p>
+
+                    <p
+                        class="welcome-label"
+                        id="welcomeText"
+                    >
+                        مرحبًا بك 👋
+                    </p>
 
                     <h2>
+
                         جاهز لدراسة
-                        <span>اليوم؟</span>
+
+                        <span>
+                            اليوم؟
+                        </span>
+
                     </h2>
 
                     <p class="welcome-description">
+
                         خطتك الدراسية ومراجعاتك اليومية في مكان واحد.
+
                     </p>
+
                 </div>
 
             </section>
 
 
-            <!-- إحصائيات اليوم -->
+
+            <!-- =================================
+                 الإحصائيات
+            ================================== -->
+
             <section class="stats-grid">
 
+
+                <!-- وقت الدراسة -->
+
                 <div class="stat-card">
-                    <div class="stat-icon">⏱️</div>
+
+                    <div class="stat-icon">
+                        ⏱️
+                    </div>
 
                     <div>
-                        <span>وقت الدراسة</span>
-                        <strong>0 ساعة</strong>
+
+                        <span>
+                            وقت الدراسة
+                        </span>
+
+                        <strong>
+                            0 ساعة
+                        </strong>
+
                     </div>
+
                 </div>
 
 
+                <!-- الدروس -->
+
                 <div class="stat-card">
-                    <div class="stat-icon">📚</div>
+
+                    <div class="stat-icon">
+                        📚
+                    </div>
 
                     <div>
-                        <span>دروس اليوم</span>
-                        <strong>0</strong>
+
+                        <span>
+                            دروس اليوم
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
                     </div>
+
                 </div>
 
 
+                <!-- المراجعات -->
+
                 <div class="stat-card">
-                    <div class="stat-icon">🔄</div>
+
+                    <div class="stat-icon">
+                        🔄
+                    </div>
 
                     <div>
-                        <span>مراجعات اليوم</span>
-                        <strong>0</strong>
+
+                        <span>
+                            مراجعات اليوم
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
                     </div>
+
                 </div>
 
 
+                <!-- Streak -->
+
                 <div class="stat-card">
-                    <div class="stat-icon">🔥</div>
+
+                    <div class="stat-icon">
+                        🔥
+                    </div>
 
                     <div>
-                        <span>أيام متتالية</span>
-                        <strong>0 يوم</strong>
+
+                        <span>
+                            أيام متتالية
+                        </span>
+
+                        <strong>
+                            0 يوم
+                        </strong>
+
                     </div>
+
                 </div>
 
             </section>
 
 
-            <!-- خطة اليوم -->
+
+            <!-- =================================
+                 خطة اليوم
+            ================================== -->
+
             <section class="today-section">
+
 
                 <div class="section-header">
 
                     <div>
-                        <span class="section-label">خطتك</span>
-                        <h3>ماذا ستدرس اليوم؟</h3>
+
+                        <span class="section-label">
+                            خطتك
+                        </span>
+
+                        <h3>
+                            ماذا ستدرس اليوم؟
+                        </h3>
+
                     </div>
 
-                    <button class="add-button" id="addLessonButton">
+
+                    <button
+                        class="add-button"
+                        id="addLessonButton"
+                        type="button"
+                    >
                         + إضافة درس
                     </button>
 
                 </div>
 
 
-                <!-- حالة عدم وجود دروس -->
-                <div class="empty-state" id="emptyState">
 
-                    <div class="empty-icon">📖</div>
+                <!-- =================================
+                     حالة عدم وجود دروس
+                ================================== -->
 
-                    <h4>لا توجد دروس بعد</h4>
+                <div
+                    class="empty-state"
+                    id="emptyState"
+                >
+
+                    <div class="empty-icon">
+                        📖
+                    </div>
+
+                    <h4>
+                        لا توجد دروس بعد
+                    </h4>
 
                     <p>
                         أضف أول درس لك، وسنساعدك في تنظيم مراجعاته.
                     </p>
 
-                    <button id="emptyAddButton">
+                    <button
+                        id="emptyAddButton"
+                        type="button"
+                    >
                         إضافة أول درس
                     </button>
 
                 </div>
 
 
-                <!-- قائمة الدروس -->
+
+                <!-- =================================
+                     قائمة الدروس
+                ================================== -->
+
                 <div
                     class="lessons-list"
                     id="lessonsList"
@@ -152,32 +538,91 @@
         </main>
 
 
-        <!-- التنقل السفلي -->
+
+        <!-- =================================
+             التنقل السفلي
+        ================================== -->
+
         <nav class="bottom-navigation">
 
-            <button class="nav-item active">
-                <span>🏠</span>
-                <small>الرئيسية</small>
+
+            <button
+                class="nav-item active"
+                type="button"
+            >
+
+                <span>
+                    🏠
+                </span>
+
+                <small>
+                    الرئيسية
+                </small>
+
             </button>
 
-            <button class="nav-item">
-                <span>📚</span>
-                <small>المواد</small>
+
+            <button
+                class="nav-item"
+                type="button"
+            >
+
+                <span>
+                    📚
+                </span>
+
+                <small>
+                    المواد
+                </small>
+
             </button>
 
-            <button class="nav-item">
-                <span>📅</span>
-                <small>الخطة</small>
+
+            <button
+                class="nav-item"
+                type="button"
+            >
+
+                <span>
+                    📅
+                </span>
+
+                <small>
+                    الخطة
+                </small>
+
             </button>
 
-            <button class="nav-item">
-                <span>📊</span>
-                <small>التقدم</small>
+
+            <button
+                class="nav-item"
+                type="button"
+            >
+
+                <span>
+                    📊
+                </span>
+
+                <small>
+                    التقدم
+                </small>
+
             </button>
 
-            <button class="nav-item">
-                <span>⚙️</span>
-                <small>الحساب</small>
+
+            <button
+                class="nav-item"
+                type="button"
+            >
+
+                <span>
+                    ⚙️
+                </span>
+
+                <small>
+                    الحساب
+                </small>
+
             </button>
 
         </nav>
@@ -185,7 +630,11 @@
     </div>
 
 
-    <!-- نافذة إضافة درس -->
+
+    <!-- =====================================
+         نافذة إضافة درس
+    ====================================== -->
+
     <div
         class="modal-overlay"
         id="lessonModal"
@@ -194,16 +643,28 @@
 
         <div class="modal">
 
+
+            <!-- رأس النافذة -->
+
             <div class="modal-header">
 
                 <div>
-                    <span class="section-label">درس جديد</span>
-                    <h3>أضف درسًا</h3>
+
+                    <span class="section-label">
+                        درس جديد
+                    </span>
+
+                    <h3>
+                        أضف درسًا
+                    </h3>
+
                 </div>
+
 
                 <button
                     class="close-button"
                     id="closeModalButton"
+                    type="button"
                     aria-label="إغلاق"
                 >
                     ×
@@ -212,7 +673,13 @@
             </div>
 
 
+
+            <!-- نموذج إضافة الدرس -->
+
             <form id="lessonForm">
+
+
+                <!-- المادة -->
 
                 <div class="form-group">
 
@@ -230,6 +697,8 @@
                 </div>
 
 
+                <!-- الدرس -->
+
                 <div class="form-group">
 
                     <label for="lessonName">
@@ -245,6 +714,8 @@
 
                 </div>
 
+
+                <!-- مدة الدراسة -->
 
                 <div class="form-group">
 
@@ -275,6 +746,8 @@
                 </div>
 
 
+                <!-- الحفظ -->
+
                 <button
                     type="submit"
                     class="primary-button"
@@ -289,7 +762,16 @@
     </div>
 
 
-    <script type="module" src="app.js?v=3"></script>
+
+    <!-- =====================================
+         JavaScript
+    ====================================== -->
+
+    <script
+        type="module"
+        src="app.js?v=4"
+    ></script>
 
 </body>
+
 </html>
