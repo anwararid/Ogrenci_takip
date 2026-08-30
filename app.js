@@ -230,21 +230,28 @@ async function saveLessonContent() {
 
 // الاتصال بـ Gemini API للشات
 async function askGeminiAI(promptText) {
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("ضَع_مِفتاح")) {
-        return "يرجى وضع مفتاح Gemini API الخاص بك داخل ملف app.js ليعمل الذكاء الاصطناعي.";
+    // 1. فحص وجود المفتاح في ذاكرة المتصفح أو إدخاله
+    let apiKey = localStorage.getItem('gemini_api_key');
+    
+    if (!apiKey) {
+        apiKey = prompt("أدخل مفتاح Gemini API الخاص بك لتشغيل الذكاء الاصطناعي:");
+        if (apiKey) {
+            localStorage.setItem('gemini_api_key', apiKey.trim());
+        } else {
+            return "يرجى إدخال مفتاح API لتتمكن من استخدام الشات.";
+        }
     }
 
     const content = activeLesson?.lessonContent || '';
-    const fullPrompt = `أنت مساعد تعليمي ذكي في مادة ${activeLesson?.courseName || ''} ودرس ${activeLesson?.title || ''}.
-إليك محتوى السلايدات أو الدرس:
-"""
+    const fullPrompt = `أنت مساعد تعليمي في مادة ${activeLesson?.courseName || ''} ودرس ${activeLesson?.title || ''}.
+محتوى الدرس:
 ${content}
-"""
 
 سؤال الطالب: ${promptText}`;
 
     try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        // 2. استخدام نموذج gemini-1.5-flash المتوافق
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -253,10 +260,19 @@ ${content}
         });
 
         const data = await res.json();
+        
+        if (data.error) {
+            if (data.error.code === 400 || data.error.code === 403) {
+                localStorage.removeItem('gemini_api_key'); // مسح المفتاح الخاطئ
+                return "المفتاح غير صالح أو تم حظره. يرجى التحديث وإدخال مفتاح جديد.";
+            }
+            return `خطأ من السيرفر: ${data.error.message}`;
+        }
+
         return data.candidates[0].content.parts[0].text;
     } catch (err) {
         console.error("Gemini Error:", err);
-        return "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. تأكد من صحة المفتاح والإنترنت.";
+        return "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. تأكد من اتصال الإنترنت.";
     }
 }
 
