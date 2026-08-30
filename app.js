@@ -4,7 +4,7 @@
 // Authentication + Firestore + Subjects
 // ========================================
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
     getAuth,
@@ -13,7 +13,7 @@ import {
     signOut,
     onAuthStateChanged,
     updateProfile
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 import {
     getFirestore,
@@ -25,7 +25,7 @@ import {
     doc,
     setDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/11.1٠ط.0/firebase-firestore.js";
 
 
 // ========================================
