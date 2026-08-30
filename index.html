@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة تتبع الدراسة والذاكرة الذكية</title>
+    <!-- مكتبة Tailwind CSS للتنسيق السريع والأنيق -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+    <!-- شريط التنقل العلوي -->
+    <nav class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-400 flex items-center gap-2">
+                <span>🧠</span> مـتـكـرّر | Smart Study Tracker
+            </h1>
+            <div class="flex items-center gap-4">
+                <span class="text-sm bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full border border-indigo-700">المستوى: جامعي / مدرسي</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-6xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- العمود الأيمن والوسط: الإحصائيات والدروس -->
+        <div class="lg:col-span-2 space-y-6">
+
+            <!-- كرت الإحصائيات العامة -->
+            <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 grid grid-cols-3 gap-4 text-center">
+                <div class="p-3 bg-slate-900/50 rounded-xl">
+                    <p class="text-xs text-slate-400 mb-1">دروس للمراجعة اليوم</p>
+                    <p class="text-2xl font-bold text-amber-400" id="dueCount">3</p>
+                </div>
+                <div class="p-3 bg-slate-900/50 rounded-xl">
+                    <p class="text-xs text-slate-400 mb-1">نسبة الإتقان العامة</p>
+                    <p class="text-2xl font-bold text-emerald-400" id="masteryRate">78%</p>
+                </div>
+                <div class="p-3 bg-slate-900/50 rounded-xl">
+                    <p class="text-xs text-slate-400 mb-1">ساعات التركيز</p>
+                    <p class="text-2xl font-bold text-indigo-400" id="totalHours">14.5h</p>
+                </div>
+            </div>
+
+            <!-- قسم: دروس مستحقة للمراجعة اليوم (SRS) -->
+            <section class="bg-slate-800 p-5 rounded-2xl border border-slate-700 space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                    <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+                        <span>🔄</span> مراجعات اليوم الموصى بها
+                    </h2>
+                    <span class="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-md border border-amber-500/20">تكرار متباعد</span>
+                </div>
+
+                <div id="lessonsList" class="space-y-3">
+                    <!-- نموذج لكرت درس مستحق للمراجعة -->
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-900/60 text-blue-300">الدارات المنطقية</span>
+                            <h3 class="font-bold text-slate-100 mt-1">Dual JK Flip-Flop 74HC73</h3>
+                            <p class="text-xs text-slate-400 mt-1">آخر مراجعة: منذ 3 أيام • مستوى الاستيعاب الحالي: <span class="text-amber-400">متوسط 🟡</span></p>
+                        </div>
+                        <!-- تقييم الفهم لتحديد المراجعة القادمة -->
+                        <div class="flex gap-1.5 w-full sm:w-auto justify-end">
+                            <button title="إعادة المراجعة غداً" class="px-3 py-1.5 text-xs bg-red-950/40 border border-red-800 text-red-300 hover:bg-red-900/60 rounded-lg transition">🔴 صعب</button>
+                            <button title="مراجعة بعد 3 أيام" class="px-3 py-1.5 text-xs bg-amber-950/40 border border-amber-800 text-amber-300 hover:bg-amber-900/60 rounded-lg transition">🟡 متوسط</button>
+                            <button title="مراجعة بعد 7 أيام" class="px-3 py-1.5 text-xs bg-emerald-950/40 border border-emerald-800 text-emerald-300 hover:bg-emerald-900/60 rounded-lg transition">🟢 ممتاز</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- العمود الأيسر: مؤقت التركيز + إضافة درس جديد -->
+        <div class="space-y-6">
+
+            <!-- مؤقت بومودورو (Pomodoro Timer) -->
+            <section class="bg-slate-800 p-5 rounded-2xl border border-slate-700 text-center space-y-4">
+                <h2 class="text-lg font-bold text-slate-200">⏱️ مؤقت التركيز (Pomodoro)</h2>
+                <div class="text-4xl font-extrabold text-indigo-400 my-2 tracking-wider" id="timerDisplay">25:00</div>
+                <div class="flex justify-center gap-2">
+                    <button id="startTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2 rounded-xl transition">بدء</button>
+                    <button id="resetTimerBtn" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-semibold px-4 py-2 rounded-xl transition">إعادة</button>
+                </div>
+            </section>
+
+            <!-- نموذج إضافة درس جديد -->
+            <section class="bg-slate-800 p-5 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-md font-bold text-slate-200">➕ إضافة درس جديد</h2>
+                <form id="addLessonForm" class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">اسم المادة</label>
+                        <input type="text" placeholder="مثال: الرياضيات / البرمجة" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">عنوان الدرس</label>
+                        <input type="text" placeholder="عنوان الموضوع أو الدرس" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold py-2.5 rounded-xl transition">حفظ الدرس</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+</body>
+</html>
