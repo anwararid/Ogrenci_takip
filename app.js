@@ -1,3 +1,4 @@
+console.log("StudyLoop app loaded");
 // ========================================
 // StudyLoop
 // Firebase Authentication + Firestore
@@ -795,4 +796,4 @@ function showFirebaseError(error) {
     alert(message);
 
 }
-```
+console.log("StudyLoop app finished");
