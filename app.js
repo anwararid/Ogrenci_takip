@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // ضع مفتاح Gemini API هنا
-const GEMINI_API_KEY = "ضَع_مِفتاح_API_الخاص_بِكَ_هُنا";
+const GEMINI_API_KEY = "AQ.Ab8RN6Lxb2c-hNtiI3K517udGp1v-6ZfqCjncgSQ6BcGhajSaw";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDU305vBeN7sBA8hNTmAFofk",
