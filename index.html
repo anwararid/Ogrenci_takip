@@ -3,187 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متابع الدراسة الذكي - AI Powered</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Cairo', sans-serif; }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .perspective-1000 { perspective: 1000px; }
-        .transform-style-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; }
-        .rotate-y-180 { transform: rotateY(180deg); }
-    </style>
+
+    <title>StudyLoop | نظم دراستك</title>
+
+    <meta
+        name="description"
+        content="StudyLoop يساعدك على تنظيم دراستك ومراجعة دروسك في الوقت المناسب."
+    >
+
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen pb-12 selection:bg-indigo-500 selection:text-white">
 
-    <!-- الهيدر العلوي -->
-    <header class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 py-3.5 mb-6">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl">
-                        🤖
-                    </div>
-                    <div>
-                        <h1 class="text-base font-extrabold text-white leading-tight">متابع الدراسة الذكي</h1>
-                        <p class="text-[11px] text-slate-400">مدعوم بـ Google Gemini AI</p>
-                    </div>
-                </div>
-            </div>
+<body>
 
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-xl">
-                    <input type="text" id="usernameInput" placeholder="ادخل اسمك..." class="bg-transparent text-xs px-2.5 py-1 text-slate-200 focus:outline-none w-28 sm:w-32">
-                    <button id="saveUserBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-lg shadow-indigo-600/20">
-                        دخول
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
+    <!-- التطبيق -->
+    <div id="app">
 
-    <main class="max-w-5xl mx-auto px-4 space-y-6">
+        <!-- الشريط العلوي -->
+        <header class="topbar">
 
-        <!-- بطاقة الترحيب -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-950 border border-indigo-800/30 p-5">
-            <h2 class="text-lg font-bold text-white">مرحباً بك، <span id="currentUserNameDisplay" class="text-amber-400 font-extrabold">زائر</span> 👋</h2>
-            <p class="text-xs text-slate-400 mt-1">اضغط على أي درس لفتح المساعد الذكي، مناقشة السلايدات، وتوليد الاختبارات تلقائياً.</p>
-        </div>
+            <div class="brand">
+                <div class="brand-icon">S</div>
 
-        <!-- إضافة درس جديد -->
-        <section class="glass-card rounded-2xl p-5 border border-slate-800/80 shadow-xl">
-            <h3 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                إضافة درس جديد
-            </h3>
-            <form id="addLessonForm" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                <div class="sm:col-span-5">
-                    <input type="text" placeholder="اسم المادة (مثال: Algoritma)" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition">
-                </div>
-                <div class="sm:col-span-5">
-                    <input type="text" placeholder="عنوان الدرس (مثال: Diziler)" required class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition">
-                </div>
-                <div class="sm:col-span-2">
-                    <button type="submit" class="w-full h-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 rounded-xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-1">
-                        <span>إضافة</span>
-                        <span>🚀</span>
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- البحث والتصفية -->
-        <section class="flex flex-col sm:flex-row gap-3 justify-between items-center">
-            <div class="relative w-full sm:w-72">
-                <input type="text" id="searchInput" placeholder="بحث عن مادة أو درس..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 pl-8">
-                <span class="absolute left-2.5 top-2 text-slate-500 text-xs">🔍</span>
-            </div>
-            
-            <div class="flex items-center gap-2 w-full sm:w-auto">
-                <button data-filter="ALL" class="filter-btn bg-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">الكل</button>
-                <button data-filter="DUE" class="filter-btn bg-slate-900 hover:bg-slate-800 text-slate-400 text-xs font-bold px-3 py-1.5 rounded-lg transition border border-slate-800">🔴 مراجعة اليوم</button>
-            </div>
-        </section>
-
-        <!-- قائمة الدروس -->
-        <section class="space-y-4">
-            <div class="flex items-center justify-between gap-4">
-                <h3 class="font-bold text-base text-white flex items-center gap-2">📋 دروسك المسجلة</h3>
-                <span id="lessonCountBadge" class="text-xs bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-indigo-400 font-bold">0 دروس</span>
-            </div>
-
-            <div id="lessonsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-        </section>
-
-    </main>
-
-    <!-- النافذة التفاعلية لمساعد الذكاء الاصطناعي (Modal) -->
-    <div id="lessonModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl transform transition-all max-h-[92vh] flex flex-col">
-            
-            <!-- رأس النافذة -->
-            <div class="bg-slate-800/50 p-4 border-b border-slate-800 flex justify-between items-start shrink-0">
                 <div>
-                    <span id="modalCourseName" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">المادة</span>
-                    <h2 id="modalLessonTitle" class="text-lg font-extrabold text-white mt-1">عنوان الدرس</h2>
+                    <h1>StudyLoop</h1>
+                    <span>نظم دراستك بذكاء</span>
                 </div>
-                <button id="closeModalBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">✕</button>
             </div>
 
-            <div class="p-4 space-y-4 overflow-y-auto">
+            <button class="profile-button" id="profileButton">
+                <span class="profile-avatar">👤</span>
+            </button>
 
-                <!-- 1. نصوص وملخصات الدرس (تُستعمل لتغذية الـ AI) -->
-                <div class="bg-slate-950/70 border border-slate-800 p-3.5 rounded-2xl space-y-2">
-                    <div class="flex justify-between items-center">
-                        <label class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-                            📄 محتوى/ملخص الدرس (ملاحظات أو أكواد):
-                        </label>
-                        <button id="autoGenFlashcardBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition flex items-center gap-1">
-                            ✨ توليد بطاقة ذكية
-                        </button>
-                    </div>
-                    <textarea id="lessonContentInput" rows="3" placeholder="الصق محتوى الدرس، السلايدات، أو الأكواد هنا ليفهمها الذكاء الاصطناعي ويجيب على أسئلتك..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500/50"></textarea>
-                    <button id="saveContentBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold py-1.5 rounded-xl transition">حفظ محتوى الدرس 💾</button>
+        </header>
+
+
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+
+            <!-- الترحيب -->
+            <section class="welcome-section">
+
+                <div>
+                    <p class="welcome-label">مرحبًا بك 👋</p>
+
+                    <h2>
+                        جاهز لدراسة
+                        <span>اليوم؟</span>
+                    </h2>
+
+                    <p class="welcome-description">
+                        خطتك الدراسية ومراجعاتك اليومية في مكان واحد.
+                    </p>
                 </div>
 
-                <!-- 2. بطاقات الاستذكار Flashcards -->
-                <div id="flashcardContainer" class="w-full h-32 perspective-1000 cursor-pointer">
-                    <div id="flashcardInner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl">
-                        <div class="absolute inset-0 backface-hidden bg-slate-950 border border-amber-500/30 rounded-2xl p-4 flex flex-col justify-between items-center text-center">
-                            <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold">السؤال / المفهوم</span>
-                            <p id="cardQuestionDisplay" class="text-xs font-semibold text-slate-200">لا يوجد سؤال محدد بعد.</p>
-                            <span class="text-[10px] text-slate-500">اضغط لكشف الإجابة 👈</span>
-                        </div>
-                        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-indigo-950/80 border border-indigo-500/30 rounded-2xl p-4 flex flex-col justify-between items-center text-center">
-                            <span class="text-[10px] bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded font-bold">الإجابة / الشرح</span>
-                            <p id="cardAnswerDisplay" class="text-xs font-semibold text-slate-100">لا توجد إجابة محددة بعد.</p>
-                            <span class="text-[10px] text-indigo-400">اضغط للعودة للسؤال 🔄</span>
-                        </div>
-                    </div>
-                </div>
+            </section>
 
-                <!-- 3. الشات التفاعلي مع AI -->
-                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 space-y-2">
-                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                        <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">💬 اسأل الذكاء الاصطناعي عن هذا الدرس</span>
-                    </div>
-                    <div id="aiChatBox" class="h-32 overflow-y-auto space-y-2 p-2 bg-slate-900/60 rounded-xl text-xs">
-                        <div class="bg-slate-800/60 text-slate-300 p-2 rounded-xl max-w-[85%]">مرحباً! أنا مساعدك الدراسي. الصق محتوى الدرس أعلاه واسألني عن أي نقطة لا تفهمها! 👋</div>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="aiChatInput" placeholder="مثال: اشرح لي مفهوم هذا الدرس بأسلوب بسيط..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-                        <button id="sendAiChatBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3.5 py-2 rounded-xl font-bold transition">إرسال</button>
+
+            <!-- إحصائيات اليوم -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+
+                    <div>
+                        <span>وقت الدراسة</span>
+                        <strong>0 ساعة</strong>
                     </div>
                 </div>
 
-                <!-- 4. تقييم SRS -->
-                <div class="pt-2">
-                    <label class="text-xs font-bold text-slate-300 block mb-2">تقييم استيعابك للمادة اليوم:</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button data-level="HARD" class="rate-btn bg-red-950/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center">
-                            <span>🔴 صعب</span>
-                            <span class="text-[9px] text-red-400/70">غداً</span>
-                        </button>
-                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center">
-                            <span>🟡 متوسط</span>
-                            <span class="text-[9px] text-amber-400/70">بعد 3 أيام</span>
-                        </button>
-                        <button data-level="EASY" class="rate-btn bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-800/50 text-emerald-300 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center">
-                            <span>🟢 ممتاز</span>
-                            <span class="text-[9px] text-emerald-400/70">مضاعفة</span>
-                        </button>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+
+                    <div>
+                        <span>دروس اليوم</span>
+                        <strong>0</strong>
                     </div>
                 </div>
 
-            </div>
-        </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+
+                    <div>
+                        <span>مراجعات اليوم</span>
+                        <strong>0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+
+                    <div>
+                        <span>أيام متتالية</span>
+                        <strong>0 يوم</strong>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- خطة اليوم -->
+            <section class="today-section">
+
+                <div class="section-header">
+
+                    <div>
+                        <span class="section-label">خطتك</span>
+                        <h3>ماذا ستدرس اليوم؟</h3>
+                    </div>
+
+                    <button class="add-button" id="addLessonButton">
+                        + إضافة درس
+                    </button>
+
+                </div>
+
+
+                <!-- حالة عدم وجود دروس -->
+                <div class="empty-state" id="emptyState">
+
+                    <div class="empty-icon">📖</div>
+
+                    <h4>لا توجد دروس بعد</h4>
+
+                    <p>
+                        أضف أول درس لك، وسنساعدك في تنظيم مراجعاته.
+                    </p>
+
+                    <button id="emptyAddButton">
+                        إضافة أول درس
+                    </button>
+
+                </div>
+
+
+                <!-- قائمة الدروس -->
+                <div
+                    class="lessons-list"
+                    id="lessonsList"
+                    hidden
+                ></div>
+
+            </section>
+
+        </main>
+
+
+        <!-- التنقل السفلي -->
+        <nav class="bottom-navigation">
+
+            <button class="nav-item active">
+                <span>🏠</span>
+                <small>الرئيسية</small>
+            </button>
+
+            <button class="nav-item">
+                <span>📚</span>
+                <small>المواد</small>
+            </button>
+
+            <button class="nav-item">
+                <span>📅</span>
+                <small>الخطة</small>
+            </button>
+
+            <button class="nav-item">
+                <span>📊</span>
+                <small>التقدم</small>
+            </button>
+
+            <button class="nav-item">
+                <span>⚙️</span>
+                <small>الحساب</small>
+            </button>
+
+        </nav>
+
     </div>
 
-    <script type="module" src="app.js?v=7"></script>
+
+    <!-- نافذة إضافة درس -->
+    <div
+        class="modal-overlay"
+        id="lessonModal"
+        hidden
+    >
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-label">درس جديد</span>
+                    <h3>أضف درسًا</h3>
+                </div>
+
+                <button
+                    class="close-button"
+                    id="closeModalButton"
+                    aria-label="إغلاق"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="lessonForm">
+
+                <div class="form-group">
+
+                    <label for="subjectName">
+                        اسم المادة
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subjectName"
+                        placeholder="مثال: الرياضيات"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="lessonName">
+                        اسم الدرس
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lessonName"
+                        placeholder="مثال: المشتقات"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="studyDuration">
+                        مدة الدراسة
+                    </label>
+
+                    <select id="studyDuration">
+
+                        <option value="25">
+                            25 دقيقة
+                        </option>
+
+                        <option value="45">
+                            45 دقيقة
+                        </option>
+
+                        <option value="60">
+                            ساعة
+                        </option>
+
+                        <option value="90">
+                            ساعة ونصف
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    إضافة الدرس
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="app.js"></script>
+
 </body>
 </html>
