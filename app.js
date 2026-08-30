@@ -1,6 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// ضع مفتاح Gemini API هنا
+const GEMINI_API_KEY = "ضَع_مِفتاح_API_الخاص_بِكَ_هُنا";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDU305vBeN7sBA8hNTmAFofk",
   authDomain: "ogrenci-ders-takibi-e7d57.firebaseapp.com",
@@ -18,9 +21,6 @@ const lessonsCollection = collection(db, "lessons");
 let currentUser = localStorage.getItem('study_tracker_user') || 'زائر';
 let allLessons = [];
 let activeLesson = null;
-let timerInterval = null;
-let timeLeftSeconds = 25 * 60;
-let isTimerRunning = false;
 let currentFilter = 'ALL';
 let searchQuery = '';
 let isCardFlipped = false;
@@ -129,7 +129,7 @@ function renderLessons() {
             
             <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
                 <span class="text-slate-400">المراجعة: <strong class="text-emerald-400">${nextDate}</strong></span>
-                <span class="text-indigo-400 font-bold group-hover:translate-x-[-3px] transition">مراجعة 👈</span>
+                <span class="text-indigo-400 font-bold group-hover:translate-x-[-3px] transition">مراجعة 🤖</span>
             </div>
         `;
 
@@ -155,9 +155,9 @@ async function addLesson(courseName, lessonTitle) {
             user: currentUser,
             courseName: courseName,
             title: lessonTitle,
+            lessonContent: '',
             cardQuestion: '',
             cardAnswer: '',
-            sourceLink: '',
             srs: initialSRS,
             createdAt: new Date().toISOString()
         });
@@ -183,36 +183,21 @@ function openLessonModal(id, lessonData) {
     document.getElementById('modalCourseName').textContent = lessonData.courseName;
     document.getElementById('modalLessonTitle').textContent = lessonData.title;
 
-    // ضبط الـ Flashcards
-    document.getElementById('cardQuestionDisplay').textContent = lessonData.cardQuestion || 'اضغط بالأسفل لإضافة سؤال لهذه البطاقة.';
-    document.getElementById('cardAnswerDisplay').textContent = lessonData.cardAnswer || 'اضغط بالأسفل لإضافة إجابة الشرح.';
-    document.getElementById('cardQuestionInput').value = lessonData.cardQuestion || '';
-    document.getElementById('cardAnswerInput').value = lessonData.cardAnswer || '';
+    document.getElementById('lessonContentInput').value = lessonData.lessonContent || '';
+    document.getElementById('cardQuestionDisplay').textContent = lessonData.cardQuestion || 'اضغط على زر (✨ توليد بطاقة ذكية) لتوليد بطاقات من المحتوى.';
+    document.getElementById('cardAnswerDisplay').textContent = lessonData.cardAnswer || 'الإجابة تظهر هنا.';
 
-    // ضبط الرابط
-    const linkInput = document.getElementById('lessonLinkInput');
-    const openBtn = document.getElementById('openLinkBtn');
-    linkInput.value = lessonData.sourceLink || '';
-    if (lessonData.sourceLink) {
-        openBtn.href = lessonData.sourceLink;
-        openBtn.classList.remove('hidden');
-    } else {
-        openBtn.classList.add('hidden');
-    }
+    document.getElementById('aiChatBox').innerHTML = `<div class="bg-slate-800/60 text-slate-300 p-2 rounded-xl max-w-[85%]">مرحباً! أنا مساعدك في درس (${lessonData.title}). اسألني أي سؤال عن المحتوى! 👋</div>`;
 
     resetCardFlip();
-    resetModalTimer();
     document.getElementById('lessonModal').classList.remove('hidden');
 }
 
 function closeLessonModal() {
     document.getElementById('lessonModal').classList.add('hidden');
-    clearInterval(timerInterval);
-    isTimerRunning = false;
     activeLesson = null;
 }
 
-// تقليب وقفظ الـ Flashcards
 function toggleCardFlip() {
     const inner = document.getElementById('flashcardInner');
     isCardFlipped = !isCardFlipped;
@@ -229,43 +214,112 @@ function resetCardFlip() {
     inner.classList.remove('rotate-y-180');
 }
 
-async function saveFlashcard() {
+async function saveLessonContent() {
     if (!activeLesson) return;
-    const q = document.getElementById('cardQuestionInput').value.trim();
-    const a = document.getElementById('cardAnswerInput').value.trim();
+    const content = document.getElementById('lessonContentInput').value.trim();
 
     try {
         const lessonRef = doc(db, "lessons", activeLesson.id);
-        await updateDoc(lessonRef, { cardQuestion: q, cardAnswer: a });
-        activeLesson.cardQuestion = q;
-        activeLesson.cardAnswer = a;
-        document.getElementById('cardQuestionDisplay').textContent = q || 'لا يوجد سؤال محدد بعد.';
-        document.getElementById('cardAnswerDisplay').textContent = a || 'لا توجد إجابة محددة بعد.';
-        alert("✅ تم حفظ بطاقة الاستذكار بنجاح!");
-        loadUserLessons();
+        await updateDoc(lessonRef, { lessonContent: content });
+        activeLesson.lessonContent = content;
+        alert("✅ تم حفظ محتوى الدرس بنجاح!");
     } catch (e) {
-        console.error("خطأ حفظ البطاقة:", e);
+        console.error("خطأ حفظ المحتوى:", e);
     }
 }
 
-// حفظ رابط المصدر
-async function saveSourceLink() {
-    if (!activeLesson) return;
-    const link = document.getElementById('lessonLinkInput').value.trim();
+// الاتصال بـ Gemini API للشات
+async function askGeminiAI(promptText) {
+    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("ضَع_مِفتاح")) {
+        return "يرجى وضع مفتاح Gemini API الخاص بك داخل ملف app.js ليعمل الذكاء الاصطناعي.";
+    }
+
+    const content = activeLesson?.lessonContent || '';
+    const fullPrompt = `أنت مساعد تعليمي ذكي في مادة ${activeLesson?.courseName || ''} ودرس ${activeLesson?.title || ''}.
+إليك محتوى السلايدات أو الدرس:
+"""
+${content}
+"""
+
+سؤال الطالب: ${promptText}`;
+
     try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: fullPrompt }] }]
+            })
+        });
+
+        const data = await res.json();
+        return data.candidates[0].content.parts[0].text;
+    } catch (err) {
+        console.error("Gemini Error:", err);
+        return "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. تأكد من صحة المفتاح والإنترنت.";
+    }
+}
+
+// إرسال سؤال في الشات
+async function handleSendAiChat() {
+    const input = document.getElementById('aiChatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const chatBox = document.getElementById('aiChatBox');
+    
+    // رسالة المستخدم
+    chatBox.innerHTML += `<div class="bg-indigo-600/30 border border-indigo-500/30 text-indigo-200 p-2 rounded-xl max-w-[85%] mr-auto">${text}</div>`;
+    input.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // جاري التفكير
+    const loadingId = "loading-" + Date.now();
+    chatBox.innerHTML += `<div id="${loadingId}" class="bg-slate-800/60 text-amber-400 p-2 rounded-xl max-w-[85%] text-[10px]">جاري التفكير... ⏳</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const aiResponse = await askGeminiAI(text);
+
+    document.getElementById(loadingId).remove();
+    chatBox.innerHTML += `<div class="bg-slate-800/80 text-slate-200 p-2 rounded-xl max-w-[85%] border border-slate-700/50">${aiResponse.replace(/\n/g, '<br>')}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// توليد بطاقة Flashcard تلقائياً من محتوى الدرس
+async function generateAutoFlashcard() {
+    const content = document.getElementById('lessonContentInput').value.trim();
+    if (!content) return alert("يرجى إدخال ملخص أو محتوى الدرس أولاً في الصندوق أعلاه ليتمكن AI من استخراج سؤال منه!");
+
+    const btn = document.getElementById('autoGenFlashcardBtn');
+    btn.textContent = "جاري التوليد... ⏳";
+
+    const prompt = `بناءً على النص التالي من الدرس، استخرج سؤالاً مهما وإجابته القصيرة. قم بصلة إجابتك بصيغة JSON فقط كالتالي بدون أي كلام آخر:
+{"question": "السؤال هنا", "answer": "الإجابة هنا"}
+
+النص:
+${content}`;
+
+    try {
+        const rawResponse = await askGeminiAI(prompt);
+        const cleanJsonStr = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+        const parsed = JSON.parse(cleanJsonStr);
+
         const lessonRef = doc(db, "lessons", activeLesson.id);
-        await updateDoc(lessonRef, { sourceLink: link });
-        activeLesson.sourceLink = link;
-        const openBtn = document.getElementById('openLinkBtn');
-        if (link) {
-            openBtn.href = link;
-            openBtn.classList.remove('hidden');
-        } else {
-            openBtn.classList.add('hidden');
-        }
-        alert("✅ تم حفظ رابط المصدر بنجاح!");
+        await updateDoc(lessonRef, { cardQuestion: parsed.question, cardAnswer: parsed.answer });
+
+        activeLesson.cardQuestion = parsed.question;
+        activeLesson.cardAnswer = parsed.answer;
+
+        document.getElementById('cardQuestionDisplay').textContent = parsed.question;
+        document.getElementById('cardAnswerDisplay').textContent = parsed.answer;
+
+        alert("✨ تم توليد سؤال وإجابة ذكية بنجاح!");
+        loadUserLessons();
     } catch (e) {
-        console.error("خطأ حفظ الرابط:", e);
+        console.error("JSON parse error:", e);
+        alert("لم نتمكن من صياغة بطاقة تلقائياً هذه المرة، جرب التوليد مرة أخرى.");
+    } finally {
+        btn.textContent = "✨ توليد بطاقة ذكية";
     }
 }
 
@@ -282,48 +336,6 @@ async function rateLesson(difficulty) {
     } catch (e) {
         console.error("خطأ التحديث:", e);
     }
-}
-
-// المؤقت
-function updateModalTimerDisplay() {
-    const display = document.getElementById('modalTimerDisplay');
-    if (!display) return;
-    const mins = Math.floor(timeLeftSeconds / 60);
-    const secs = timeLeftSeconds % 60;
-    display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
-
-function startModalTimer() {
-    const btn = document.getElementById('modalStartTimerBtn');
-    if (isTimerRunning) {
-        clearInterval(timerInterval);
-        isTimerRunning = false;
-        if (btn) btn.textContent = 'استئناف';
-        return;
-    }
-
-    isTimerRunning = true;
-    if (btn) btn.textContent = 'إيقاف';
-    timerInterval = setInterval(() => {
-        if (timeLeftSeconds > 0) {
-            timeLeftSeconds--;
-            updateModalTimerDisplay();
-        } else {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-            alert(`🎉 أحسنت! أنهيت الجلسة للدرس (${activeLesson ? activeLesson.title : ''})`);
-            resetModalTimer();
-        }
-    }, 1000);
-}
-
-function resetModalTimer() {
-    clearInterval(timerInterval);
-    isTimerRunning = false;
-    timeLeftSeconds = 25 * 60;
-    updateModalTimerDisplay();
-    const btn = document.getElementById('modalStartTimerBtn');
-    if (btn) btn.textContent = 'بدء';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -368,11 +380,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('flashcardContainer').addEventListener('click', toggleCardFlip);
-    document.getElementById('saveFlashcardBtn').addEventListener('click', saveFlashcard);
-    document.getElementById('saveLinkBtn').addEventListener('click', saveSourceLink);
+    document.getElementById('saveContentBtn').addEventListener('click', saveLessonContent);
+    document.getElementById('autoGenFlashcardBtn').addEventListener('click', generateAutoFlashcard);
+    document.getElementById('sendAiChatBtn').addEventListener('click', handleSendAiChat);
+    document.getElementById('aiChatInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendAiChat(); });
     document.getElementById('closeModalBtn').addEventListener('click', closeLessonModal);
-    document.getElementById('modalStartTimerBtn').addEventListener('click', startModalTimer);
-    document.getElementById('modalResetTimerBtn').addEventListener('click', resetModalTimer);
 
     document.querySelectorAll('.rate-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
