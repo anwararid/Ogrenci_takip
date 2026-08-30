@@ -1,9 +1,29 @@
+// ========================================
+// StudyLoop
+// Firebase Authentication + Firestore
+// ========================================
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    updateProfile
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 import {
     getFirestore,
     collection,
     addDoc,
-    getDocs
+    getDocs,
+    query,
+    where,
+    doc,
+    setDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -28,6 +48,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+const auth = getAuth(app);
+
 const db = getFirestore(app);
 
 
@@ -36,13 +58,53 @@ const db = getFirestore(app);
 // ========================================
 
 const state = {
-    lessons: []
+    lessons: [],
+    currentUser: null
 };
 
 
 // ========================================
-// DOM
+// DOM Elements
 // ========================================
+
+const authScreen =
+    document.getElementById("authScreen");
+
+const appScreen =
+    document.getElementById("app");
+
+
+const loginFormContainer =
+    document.getElementById("loginFormContainer");
+
+const registerFormContainer =
+    document.getElementById("registerFormContainer");
+
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const registerForm =
+    document.getElementById("registerForm");
+
+
+const showRegisterButton =
+    document.getElementById("showRegisterButton");
+
+const showLoginButton =
+    document.getElementById("showLoginButton");
+
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+
+const userName =
+    document.getElementById("userName");
+
+const welcomeText =
+    document.getElementById("welcomeText");
+
 
 const lessonModal =
     document.getElementById("lessonModal");
@@ -67,123 +129,422 @@ const lessonsList =
 
 
 // ========================================
-// Open Modal
+// Authentication Screen
+// ========================================
+
+function showLogin() {
+
+    loginFormContainer.hidden = false;
+
+    registerFormContainer.hidden = true;
+
+}
+
+
+function showRegister() {
+
+    loginFormContainer.hidden = true;
+
+    registerFormContainer.hidden = false;
+
+}
+
+
+// ========================================
+// Register
+// ========================================
+
+registerForm.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document
+                .getElementById("registerName")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("registerEmail")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("registerPassword")
+                .value;
+
+
+        if (!name || !email || !password) {
+
+            alert("يرجى تعبئة جميع الحقول.");
+
+            return;
+        }
+
+
+        try {
+
+            const userCredential =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            const user =
+                userCredential.user;
+
+
+            // حفظ اسم المستخدم في Authentication
+
+            await updateProfile(
+                user,
+                {
+                    displayName: name
+                }
+            );
+
+
+            // إنشاء ملف المستخدم في Firestore
+
+            await setDoc(
+                doc(db, "users", user.uid),
+                {
+                    name: name,
+                    email: email,
+                    createdAt: serverTimestamp()
+                }
+            );
+
+
+            alert(
+                "تم إنشاء الحساب بنجاح 🎉"
+            );
+
+
+            registerForm.reset();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showFirebaseError(error);
+
+        }
+
+    }
+);
+
+
+// ========================================
+// Login
+// ========================================
+
+loginForm.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("loginEmail")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("loginPassword")
+                .value;
+
+
+        try {
+
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+            loginForm.reset();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showFirebaseError(error);
+
+        }
+
+    }
+);
+
+
+// ========================================
+// Logout
+// ========================================
+
+logoutButton.addEventListener(
+    "click",
+    async function () {
+
+        try {
+
+            await signOut(auth);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "حدث خطأ أثناء تسجيل الخروج."
+            );
+
+        }
+
+    }
+);
+
+
+// ========================================
+// Switch Auth Forms
+// ========================================
+
+showRegisterButton.addEventListener(
+    "click",
+    showRegister
+);
+
+
+showLoginButton.addEventListener(
+    "click",
+    showLogin
+);
+
+
+// ========================================
+// Firebase Authentication State
+// ========================================
+
+onAuthStateChanged(
+    auth,
+    async function (user) {
+
+        if (user) {
+
+            state.currentUser = user;
+
+
+            // إظهار التطبيق
+
+            authScreen.hidden = true;
+
+            appScreen.hidden = false;
+
+
+            // عرض اسم المستخدم
+
+            const name =
+                user.displayName ||
+                user.email.split("@")[0];
+
+
+            userName.textContent =
+                name;
+
+
+            welcomeText.textContent =
+                `مرحبًا ${name} 👋`;
+
+
+            // تحميل دروس المستخدم
+
+            await loadLessons();
+
+        } else {
+
+            state.currentUser = null;
+
+            authScreen.hidden = false;
+
+            appScreen.hidden = true;
+
+            state.lessons = [];
+
+        }
+
+    }
+);
+
+
+// ========================================
+// Open Lesson Modal
 // ========================================
 
 function openLessonModal() {
+
     lessonModal.hidden = false;
+
 }
 
 
 // ========================================
-// Close Modal
+// Close Lesson Modal
 // ========================================
 
 function closeLessonModal() {
+
     lessonModal.hidden = true;
+
     lessonForm.reset();
+
 }
 
 
 // ========================================
-// Add Lesson To Firestore
+// Add Lesson
 // ========================================
 
-async function addLesson(event) {
+lessonForm.addEventListener(
+    "submit",
+    async function (event) {
 
-    event.preventDefault();
-
-
-    const subject =
-        document
-            .getElementById("subjectName")
-            .value
-            .trim();
+        event.preventDefault();
 
 
-    const name =
-        document
-            .getElementById("lessonName")
-            .value
-            .trim();
+        if (!state.currentUser) {
+
+            alert(
+                "يجب تسجيل الدخول أولًا."
+            );
+
+            return;
+        }
 
 
-    const duration =
-        Number(
+        const subject =
             document
-                .getElementById("studyDuration")
+                .getElementById("subjectName")
                 .value
-        );
+                .trim();
 
 
-    if (!subject || !name) {
+        const name =
+            document
+                .getElementById("lessonName")
+                .value
+                .trim();
 
-        alert("يرجى تعبئة جميع الحقول");
 
+        const duration =
+            Number(
+                document
+                    .getElementById("studyDuration")
+                    .value
+            );
+
+
+        if (!subject || !name) {
+
+            alert(
+                "يرجى تعبئة جميع الحقول."
+            );
+
+            return;
+        }
+
+
+        try {
+
+            await addDoc(
+                collection(db, "lessons"),
+                {
+
+                    userId:
+                        state.currentUser.uid,
+
+                    subject:
+                        subject,
+
+                    name:
+                        name,
+
+                    duration:
+                        duration,
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    nextReview:
+                        serverTimestamp()
+
+                }
+            );
+
+
+            closeLessonModal();
+
+
+            await loadLessons();
+
+
+            alert(
+                "تم حفظ الدرس بنجاح ✅"
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showFirebaseError(error);
+
+        }
+
+    }
+);
+
+
+// ========================================
+// Load User Lessons
+// ========================================
+
+async function loadLessons() {
+
+    if (!state.currentUser) {
         return;
     }
 
 
     try {
 
-        const lessonData = {
+        const lessonsQuery =
+            query(
+                collection(db, "lessons"),
+                where(
+                    "userId",
+                    "==",
+                    state.currentUser.uid
+                )
+            );
 
-            subject: subject,
-
-            name: name,
-
-            duration: duration,
-
-            createdAt: new Date(),
-
-            nextReview: new Date()
-
-        };
-
-
-        await addDoc(
-            collection(db, "lessons"),
-            lessonData
-        );
-
-
-        alert("تم حفظ الدرس بنجاح ✅");
-
-
-        lessonForm.reset();
-
-        closeLessonModal();
-
-
-        await loadLessons();
-
-
-    } catch (error) {
-
-        console.error(
-            "Firestore error:",
-            error
-        );
-
-
-        alert(
-            "حدث خطأ أثناء حفظ الدرس. تأكد من إعدادات Firestore."
-        );
-    }
-}
-
-
-// ========================================
-// Load Lessons
-// ========================================
-
-async function loadLessons() {
-
-    try {
 
         const snapshot =
             await getDocs(
-                collection(db, "lessons")
+                lessonsQuery
             );
 
 
@@ -191,13 +552,14 @@ async function loadLessons() {
 
 
         snapshot.forEach(
-            function (document) {
+            function (lessonDocument) {
 
                 state.lessons.push({
 
-                    id: document.id,
+                    id:
+                        lessonDocument.id,
 
-                    ...document.data()
+                    ...lessonDocument.data()
 
                 });
 
@@ -210,18 +572,17 @@ async function loadLessons() {
 
     } catch (error) {
 
-        console.error(
-            "Loading lessons failed:",
-            error
-        );
+        console.error(error);
 
-        renderLessons();
+        showFirebaseError(error);
+
     }
+
 }
 
 
 // ========================================
-// Render
+// Render Lessons
 // ========================================
 
 function renderLessons() {
@@ -233,6 +594,7 @@ function renderLessons() {
         lessonsList.hidden = true;
 
         return;
+
     }
 
 
@@ -274,16 +636,20 @@ function renderLessons() {
 
                 <button
                     class="start-lesson-button"
+                    type="button"
                     style="
                         margin-top: 15px;
                         padding: 10px 15px;
                         border-radius: 10px;
                         background: #5b5bd6;
                         color: white;
+                        border: none;
+                        cursor: pointer;
                     "
                 >
                     ابدأ الدراسة
                 </button>
+
             `;
 
 
@@ -291,6 +657,7 @@ function renderLessons() {
 
         }
     );
+
 }
 
 
@@ -307,11 +674,12 @@ function escapeHTML(value) {
         value ?? "";
 
     return element.innerHTML;
+
 }
 
 
 // ========================================
-// Events
+// Modal Events
 // ========================================
 
 addLessonButton.addEventListener(
@@ -332,17 +700,13 @@ closeModalButton.addEventListener(
 );
 
 
-lessonForm.addEventListener(
-    "submit",
-    addLesson
-);
-
-
 lessonModal.addEventListener(
     "click",
     function (event) {
 
-        if (event.target === lessonModal) {
+        if (
+            event.target === lessonModal
+        ) {
 
             closeLessonModal();
 
@@ -367,7 +731,68 @@ document.addEventListener(
 
 
 // ========================================
-// Start
+// Firebase Error Messages
 // ========================================
 
-loadLessons();
+function showFirebaseError(error) {
+
+    let message =
+        "حدث خطأ. حاول مرة أخرى.";
+
+
+    switch (error.code) {
+
+        case "auth/email-already-in-use":
+
+            message =
+                "هذا البريد الإلكتروني مستخدم بالفعل.";
+
+            break;
+
+
+        case "auth/invalid-email":
+
+            message =
+                "البريد الإلكتروني غير صحيح.";
+
+            break;
+
+
+        case "auth/weak-password":
+
+            message =
+                "كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.";
+
+            break;
+
+
+        case "auth/invalid-credential":
+
+            message =
+                "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+
+            break;
+
+
+        case "auth/user-not-found":
+
+            message =
+                "لا يوجد حساب بهذا البريد الإلكتروني.";
+
+            break;
+
+
+        case "auth/wrong-password":
+
+            message =
+                "كلمة المرور غير صحيحة.";
+
+            break;
+
+    }
+
+
+    alert(message);
+
+}
+```
