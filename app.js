@@ -225,8 +225,7 @@ async function saveLessonContent() {
     }
 }
 
-// دالة الاتصال بـ Gemini API المحسنة والمضمونة
-// دالة الاتصال بـ Gemini API بالاسم المعتمد حالياً
+// دالة الاتصال بـ Gemini API المعتمدة والمعالجة
 async function askGeminiAI(promptText) {
     let apiKey = localStorage.getItem('gemini_api_key');
     
@@ -244,7 +243,6 @@ async function askGeminiAI(promptText) {
     const fullPrompt = `أنت مساعد تعليمي لدرس (${activeLesson?.title || ''}) في مادة (${activeLesson?.courseName || ''}).\nمحتوى الدرس الحالي:\n${content}\n\nسؤال الطالب: ${promptText}`;
 
     try {
-        // نقطة النهاية الرسمية الصحيحة: models/gemini-1.5-flash
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: {
@@ -270,29 +268,6 @@ async function askGeminiAI(promptText) {
                 return "المفتاح غير صحيح أو منتهي الصلاحية. اضغط إعادة تحميل واكتب المفتاح الصحيح.";
             }
             return `خطأ من السيرفر: ${data.error?.message || 'تعذر الاتصال بالخدمة'}`;
-        }
-
-        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            return "لم يتم استلام رد واضح من الذكاء الاصطناعي.";
-        }
-
-    } catch (err) {
-        console.error("Network Error:", err);
-        return "حدث خطأ في الاتصال بالشبكة، تأكد من اتصال الإنترنت وحاول مجدداً.";
-    }
-}
-
-        const data = await response.json();
-
-        if (!response.ok || data.error) {
-            console.error("Gemini Error API Response:", data);
-            if (data.error?.code === 400 || data.error?.code === 403 || data.error?.status === "UNAUTHENTICATED") {
-                localStorage.removeItem('gemini_api_key');
-                return "المفتاح غير صحيح أو منتهي الصلاحية. يرجى إعادة كتابة السؤال وتجربة مفتاح جديد.";
-            }
-            return `حدث خطأ: ${data.error?.message || 'تعذر الاتصال بالخدمة'}`;
         }
 
         if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
