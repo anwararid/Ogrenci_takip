@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متابع الدراسة الذكي</title>
+    <title>متابع الدراسة الذكي - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -17,40 +17,51 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen pb-12 selection:bg-indigo-500 selection:text-white">
 
-    <!-- الهيدر العلوي -->
+    <!-- الهيدر العلوي والإحصائيات -->
     <header class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 py-3.5 mb-6">
-        <div class="max-w-5xl mx-auto flex justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl">
-                    📚
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl">
+                        🚀
+                    </div>
+                    <div>
+                        <h1 class="text-base font-extrabold text-white leading-tight">متابع الدراسة الذكي</h1>
+                        <p class="text-[11px] text-slate-400">نظام المراجعة والملاحظات المتكامل</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-base font-extrabold text-white leading-tight">متابع الدراسة الذكي</h1>
-                    <p class="text-[11px] text-slate-400">نظام التكرار المتباعد & Pomodoro</p>
+
+                <!-- إحصائيات سريعة للمستخدم -->
+                <div class="flex items-center gap-2 text-xs sm:hidden">
+                    <span class="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-1 rounded-lg font-bold" id="mobileStreakDisplay">🔥 0 يوم</span>
                 </div>
             </div>
 
-            <!-- سجل المستخدم -->
-            <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-xl">
-                <input type="text" id="usernameInput" placeholder="ادخل اسمك..." class="bg-transparent text-xs px-2.5 py-1 text-slate-200 focus:outline-none w-28 sm:w-36">
-                <button id="saveUserBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition shadow-lg shadow-indigo-600/20">
-                    دخول
-                </button>
+            <!-- معلومات المستخدم والشعارات -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div class="hidden sm:flex items-center gap-2 text-xs">
+                    <span class="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2.5 py-1 rounded-lg font-bold" id="streakDisplay">🔥 0 يوم متتالي</span>
+                    <span class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-2.5 py-1 rounded-lg font-bold" id="totalTimeDisplay">⏱️ 0 دقيقة</span>
+                </div>
+
+                <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-xl">
+                    <input type="text" id="usernameInput" placeholder="ادخل اسمك..." class="bg-transparent text-xs px-2.5 py-1 text-slate-200 focus:outline-none w-28 sm:w-32">
+                    <button id="saveUserBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-lg shadow-indigo-600/20">
+                        دخول
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
     <main class="max-w-5xl mx-auto px-4 space-y-6">
 
-        <!-- بطاقة الترحيب والتطبيق -->
+        <!-- بطاقة الترحيب -->
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-950 border border-indigo-800/30 p-5">
             <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 relative z-10">
                 <div>
-                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-2">
-                        ✨ جلسة دراسية جديدة
-                    </div>
                     <h2 class="text-lg font-bold text-white">مرحباً بك، <span id="currentUserNameDisplay" class="text-amber-400 font-extrabold">زائر</span> 👋</h2>
-                    <p class="text-xs text-slate-400 mt-1">اضغط على أي درس للبدء بمراجعته أو تشغيل المؤقت المخصص له.</p>
+                    <p class="text-xs text-slate-400 mt-1">إليك نظرة عامة على خطة دراستك وملاحظاتك اليومية.</p>
                 </div>
             </div>
         </div>
@@ -77,6 +88,19 @@
             </form>
         </section>
 
+        <!-- أدوات البحث والتصفية -->
+        <section class="flex flex-col sm:flex-row gap-3 justify-between items-center">
+            <div class="relative w-full sm:w-72">
+                <input type="text" id="searchInput" placeholder="بحث عن مادة أو درس..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 pl-8">
+                <span class="absolute left-2.5 top-2 text-slate-500 text-xs">🔍</span>
+            </div>
+            
+            <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+                <button data-filter="ALL" class="filter-btn bg-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">الكل</button>
+                <button data-filter="DUE" class="filter-btn bg-slate-900 hover:bg-slate-800 text-slate-400 text-xs font-bold px-3 py-1.5 rounded-lg transition border border-slate-800">🔴 مراجعة اليوم</button>
+            </div>
+        </section>
+
         <!-- قائمة الدروس -->
         <section class="space-y-4">
             <div class="flex items-center justify-between gap-4">
@@ -88,9 +112,9 @@
                 </span>
             </div>
 
-            <!-- شبكة بطاقات الدروس -->
+            <!-- شبكة البطاقات -->
             <div id="lessonsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- يتم التحميل هنا ديناميكياً -->
+                <!-- تحميل الدروس هنا -->
             </div>
         </section>
 
@@ -98,65 +122,74 @@
 
     <!-- النافذة التفاعلية للدرس (Modal) -->
     <div id="lessonModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform transition-all">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl transform transition-all max-h-[90vh] flex flex-col">
             
             <!-- رأس النافذة -->
-            <div class="bg-slate-800/50 p-5 border-b border-slate-800 flex justify-between items-start">
+            <div class="bg-slate-800/50 p-4 border-b border-slate-800 flex justify-between items-start shrink-0">
                 <div>
                     <span id="modalCourseName" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
                         المادة
                     </span>
-                    <h2 id="modalLessonTitle" class="text-lg font-extrabold text-white mt-2">عنوان الدرس</h2>
+                    <h2 id="modalLessonTitle" class="text-lg font-extrabold text-white mt-1">عنوان الدرس</h2>
                 </div>
                 <button id="closeModalBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
                     ✕
                 </button>
             </div>
 
-            <!-- محتوى النافذة -->
-            <div class="p-6 space-y-6">
+            <!-- محتوى النافذة القابل للتمشيط -->
+            <div class="p-5 space-y-5 overflow-y-auto">
 
                 <!-- المؤقت -->
-                <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-5 text-center">
+                <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 text-center">
                     <span class="text-xs text-slate-400 font-semibold">⏱️ مؤقت التركيز (Pomodoro)</span>
-                    <div id="modalTimerDisplay" class="text-5xl font-mono font-black text-indigo-400 my-3 tracking-wider">
+                    <div id="modalTimerDisplay" class="text-4xl font-mono font-black text-indigo-400 my-2 tracking-wider">
                         25:00
                     </div>
                     <div class="flex justify-center gap-2">
-                        <button id="modalStartTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20">
+                        <button id="modalStartTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-indigo-600/20">
                             بدء الجلسة
                         </button>
-                        <button id="modalResetTimerBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition">
+                        <button id="modalResetTimerBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-3 py-2 rounded-xl transition">
                             إعادة ضبط
                         </button>
                     </div>
                 </div>
 
-                <!-- معلومات السجل -->
+                <!-- قسم الملاحظات السريعة -->
+                <div>
+                    <label class="text-xs font-bold text-slate-300 block mb-1.5">📝 ملاحظات ومعادلات سريعة للدرس:</label>
+                    <textarea id="lessonNotesInput" rows="3" placeholder="اكتب ملاحظاتك أو قوانين الدرس هنا..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition"></textarea>
+                    <button id="saveNotesBtn" class="mt-1.5 bg-slate-800 hover:bg-slate-700 text-indigo-300 text-[11px] font-bold px-3 py-1.5 rounded-lg transition w-full">
+                        حفظ الملاحظات
+                    </button>
+                </div>
+
+                <!-- إحصائيات التكرار -->
                 <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-slate-950/50 border border-slate-800 p-3.5 rounded-2xl">
+                    <div class="bg-slate-950/50 border border-slate-800 p-3 rounded-2xl">
                         <span class="text-[11px] text-slate-400 block">مرات التكرار</span>
                         <span id="modalRepetitionCount" class="text-lg font-bold text-amber-400 mt-0.5 block">0</span>
                     </div>
-                    <div class="bg-slate-950/50 border border-slate-800 p-3.5 rounded-2xl">
+                    <div class="bg-slate-950/50 border border-slate-800 p-3 rounded-2xl">
                         <span class="text-[11px] text-slate-400 block">المراجعة القادمة</span>
                         <span id="modalNextReviewDate" class="text-xs font-bold text-emerald-400 mt-1 block">-</span>
                     </div>
                 </div>
 
-                <!-- أزرار التقييم -->
+                <!-- تقييم المستوى -->
                 <div>
-                    <label class="text-xs font-bold text-slate-300 block mb-2.5">ما مدى استيعابك للمادة اليوم؟</label>
+                    <label class="text-xs font-bold text-slate-300 block mb-2">ما مدى استيعابك للمادة اليوم؟</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button data-level="HARD" class="rate-btn bg-red-950/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 py-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-1">
+                        <button data-level="HARD" class="rate-btn bg-red-950/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 py-2.5 rounded-xl text-xs font-bold transition flex flex-col items-center gap-0.5">
                             <span>🔴 صعب</span>
                             <span class="text-[10px] text-red-400/70">غداً</span>
                         </button>
-                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 py-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-1">
+                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 py-2.5 rounded-xl text-xs font-bold transition flex flex-col items-center gap-0.5">
                             <span>🟡 متوسط</span>
                             <span class="text-[10px] text-amber-400/70">بعد 3 أيام</span>
                         </button>
-                        <button data-level="EASY" class="rate-btn bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-800/50 text-emerald-300 py-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-1">
+                        <button data-level="EASY" class="rate-btn bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-800/50 text-emerald-300 py-2.5 rounded-xl text-xs font-bold transition flex flex-col items-center gap-0.5">
                             <span>🟢 ممتاز</span>
                             <span class="text-[10px] text-emerald-400/70">مضاعفة</span>
                         </button>
@@ -167,6 +200,6 @@
         </div>
     </div>
 
-    <script type="module" src="app.js?v=4"></script>
+    <script type="module" src="app.js?v=5"></script>
 </body>
 </html>
