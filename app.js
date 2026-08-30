@@ -1,9 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ضع مفتاح Gemini API هنا
-const GEMINI_API_KEY = "AQ.Ab8RN6Lxb2c-hNtiI3K517udGp1v-6ZfqCjncgSQ6BcGhajSaw";
-
 const firebaseConfig = {
   apiKey: "AIzaSyDU305vBeN7sBA8hNTmAFofk",
   authDomain: "ogrenci-ders-takibi-e7d57.firebaseapp.com",
@@ -228,15 +225,15 @@ async function saveLessonContent() {
     }
 }
 
-// الاتصال بـ Gemini API للشات
+// الاتصال بـ Gemini API للشات بدون تخزين المفتاح كودياً
 async function askGeminiAI(promptText) {
-    // 1. فحص وجود المفتاح في ذاكرة المتصفح أو إدخاله
     let apiKey = localStorage.getItem('gemini_api_key');
     
     if (!apiKey) {
         apiKey = prompt("أدخل مفتاح Gemini API الخاص بك لتشغيل الذكاء الاصطناعي:");
         if (apiKey) {
-            localStorage.setItem('gemini_api_key', apiKey.trim());
+            apiKey = apiKey.trim();
+            localStorage.setItem('gemini_api_key', apiKey);
         } else {
             return "يرجى إدخال مفتاح API لتتمكن من استخدام الشات.";
         }
@@ -250,7 +247,6 @@ ${content}
 سؤال الطالب: ${promptText}`;
 
     try {
-        // 2. استخدام نموذج gemini-1.5-flash المتوافق
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -263,7 +259,7 @@ ${content}
         
         if (data.error) {
             if (data.error.code === 400 || data.error.code === 403) {
-                localStorage.removeItem('gemini_api_key'); // مسح المفتاح الخاطئ
+                localStorage.removeItem('gemini_api_key');
                 return "المفتاح غير صالح أو تم حظره. يرجى التحديث وإدخال مفتاح جديد.";
             }
             return `خطأ من السيرفر: ${data.error.message}`;
@@ -284,12 +280,10 @@ async function handleSendAiChat() {
 
     const chatBox = document.getElementById('aiChatBox');
     
-    // رسالة المستخدم
     chatBox.innerHTML += `<div class="bg-indigo-600/30 border border-indigo-500/30 text-indigo-200 p-2 rounded-xl max-w-[85%] mr-auto">${text}</div>`;
     input.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    // جاري التفكير
     const loadingId = "loading-" + Date.now();
     chatBox.innerHTML += `<div id="${loadingId}" class="bg-slate-800/60 text-amber-400 p-2 rounded-xl max-w-[85%] text-[10px]">جاري التفكير... ⏳</div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
