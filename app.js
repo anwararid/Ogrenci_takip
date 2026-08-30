@@ -225,12 +225,12 @@ async function saveLessonContent() {
     }
 }
 
-// دالة الاتصال بـ Gemini API المعتمدة والمعالجة
+// دالة الاتصال الموحدة بدون تكرار
 async function askGeminiAI(promptText) {
     let apiKey = localStorage.getItem('gemini_api_key');
     
     if (!apiKey) {
-        apiKey = prompt("أدخل مفتاح Gemini API الخاص بك للتجربة:");
+        apiKey = prompt("أدخل مفتاح Gemini API الخاص بك:");
         if (apiKey) {
             apiKey = apiKey.trim();
             localStorage.setItem('gemini_api_key', apiKey);
@@ -243,19 +243,13 @@ async function askGeminiAI(promptText) {
     const fullPrompt = `أنت مساعد تعليمي لدرس (${activeLesson?.title || ''}) في مادة (${activeLesson?.courseName || ''}).\nمحتوى الدرس الحالي:\n${content}\n\nسؤال الطالب: ${promptText}`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                contents: [
-                    {
-                        parts: [
-                            { text: fullPrompt }
-                        ]
-                    }
-                ]
+                contents: [{ parts: [{ text: fullPrompt }] }]
             })
         });
 
@@ -265,7 +259,7 @@ async function askGeminiAI(promptText) {
             console.error("Gemini Error API Response:", data);
             if (data.error?.code === 400 || data.error?.code === 403 || data.error?.status === "UNAUTHENTICATED") {
                 localStorage.removeItem('gemini_api_key');
-                return "المفتاح غير صحيح أو منتهي الصلاحية. اضغط إعادة تحميل واكتب المفتاح الصحيح.";
+                return "المفتاح غير صحيح أو منتهي الصلاحية. أعد إرسال الرسالة لكتابة المفتاح الصحيح.";
             }
             return `خطأ من السيرفر: ${data.error?.message || 'تعذر الاتصال بالخدمة'}`;
         }
