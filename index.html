@@ -13,37 +13,31 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        /* تأثير تقليب البطاقة */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen pb-12 selection:bg-indigo-500 selection:text-white">
 
-    <!-- الهيدر العلوي والإحصائيات -->
+    <!-- الهيدر العلوي -->
     <header class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 py-3.5 mb-6">
         <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3 w-full sm:w-auto justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl">
-                        🚀
+                        🧠
                     </div>
                     <div>
                         <h1 class="text-base font-extrabold text-white leading-tight">متابع الدراسة الذكي</h1>
-                        <p class="text-[11px] text-slate-400">نظام المراجعة والملاحظات المتكامل</p>
+                        <p class="text-[11px] text-slate-400">نظام Flashcards & SRS المتكامل</p>
                     </div>
-                </div>
-
-                <!-- إحصائيات سريعة للمستخدم -->
-                <div class="flex items-center gap-2 text-xs sm:hidden">
-                    <span class="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-1 rounded-lg font-bold" id="mobileStreakDisplay">🔥 0 يوم</span>
                 </div>
             </div>
 
-            <!-- معلومات المستخدم والشعارات -->
             <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <div class="hidden sm:flex items-center gap-2 text-xs">
-                    <span class="bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2.5 py-1 rounded-lg font-bold" id="streakDisplay">🔥 0 يوم متتالي</span>
-                    <span class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-2.5 py-1 rounded-lg font-bold" id="totalTimeDisplay">⏱️ 0 دقيقة</span>
-                </div>
-
                 <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-xl">
                     <input type="text" id="usernameInput" placeholder="ادخل اسمك..." class="bg-transparent text-xs px-2.5 py-1 text-slate-200 focus:outline-none w-28 sm:w-32">
                     <button id="saveUserBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-lg shadow-indigo-600/20">
@@ -58,19 +52,15 @@
 
         <!-- بطاقة الترحيب -->
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-950 border border-indigo-800/30 p-5">
-            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 relative z-10">
-                <div>
-                    <h2 class="text-lg font-bold text-white">مرحباً بك، <span id="currentUserNameDisplay" class="text-amber-400 font-extrabold">زائر</span> 👋</h2>
-                    <p class="text-xs text-slate-400 mt-1">إليك نظرة عامة على خطة دراستك وملاحظاتك اليومية.</p>
-                </div>
-            </div>
+            <h2 class="text-lg font-bold text-white">مرحباً بك، <span id="currentUserNameDisplay" class="text-amber-400 font-extrabold">زائر</span> 👋</h2>
+            <p class="text-xs text-slate-400 mt-1">اضغط على أي درس للبدء بالمراجعة وتجربة بطاقات الاستذكار السريع (Flashcards).</p>
         </div>
 
         <!-- إضافة درس جديد -->
         <section class="glass-card rounded-2xl p-5 border border-slate-800/80 shadow-xl">
             <h3 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                إضافة درس جديد للقائمة
+                إضافة درس جديد
             </h3>
             <form id="addLessonForm" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
                 <div class="sm:col-span-5">
@@ -88,14 +78,14 @@
             </form>
         </section>
 
-        <!-- أدوات البحث والتصفية -->
+        <!-- البحث والتصفية -->
         <section class="flex flex-col sm:flex-row gap-3 justify-between items-center">
             <div class="relative w-full sm:w-72">
                 <input type="text" id="searchInput" placeholder="بحث عن مادة أو درس..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 pl-8">
                 <span class="absolute left-2.5 top-2 text-slate-500 text-xs">🔍</span>
             </div>
             
-            <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
                 <button data-filter="ALL" class="filter-btn bg-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">الكل</button>
                 <button data-filter="DUE" class="filter-btn bg-slate-900 hover:bg-slate-800 text-slate-400 text-xs font-bold px-3 py-1.5 rounded-lg transition border border-slate-800">🔴 مراجعة اليوم</button>
             </div>
@@ -104,18 +94,11 @@
         <!-- قائمة الدروس -->
         <section class="space-y-4">
             <div class="flex items-center justify-between gap-4">
-                <h3 class="font-bold text-base text-white flex items-center gap-2">
-                    <span>📋 دروسك المسجلة</span>
-                </h3>
-                <span id="lessonCountBadge" class="text-xs bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-indigo-400 font-bold">
-                    0 دروس
-                </span>
+                <h3 class="font-bold text-base text-white flex items-center gap-2">📋 دروسك المسجلة</h3>
+                <span id="lessonCountBadge" class="text-xs bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-indigo-400 font-bold">0 دروس</span>
             </div>
 
-            <!-- شبكة البطاقات -->
-            <div id="lessonsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- تحميل الدروس هنا -->
-            </div>
+            <div id="lessonsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </section>
 
     </main>
@@ -127,71 +110,87 @@
             <!-- رأس النافذة -->
             <div class="bg-slate-800/50 p-4 border-b border-slate-800 flex justify-between items-start shrink-0">
                 <div>
-                    <span id="modalCourseName" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                        المادة
-                    </span>
+                    <span id="modalCourseName" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">المادة</span>
                     <h2 id="modalLessonTitle" class="text-lg font-extrabold text-white mt-1">عنوان الدرس</h2>
                 </div>
-                <button id="closeModalBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
-                    ✕
-                </button>
+                <button id="closeModalBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">✕</button>
             </div>
 
-            <!-- محتوى النافذة القابل للتمشيط -->
             <div class="p-5 space-y-5 overflow-y-auto">
 
-                <!-- المؤقت -->
-                <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-4 text-center">
-                    <span class="text-xs text-slate-400 font-semibold">⏱️ مؤقت التركيز (Pomodoro)</span>
-                    <div id="modalTimerDisplay" class="text-4xl font-mono font-black text-indigo-400 my-2 tracking-wider">
-                        25:00
-                    </div>
-                    <div class="flex justify-center gap-2">
-                        <button id="modalStartTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-lg shadow-indigo-600/20">
-                            بدء الجلسة
-                        </button>
-                        <button id="modalResetTimerBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-3 py-2 rounded-xl transition">
-                            إعادة ضبط
-                        </button>
-                    </div>
-                </div>
-
-                <!-- قسم الملاحظات السريعة -->
+                <!-- بطاقات التقليب Flashcards -->
                 <div>
-                    <label class="text-xs font-bold text-slate-300 block mb-1.5">📝 ملاحظات ومعادلات سريعة للدرس:</label>
-                    <textarea id="lessonNotesInput" rows="3" placeholder="اكتب ملاحظاتك أو قوانين الدرس هنا..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition"></textarea>
-                    <button id="saveNotesBtn" class="mt-1.5 bg-slate-800 hover:bg-slate-700 text-indigo-300 text-[11px] font-bold px-3 py-1.5 rounded-lg transition w-full">
-                        حفظ الملاحظات
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                            <span>🃏 بطاقة الاستذكار السريع (Flashcard)</span>
+                        </label>
+                        <span class="text-[10px] text-slate-400">اضغط على البطاقة لقلبها 🔄</span>
+                    </div>
+                    
+                    <div id="flashcardContainer" class="w-full h-36 perspective-1000 cursor-pointer">
+                        <div id="flashcardInner" class="w-full h-full relative transform-style-3d transition-transform duration-500 rounded-2xl">
+                            <!-- الوجه الأمامي (السؤال) -->
+                            <div class="absolute inset-0 backface-hidden bg-slate-950 border border-amber-500/30 rounded-2xl p-4 flex flex-col justify-between items-center text-center">
+                                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold">السؤال / المفهوم</span>
+                                <p id="cardQuestionDisplay" class="text-xs font-semibold text-slate-200">لا يوجد سؤال محدد بعد.</p>
+                                <span class="text-[10px] text-slate-500">اضغط لكشف الإجابة 👈</span>
+                            </div>
+                            <!-- الوجه الخلفي (الإجابة) -->
+                            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-indigo-950/80 border border-indigo-500/30 rounded-2xl p-4 flex flex-col justify-between items-center text-center">
+                                <span class="text-[10px] bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded font-bold">الإجابة / الشرح</span>
+                                <p id="cardAnswerDisplay" class="text-xs font-semibold text-slate-100">لا توجد إجابة محددة بعد.</p>
+                                <span class="text-[10px] text-indigo-400">اضغط للعودة للسؤال 🔄</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- إدخال وتعديل البطاقات -->
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <input type="text" id="cardQuestionInput" placeholder="السؤال / المفهوم..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        <input type="text" id="cardAnswerInput" placeholder="الإجابة / القانون..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <button id="saveFlashcardBtn" class="mt-2 w-full bg-slate-800 hover:bg-slate-700 text-amber-300 text-[11px] font-bold py-1.5 rounded-xl transition">
+                        حفظ بطاقة الـ Flashcard 💾
                     </button>
                 </div>
 
-                <!-- إحصائيات التكرار -->
-                <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-slate-950/50 border border-slate-800 p-3 rounded-2xl">
-                        <span class="text-[11px] text-slate-400 block">مرات التكرار</span>
-                        <span id="modalRepetitionCount" class="text-lg font-bold text-amber-400 mt-0.5 block">0</span>
-                    </div>
-                    <div class="bg-slate-950/50 border border-slate-800 p-3 rounded-2xl">
-                        <span class="text-[11px] text-slate-400 block">المراجعة القادمة</span>
-                        <span id="modalNextReviewDate" class="text-xs font-bold text-emerald-400 mt-1 block">-</span>
+                <!-- رابط المصدر/الفيديو -->
+                <div class="bg-slate-950/60 border border-slate-800 p-3 rounded-2xl space-y-2">
+                    <label class="text-xs font-bold text-slate-300 flex items-center justify-between">
+                        <span>🔗 رابط المصدر (YouTube / PDF)</span>
+                        <a id="openLinkBtn" href="#" target="_blank" class="hidden text-[11px] text-indigo-400 hover:underline">فتح الرابط ↗️</a>
+                    </label>
+                    <div class="flex gap-2">
+                        <input type="url" id="lessonLinkInput" placeholder="https://..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                        <button id="saveLinkBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 rounded-xl font-bold transition">حفظ</button>
                     </div>
                 </div>
 
-                <!-- تقييم المستوى -->
+                <!-- المؤقت -->
+                <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-3 text-center">
+                    <span class="text-xs text-slate-400 font-semibold">⏱️ مؤقت التركيز (Pomodoro)</span>
+                    <div id="modalTimerDisplay" class="text-3xl font-mono font-black text-indigo-400 my-1 tracking-wider">25:00</div>
+                    <div class="flex justify-center gap-2">
+                        <button id="modalStartTimerBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-1.5 rounded-xl transition">بدء</button>
+                        <button id="modalResetTimerBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl transition">إعادة</button>
+                    </div>
+                </div>
+
+                <!-- أزرار التقييم SRS -->
                 <div>
-                    <label class="text-xs font-bold text-slate-300 block mb-2">ما مدى استيعابك للمادة اليوم؟</label>
+                    <label class="text-xs font-bold text-slate-300 block mb-2">تقييم استيعابك للمادة اليوم:</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button data-level="HARD" class="rate-btn bg-red-950/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 py-2.5 rounded-xl text-xs font-bold transition flex flex-col items-center gap-0.5">
+                        <button data-level="HARD" class="rate-btn bg-red-950/30 hover:bg-red-900/50 border border-red-800/50 text-red-300 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center">
                             <span>🔴 صعب</span>
-                            <span class="text-[10px] text-red-400/70">غداً</span>
+                            <span class="text-[9px] text-red-400/70">غداً</span>
                         </button>
-                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 py-2.5 rounded-xl text-xs font-bold transition flex flex-col items-center gap-0.5">
+                        <button data-level="MEDIUM" class="rate-btn bg-amber-950/30 hover:bg-amber-900/50 border border-amber-800/50 text-amber-300 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center">
                             <span>🟡 متوسط</span>
-                            <span class="text-[10px] text-amber-400/70">بعد 3 أيام</span>
+                            <span class="text-[9px] text-amber-400/70">بعد 3 أيام</span>
                         </button>
-                        <button data-level="EASY" class="rate-btn bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-800/50 text-emerald-300 py-2.5 rounded-xl text-xs font-bold transition flex flex-col items-center gap-0.5">
+                        <button data-level="EASY" class="rate-btn bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-800/50 text-emerald-300 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center">
                             <span>🟢 ممتاز</span>
-                            <span class="text-[10px] text-emerald-400/70">مضاعفة</span>
+                            <span class="text-[9px] text-emerald-400/70">مضاعفة</span>
                         </button>
                     </div>
                 </div>
@@ -200,6 +199,6 @@
         </div>
     </div>
 
-    <script type="module" src="app.js?v=5"></script>
+    <script type="module" src="app.js?v=6"></script>
 </body>
 </html>
