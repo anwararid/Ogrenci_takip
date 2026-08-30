@@ -1,5 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+// استيراد مكتبة Gemini الرسمية المستقرة
+import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDU305vBeN7sBA8hNTmAFofk",
@@ -225,7 +227,7 @@ async function saveLessonContent() {
     }
 }
 
-// دالة الاتصال المحدثة والمصححة بـ Gemini API
+// دالة الاتصال المضمونة باستخدام SDK الرسمي لـ جوجل
 async function askGeminiAI(promptText) {
     let apiKey = localStorage.getItem('gemini_api_key');
     
@@ -243,40 +245,20 @@ async function askGeminiAI(promptText) {
     const fullPrompt = `أنت مساعد تعليمي لدرس (${activeLesson?.title || ''}) في مادة (${activeLesson?.courseName || ''}).\nمحتوى الدرس الحالي:\n${content}\n\nسؤال الطالب: ${promptText}`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: fullPrompt }] }]
-            })
-        });
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        const data = await response.json();
-
-        if (!response.ok || data.error) {
-            console.error("Gemini Error API Response:", data);
-            if (data.error?.code === 400 || data.error?.code === 404 || data.error?.code === 403 || data.error?.status === "UNAUTHENTICATED") {
-                localStorage.removeItem('gemini_api_key');
-                return "حدث خطأ في المفتاح أو الطلب. تم مسح المفتاح المخزن، أعد إرسال الرسالة لكتابة المفتاح الصحيح.";
-            }
-            return `خطأ من السيرفر: ${data.error?.message || 'تعذر الاتصال بالخدمة'}`;
-        }
-
-        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            return "لم يتم استلام رد واضح من الذكاء الاصطناعي.";
-        }
+        const result = await model.generateContent(fullPrompt);
+        const response = await result.response;
+        return response.text();
 
     } catch (err) {
-        console.error("Network Error:", err);
-        return "حدث خطأ في الاتصال بالشبكة، تأكد من اتصال الإنترنت وحاول مجدداً.";
+        console.error("Gemini SDK Error:", err);
+        localStorage.removeItem('gemini_api_key');
+        return "حدث خطأ في المفتاح أو الخدمة. تم مسح المفتاح المخزن تلقائياً، يرجى إعادة إرسال السؤال وإلصاق المفتاح الجديد الصحيح.";
     }
 }
 
-// إرسال سؤال في الشات
 async function handleSendAiChat() {
     const input = document.getElementById('aiChatInput');
     const text = input.value.trim();
@@ -301,7 +283,6 @@ async function handleSendAiChat() {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// توليد بطاقة Flashcard تلقائياً من محتوى الدرس
 async function generateAutoFlashcard() {
     const content = document.getElementById('lessonContentInput').value.trim();
     if (!content) return alert("يرجى إدخال ملخص أو محتوى الدرس أولاً في الصندوق أعلاه ليتمكن AI من استخراج سؤال منه!");
