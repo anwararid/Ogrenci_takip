@@ -225,50 +225,60 @@ async function saveLessonContent() {
     }
 }
 
-// الاتصال بـ Gemini API للشات بدون تخزين المفتاح كودياً
+// دالة الاتصال بـ Gemini API المحسنة والمضمونة
 async function askGeminiAI(promptText) {
     let apiKey = localStorage.getItem('gemini_api_key');
     
     if (!apiKey) {
-        apiKey = prompt("أدخل مفتاح Gemini API الخاص بك لتشغيل الذكاء الاصطناعي:");
+        apiKey = prompt("أدخل مفتاح Gemini API الخاص بك للتجربة:");
         if (apiKey) {
             apiKey = apiKey.trim();
             localStorage.setItem('gemini_api_key', apiKey);
         } else {
-            return "يرجى إدخال مفتاح API لتتمكن من استخدام الشات.";
+            return "يرجى إدخال مفتاح API أولاً.";
         }
     }
 
     const content = activeLesson?.lessonContent || '';
-    const fullPrompt = `أنت مساعد تعليمي في مادة ${activeLesson?.courseName || ''} ودرس ${activeLesson?.title || ''}.
-محتوى الدرس:
-${content}
-
-سؤال الطالب: ${promptText}`;
+    const fullPrompt = `أنت مساعد تعليمي لدرس (${activeLesson?.title || ''}) في مادة (${activeLesson?.courseName || ''}).\nمحتوى الدرس الحالي:\n${content}\n\nسؤال الطالب: ${promptText}`;
 
     try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: fullPrompt }] }]
+                contents: [
+                    {
+                        parts: [
+                            { text: fullPrompt }
+                        ]
+                    }
+                ]
             })
         });
 
-        const data = await res.json();
-        
-        if (data.error) {
-            if (data.error.code === 400 || data.error.code === 403) {
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            console.error("Gemini Error API Response:", data);
+            if (data.error?.code === 400 || data.error?.code === 403 || data.error?.status === "UNAUTHENTICATED") {
                 localStorage.removeItem('gemini_api_key');
-                return "المفتاح غير صالح أو تم حظره. يرجى التحديث وإدخال مفتاح جديد.";
+                return "المفتاح غير صحيح أو منتهي الصلاحية. يرجى إعادة كتابة السؤال وتجربة مفتاح جديد.";
             }
-            return `خطأ من السيرفر: ${data.error.message}`;
+            return `حدث خطأ: ${data.error?.message || 'تعذر الاتصال بالخدمة'}`;
         }
 
-        return data.candidates[0].content.parts[0].text;
+        if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            return "لم يتم استلام رد واضح من الذكاء الاصطناعي.";
+        }
+
     } catch (err) {
-        console.error("Gemini Error:", err);
-        return "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. تأكد من اتصال الإنترنت.";
+        console.error("Network Error:", err);
+        return "حدث خطأ في الاتصال بالشبكة، تأكد من اتصال الإنترنت وحاول مجدداً.";
     }
 }
 
@@ -290,7 +300,9 @@ async function handleSendAiChat() {
 
     const aiResponse = await askGeminiAI(text);
 
-    document.getElementById(loadingId).remove();
+    const loader = document.getElementById(loadingId);
+    if (loader) loader.remove();
+
     chatBox.innerHTML += `<div class="bg-slate-800/80 text-slate-200 p-2 rounded-xl max-w-[85%] border border-slate-700/50">${aiResponse.replace(/\n/g, '<br>')}</div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -303,14 +315,14 @@ async function generateAutoFlashcard() {
     const btn = document.getElementById('autoGenFlashcardBtn');
     btn.textContent = "جاري التوليد... ⏳";
 
-    const prompt = `بناءً على النص التالي من الدرس، استخرج سؤالاً مهما وإجابته القصيرة. قم بصلة إجابتك بصيغة JSON فقط كالتالي بدون أي كلام آخر:
+    const promptText = `بناءً على النص التالي من الدرس، استخرج سؤالاً مهم وإجابته القصيرة. أرجع الإجابة بتنسيق JSON فقط بالشكل التالي دون أي مقدمات:
 {"question": "السؤال هنا", "answer": "الإجابة هنا"}
 
 النص:
 ${content}`;
 
     try {
-        const rawResponse = await askGeminiAI(prompt);
+        const rawResponse = await askGeminiAI(promptText);
         const cleanJsonStr = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
         const parsed = JSON.parse(cleanJsonStr);
 
@@ -327,7 +339,7 @@ ${content}`;
         loadUserLessons();
     } catch (e) {
         console.error("JSON parse error:", e);
-        alert("لم نتمكن من صياغة بطاقة تلقائياً هذه المرة، جرب التوليد مرة أخرى.");
+        alert("لم نتمكن من صياغة بطاقة تلقائياً، تأكد من كتابة نص كافٍ في المحتوى واعد المحاولة.");
     } finally {
         btn.textContent = "✨ توليد بطاقة ذكية";
     }
