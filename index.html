@@ -1,642 +1,425 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyLoop - منصة متابعة الدراسة</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 16px;
+        }
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
 
-    <meta
-        name="description"
-        content="StudyLoop - تطبيق ذكي لتنظيم الدراسة ومراجعة الدروس"
-    >
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    <meta
-        name="theme-color"
-        content="#6366f1"
-    >
+        /* --- Auth Screen --- */
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <title>StudyLoop | تنظيم دراستك</title>
+        .auth-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid var(--border);
+        }
 
+        .auth-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
 
-    <!-- Google Fonts -->
+        .auth-header h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+        .form-group {
+            margin-bottom: 18px;
+        }
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
 
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
 
-    <!-- Main CSS -->
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
 
-    <link
-        rel="stylesheet"
-        href="styles.css?v=100"
-    >
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .auth-toggle button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* --- App Screen --- */
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            padding: 8px 16px;
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .lesson-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .lesson-subject {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            background: #eeef2a20;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .start-lesson-button {
+            padding: 10px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .start-lesson-button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px dashed var(--border);
+        }
+
+        /* --- Modal --- */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+    </style>
 </head>
-
-
 <body>
 
-
-    <!-- =====================================
-         Authentication
-    ====================================== -->
-
-    <section
-        id="authScreen"
-    >
-
-        <div class="auth-container">
-
-            <div class="auth-card">
-
-
-                <!-- Logo -->
-
-                <div class="logo">
-                    📚
-                </div>
-
-
-                <!-- =============================
-                     Login
-                ============================== -->
-
-                <div
-                    id="loginFormContainer"
-                >
-
-                    <h1>
-                        StudyLoop
-                    </h1>
-
-                    <p class="subtitle">
-                        نظّم دراستك، وراجع دروسك بذكاء.
-                    </p>
-
-
-                    <form
-                        id="loginForm"
-                    >
-
-                        <div class="form-group">
-
-                            <label
-                                for="loginEmail"
-                            >
-                                البريد الإلكتروني
-                            </label>
-
-                            <input
-                                id="loginEmail"
-                                type="email"
-                                placeholder="example@email.com"
-                                autocomplete="email"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label
-                                for="loginPassword"
-                            >
-                                كلمة المرور
-                            </label>
-
-                            <input
-                                id="loginPassword"
-                                type="password"
-                                placeholder="••••••••"
-                                autocomplete="current-password"
-                                required
-                            >
-
-                        </div>
-
-
-                        <button
-                           type="submit"
-                           class="primary-button"
-                        >
-                          تسجيل الدخول
-                        </button>
-
-                    </form>
-
-
-                    <div class="auth-switch">
-
-                        ليس لديك حساب؟
-
-                        <button
-                            type="button"
-                            id="showRegisterButton"
-                        >
-                            إنشاء حساب
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =============================
-                     Register
-                ============================== -->
-
-                <div
-                    id="registerFormContainer"
-                    hidden
-                >
-
-                    <h1>
-                        إنشاء حساب
-                    </h1>
-
-                    <p class="subtitle">
-                        ابدأ بتنظيم دراستك اليوم.
-                    </p>
-
-
-                    <form
-                        id="registerForm"
-                    >
-
-                        <div class="form-group">
-
-                            <label
-                                for="registerName"
-                            >
-                                الاسم
-                            </label>
-
-                            <input
-                                id="registerName"
-                                type="text"
-                                placeholder="اكتب اسمك"
-                                autocomplete="name"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label
-                                for="registerEmail"
-                            >
-                                البريد الإلكتروني
-                            </label>
-
-                            <input
-                                id="registerEmail"
-                                type="email"
-                                placeholder="example@email.com"
-                                autocomplete="email"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label
-                                for="registerPassword"
-                            >
-                                كلمة المرور
-                            </label>
-
-                            <input
-                                id="registerPassword"
-                                type="password"
-                                placeholder="6 أحرف على الأقل"
-                                autocomplete="new-password"
-                                minlength="6"
-                                required
-                            >
-
-                        </div>
-
-
-                        <button
-                            type="submit"
-                            class="primary-button"
-                        >
-                            إنشاء الحساب
-                        </button>
-
-                    </form>
-
-
-                    <div class="auth-switch">
-
-                        لديك حساب بالفعل؟
-
-                        <button
-                            type="button"
-                            id="showLoginButton"
-                        >
-                            تسجيل الدخول
-                        </button>
-
-                    </div>
-
-                </div>
-
-
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="authScreen" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>StudyLoop</h1>
+                <p>منصتك الذكية لمتابعة الدروس والتكرار المتباعد</p>
             </div>
 
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         Main Application
-    ====================================== -->
-
-    <main
-        id="app"
-        hidden
-    >
-
-
-        <!-- =============================
-             Header
-        ============================== -->
-
-        <header class="app-header">
-
-            <div class="header-inner">
-
-
-                <div class="brand">
-
-                    <div class="brand-logo">
-                        📚
+            <!-- Login Container -->
+            <div id="loginFormContainer">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">البريد الإلكتروني</label>
+                        <input type="email" id="loginEmail" placeholder="example@domain.com" required>
                     </div>
-
-                    <div class="brand-name">
-                        Study<span>Loop</span>
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
                     </div>
-
+                    <button type="submit" class="btn-primary">تسجيل الدخول</button>
+                </form>
+                <div class="auth-toggle">
+                    ليس لديك حساب؟ <button id="showRegisterButton" type="button">إنشاء حساب جديد</button>
                 </div>
-
-
-                <div class="header-user">
-
-                    <span
-                        id="userName"
-                        class="user-name"
-                    >
-                        المستخدم
-                    </span>
-
-                    <button
-                        id="logoutButton"
-                        type="button"
-                        class="logout-button"
-                    >
-                        تسجيل الخروج
-                    </button>
-
-                </div>
-
-
             </div>
 
-        </header>
-
-
-
-        <!-- =============================
-             Dashboard
-        ============================== -->
-
-        <div class="dashboard">
-
-
-            <!-- Welcome -->
-
-            <section class="welcome-section">
-
-                <div>
-
-                    <h2 id="welcomeText">
-                        مرحبًا 👋
-                    </h2>
-
-                    <p>
-                        جاهز تكمل رحلة الدراسة اليوم؟
-                    </p>
-
-                </div>
-
-
-                <button
-                    id="addLessonButton"
-                    type="button"
-                    class="add-lesson-button"
-                >
-                    ＋ إضافة درس
-                </button>
-
-            </section>
-
-
-
-            <!-- =============================
-                 Statistics
-            ============================== -->
-
-            <section
-                class="stats-grid"
-            >
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-                        📚
+            <!-- Register Container -->
+            <div id="registerFormContainer" hidden>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">الاسم الكامل</label>
+                        <input type="text" id="registerName" placeholder="أنور" required>
                     </div>
-
-                    <h3 id="totalLessons">
-                        0
-                    </h3>
-
-                    <p>
-                        إجمالي الدروس
-                    </p>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-                        📖
+                    <div class="form-group">
+                        <label for="registerEmail">البريد الإلكتروني</label>
+                        <input type="email" id="registerEmail" placeholder="example@domain.com" required>
                     </div>
-
-                    <h3 id="totalSubjects">
-                        0
-                    </h3>
-
-                    <p>
-                        المواد
-                    </p>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-                        🔄
+                    <div class="form-group">
+                        <label for="registerPassword">كلمة المرور</label>
+                        <input type="password" id="registerPassword" placeholder="6 أحرف على الأقل" required>
                     </div>
-
-                    <h3 id="reviewLessons">
-                        0
-                    </h3>
-
-                    <p>
-                        دروس تحتاج مراجعة
-                    </p>
-
+                    <button type="submit" class="btn-primary">إنشاء الحساب</button>
+                </form>
+                <div class="auth-toggle">
+                    لديك حساب بالفعل؟ <button id="showLoginButton" type="button">تسجيل الدخول</button>
                 </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-                        ⏱️
-                    </div>
-
-                    <h3 id="totalMinutes">
-                        0
-                    </h3>
-
-                    <p>
-                        دقائق الدراسة
-                    </p>
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- =============================
-                 Lessons Section
-            ============================== -->
-
-            <section>
-
-
-                <div class="section-header">
-
-                    <h3>
-                        دروسي
-                    </h3>
-
-                    <span>
-                        خطتك الدراسية
-                    </span>
-
-                </div>
-
-
-                <!-- Empty State -->
-
-                <div
-                    id="emptyState"
-                >
-
-                    <div class="empty-icon">
-                        📚
-                    </div>
-
-                    <h3>
-                        لا توجد دروس بعد
-                    </h3>
-
-                    <p>
-                        أضف أول درس وابدأ بتنظيم دراستك.
-                    </p>
-
-                    <button
-                        id="emptyAddButton"
-                        type="button"
-                    >
-                        ＋ إضافة أول درس
-                    </button>
-
-                </div>
-
-
-                <!-- Lessons -->
-
-                <div
-                    id="lessonsList"
-                    hidden
-                >
-                </div>
-
-
-            </section>
-
-
-        </div>
-
-
-    </main>
-
-
-
-    <!-- =====================================
-         Add Lesson Modal
-    ====================================== -->
-
-    <div
-        id="lessonModal"
-        hidden
-    >
-
-        <div class="modal-content">
-
-
-            <div class="modal-header">
-
-                <h3>
-                    إضافة درس جديد
-                </h3>
-
-                <button
-                    id="closeModalButton"
-                    type="button"
-                    class="close-modal"
-                    aria-label="إغلاق"
-                >
-                    ×
-                </button>
-
             </div>
-
-
-            <form
-                id="lessonForm"
-            >
-
-
-                <div class="form-group">
-
-                    <label
-                        for="subjectName"
-                    >
-                        المادة
-                    </label>
-
-                    <input
-                        id="subjectName"
-                        type="text"
-                        placeholder="مثال: الرياضيات"
-                        autocomplete="off"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label
-                        for="lessonName"
-                    >
-                        اسم الدرس
-                    </label>
-
-                    <input
-                        id="lessonName"
-                        type="text"
-                        placeholder="مثال: المشتقات"
-                        autocomplete="off"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label
-                        for="studyDuration"
-                    >
-                        مدة الدراسة بالدقائق
-                    </label>
-
-                    <input
-                        id="studyDuration"
-                        type="number"
-                        min="1"
-                        max="1440"
-                        value="45"
-                        required
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    حفظ الدرس
-                </button>
-
-
-            </form>
-
-
         </div>
-
     </div>
 
+    <!-- MAIN APP SCREEN -->
+    <div id="app" hidden>
+        <header>
+            <h2>StudyLoop</h2>
+            <div class="user-info">
+                <span id="userName">المستخدم</span>
+                <button id="logoutButton" class="btn-secondary" type="button">تسجيل الخروج</button>
+            </div>
+        </header>
 
+        <main class="container">
+            <h2 id="welcomeText" style="margin-bottom: 20px;">مرحبًا بك 👋</h2>
 
-    <!-- =====================================
-         Firebase / Application
-    ====================================== -->
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalLessons">0</h3>
+                    <p>إجمالي الدروس</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalSubjects">0</h3>
+                    <p>المواد الدراسية</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="reviewLessons">0</h3>
+                    <p>قيد المراجعة</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalMinutes">0</h3>
+                    <p>إجمالي الدقائق</p>
+                </div>
+            </div>
 
-    <script>
-    alert("✅ index.html يعمل");
-    </script>
+            <!-- Lessons Section -->
+            <div class="section-header">
+                <h3>جدول الدروس</h3>
+                <button id="addLessonButton" class="btn-primary" style="width: auto; padding: 8px 16px;" type="button">+ إضافة درس</button>
+            </div>
 
-    <script type="module" src="./app.js"></script>
+            <div id="emptyState" class="empty-state">
+                <p style="margin-bottom: 12px; color: var(--text-muted);">لا توجد دروس مضافة حتى الآن.</p>
+                <button id="emptyAddButton" class="btn-secondary" type="button">إضافة أول درس</button>
+            </div>
 
+            <div id="lessonsList" class="lessons-grid" hidden></div>
+        </main>
+    </div>
 
+    <!-- ADD LESSON MODAL -->
+    <div id="lessonModal" class="modal-backdrop" hidden>
+        <div class="modal">
+            <div class="modal-header">
+                <h3>إضافة درس جديد</h3>
+                <button id="closeModalButton" class="close-btn" type="button">&times;</button>
+            </div>
+            <form id="lessonForm">
+                <div class="form-group">
+                    <label for="subjectName">اسم المادة</label>
+                    <input type="text" id="subjectName" placeholder="مثال: الرياضيات" required>
+                </div>
+                <div class="form-group">
+                    <label for="lessonName">اسم الدرس</label>
+                    <input type="text" id="lessonName" placeholder="مثال: التكامل المباشر" required>
+                </div>
+                <div class="form-group">
+                    <label for="studyDuration">مدة الدراسة المتوقعة (بالدقائق)</label>
+                    <input type="number" id="studyDuration" min="1" placeholder="45" required>
+                </div>
+                <button type="submit" class="btn-primary">حفظ الدرس</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Code Logic -->
+    <script type="module" src="app.js"></script>
 </body>
-
 </html>
