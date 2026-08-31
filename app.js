@@ -1,3 +1,4 @@
+alert("🔥 app.js يعمل");
 ```javascript
 // ============================================================
 // StudyLoop
@@ -1787,4 +1788,4 @@ function getFirebaseErrorMessage(
     }
 
 }
-alert("🔥 APP.JS اشتغل");
+
