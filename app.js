@@ -1,6 +1,3 @@
-// إلغاء رسائل Alert المنبثقة نهائياً من المتصفح
-window.alert = function() {};
-
 import { 
     auth, 
     db, 
@@ -49,15 +46,6 @@ let currentUser = null;
 let unsubscribeLessons = null;
 let activeTimer = null;
 
-// وظيفة إخفاء دائرة التحميل فوراً
-function hideLoader() {
-    const loader = document.getElementById('authLoading');
-    if (loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.hidden = true, 400);
-    }
-}
-
 // Navigation Logic
 showRegisterButton?.addEventListener('click', () => {
     loginFormContainer.hidden = true;
@@ -82,8 +70,6 @@ closeModalButton?.addEventListener('click', closeModal);
 
 // Auth Observer
 onAuthStateChanged(auth, (user) => {
-    hideLoader();
-
     if (user) {
         currentUser = user;
         authScreen.hidden = true;
@@ -225,7 +211,7 @@ function renderLessons(lessons) {
     });
 }
 
-// نافذة التكرار والمؤقت المباشرة
+// نافذة بدأ الدراسة للمراجعة
 function startStudySession(lessonName, durationMinutes) {
     if (activeTimer) clearInterval(activeTimer);
 
@@ -275,6 +261,3 @@ function formatTime(seconds) {
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
-
-// أمان إضافي لإخفاء الـ Loader إن تأخر الاتصال
-setTimeout(hideLoader, 2500);
