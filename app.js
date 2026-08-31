@@ -1787,4 +1787,36 @@ function getFirebaseErrorMessage(
     }
 
 }
-```
+```console.log("🔥 TEST: app.js loaded");
+
+const testLoginButton = document.querySelector(
+    '#loginForm button[type="submit"]'
+);
+
+console.log(
+    "🔥 TEST: login button =",
+    testLoginButton
+);
+
+if (testLoginButton) {
+
+    testLoginButton.addEventListener(
+        "click",
+        function () {
+
+            alert("✅ زر تسجيل الدخول يعمل!");
+
+            console.log(
+                "🔥 TEST: LOGIN BUTTON CLICKED"
+            );
+
+        }
+    );
+
+} else {
+
+    console.error(
+        "❌ TEST: لم يتم العثور على زر تسجيل الدخول"
+    );
+
+}
