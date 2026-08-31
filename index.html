@@ -20,7 +20,6 @@
             --primary: #8b5cf6;
             --primary-gradient: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%);
             --accent-green: #10b981;
-            --accent-cyan: #06b6d4;
             
             --text-title: #f8fafc;
             --text-body: #cbd5e1;
@@ -51,7 +50,6 @@
             background-attachment: fixed;
         }
 
-        /* --- LOADER لمنع ومضة صفحة التسجيل عند التحديث --- */
         #authLoading {
             position: fixed;
             inset: 0;
@@ -60,7 +58,7 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.4s ease;
         }
 
         .spinner {
@@ -76,14 +74,12 @@
             to { transform: rotate(360deg); }
         }
 
-        /* --- AUTH SCREEN --- */
         .auth-wrapper {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 24px;
-            animation: fadeIn 0.5s ease;
         }
 
         .auth-card {
@@ -96,11 +92,6 @@
             width: 100%;
             max-width: 420px;
             border: 1px solid var(--border-light);
-            transition: var(--transition-smooth);
-        }
-
-        .auth-card:hover {
-            border-color: rgba(139, 92, 246, 0.25);
         }
 
         .auth-header {
@@ -141,7 +132,6 @@
             border-radius: var(--radius-md);
             font-size: 14px;
             outline: none;
-            transition: var(--transition-smooth);
             background: rgba(11, 15, 25, 0.6);
             color: var(--text-title);
         }
@@ -149,7 +139,6 @@
         .form-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 16px rgba(139, 92, 246, 0.25);
-            background: rgba(11, 15, 25, 0.85);
         }
 
         .btn-primary {
@@ -162,13 +151,7 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition-smooth);
             box-shadow: 0 4px 18px rgba(139, 92, 246, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.45);
         }
 
         .auth-toggle {
@@ -187,11 +170,9 @@
             margin-right: 4px;
         }
 
-        /* --- DASHBOARD HEADER --- */
         header {
             background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-light);
             padding: 18px 32px;
             display: flex;
@@ -225,13 +206,6 @@
             cursor: pointer;
             font-weight: 500;
             font-size: 13px;
-            transition: var(--transition-smooth);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
         }
 
         .container {
@@ -239,10 +213,8 @@
             margin: 36px auto;
             padding: 0 20px;
             width: 100%;
-            animation: fadeIn 0.4s ease;
         }
 
-        /* --- STATS & LESSONS --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -257,13 +229,6 @@
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-light);
             text-align: center;
-            transition: var(--transition-smooth);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-hover);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
         }
 
         .stat-card h3 {
@@ -301,14 +266,6 @@
             flex-direction: column;
             justify-content: space-between;
             gap: 20px;
-            transition: var(--transition-smooth);
-            animation: fadeInUp 0.4s ease forwards;
-        }
-
-        .lesson-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
         }
 
         .lesson-subject {
@@ -346,13 +303,6 @@
             font-weight: 600;
             font-size: 13px;
             width: 100%;
-            transition: var(--transition-smooth);
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
-        }
-
-        .start-lesson-button:hover {
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-            transform: translateY(-1px);
         }
 
         .empty-state {
@@ -363,18 +313,16 @@
             border: 2px dashed var(--border-light);
         }
 
-        /* --- MODALS --- */
         .modal-backdrop {
             position: fixed;
             inset: 0;
-            background: rgba(8, 12, 22, 0.8);
+            background: rgba(8, 12, 22, 0.85);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            z-index: 1000;
-            animation: fadeIn 0.25s ease;
+            z-index: 10000;
         }
 
         .modal {
@@ -403,22 +351,6 @@
             font-size: 18px;
             cursor: pointer;
             color: var(--text-sub);
-            transition: var(--transition-smooth);
-        }
-
-        .close-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         [hidden] {
@@ -428,17 +360,17 @@
 </head>
 <body>
 
-    <!-- مؤشر التحميل لحل مشكلة الومضة أثناء التحقق من التسجيل -->
+    <!-- LOADER -->
     <div id="authLoading">
         <div class="spinner"></div>
     </div>
 
-    <!-- AUTHENTICATION SCREEN (مخفية افتراضياً عبر hidden لمنع الظهور اللحظي) -->
+    <!-- AUTH SCREEN -->
     <div id="authScreen" class="auth-wrapper" hidden>
         <div class="auth-card">
             <div class="auth-header">
                 <h1>StudyLoop</h1>
-                <p>منصتك الذكية لمتابعة الدراسة والتكرار المتباعد</p>
+                <p>منصتك الذكية لمتابعة الدراسة</p>
             </div>
 
             <div id="loginFormContainer">
@@ -481,7 +413,7 @@
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD SCREEN -->
+    <!-- DASHBOARD SCREEN -->
     <div id="app" hidden>
         <header>
             <h2>StudyLoop</h2>
@@ -552,6 +484,7 @@
         </div>
     </div>
 
-    <script type="module" src="app.js?v=100"></script>
+    <!-- كسر كاش المتصفح لضمان قراءة app.js الجديد -->
+    <script type="module" src="app.js?v=999"></script>
 </body>
 </html>
