@@ -1820,3 +1820,39 @@ if (testLoginButton) {
     );
 
 }
+console.log("🚀 LOGIN TEST STARTED");
+
+const loginFormTest =
+    document.getElementById("loginForm");
+
+console.log(
+    "loginForm:",
+    loginFormTest
+);
+
+if (loginFormTest) {
+
+    loginFormTest.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            alert(
+                "✅ JavaScript استقبل زر تسجيل الدخول"
+            );
+
+            console.log(
+                "✅ LOGIN SUBMIT RECEIVED"
+            );
+
+        }
+    );
+
+} else {
+
+    alert(
+        "❌ لم يتم العثور على loginForm"
+    );
+
+}
