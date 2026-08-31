@@ -641,142 +641,25 @@ if (registerForm) {
 // LOGIN
 // ============================================================
 
+
 if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        async function (event) {
+        function (event) {
 
             event.preventDefault();
 
-            hideAuthMessage();
+            alert("✅ زر تسجيل الدخول يعمل!");
 
-
-            const submitButton =
-                loginForm.querySelector(
-                    'button[type="submit"]'
-                );
-
-
-            const email =
-                $("loginEmail")?.value
-                    .trim()
-                    .toLowerCase();
-
-            const password =
-                $("loginPassword")?.value;
-
-
-            // --------------------------------------------
-            // Validation
-            // --------------------------------------------
-
-            if (!email) {
-
-                showAuthMessage(
-                    "يرجى كتابة البريد الإلكتروني."
-                );
-
-                $("loginEmail")?.focus();
-
-                return;
-
-            }
-
-
-            if (!password) {
-
-                showAuthMessage(
-                    "يرجى كتابة كلمة المرور."
-                );
-
-                $("loginPassword")?.focus();
-
-                return;
-
-            }
-
-
-            // --------------------------------------------
-            // Loading
-            // --------------------------------------------
-
-            setButtonLoading(
-                submitButton,
-                true,
-                "تسجيل الدخول",
-                "جارٍ تسجيل الدخول..."
+            console.log(
+                "LOGIN BUTTON WORKS"
             );
-
-
-            try {
-
-                console.log(
-                    "Signing in..."
-                );
-
-
-                const result =
-                    await signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password
-                    );
-
-
-                console.log(
-                    "Login successful:",
-                    result.user.uid
-                );
-
-
-                loginForm.reset();
-
-
-                showAuthMessage(
-                    "تم تسجيل الدخول بنجاح ✓",
-                    "success"
-                );
-
-
-                /*
-                 * onAuthStateChanged handles
-                 * opening the application.
-                 */
-
-
-            } catch (error) {
-
-                console.error(
-                    "LOGIN ERROR:",
-                    error
-                );
-
-
-                showAuthMessage(
-                    getFirebaseErrorMessage(
-                        error,
-                        "login"
-                    )
-                );
-
-
-            } finally {
-
-                setButtonLoading(
-                    submitButton,
-                    false,
-                    "تسجيل الدخول",
-                    "جارٍ تسجيل الدخول..."
-                );
-
-            }
 
         }
     );
 
 }
-
 
 // ============================================================
 // LOGOUT
