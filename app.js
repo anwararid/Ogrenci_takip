@@ -255,36 +255,32 @@ if (registerForm) {
 // LOGIN (FIXED & FULLY IMPLEMENTED)
 // ============================================================
 
+// ============================================================
+// LOGIN (تسجيل الدخول المعدل)
+// ============================================================
+
+const loginForm = document.getElementById("loginForm");
+
 if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        hideAuthMessage();
+        event.preventDefault(); // يمنع إعادة تحديث الصفحة
 
-        const submitButton = loginForm.querySelector('button[type="submit"]');
-        const email = $("loginEmail")?.value.trim().toLowerCase();
-        const password = $("loginPassword")?.value;
+        const email = document.getElementById("loginEmail")?.value.trim().toLowerCase();
+        const password = document.getElementById("loginPassword")?.value;
 
-        if (!email) {
-            showAuthMessage("يرجى إدخال البريد الإلكتروني.");
+        if (!email || !password) {
+            alert("يرجى إدخال البريد الإلكتروني وكلمة المرور.");
             return;
         }
-
-        if (!password) {
-            showAuthMessage("يرجى إدخال كلمة المرور.");
-            return;
-        }
-
-        setButtonLoading(submitButton, true, "تسجيل الدخول", "جارٍ تسجيل الدخول...");
 
         try {
+            // استدعاء دالة Firebase الحقيقية بدلاً من alert
             await signInWithEmailAndPassword(auth, email, password);
             loginForm.reset();
-            showAuthMessage("تم تسجيل الدخول بنجاح! 🎉", "success");
+            alert("تم تسجيل الدخول بنجاح! 🎉");
         } catch (error) {
             console.error("LOGIN ERROR:", error);
-            showAuthMessage(getFirebaseErrorMessage(error, "login"));
-        } finally {
-            setButtonLoading(submitButton, false, "تسجيل الدخول", "جارٍ تسجيل الدخول...");
+            alert("حدث خطأ أثناء تسجيل الدخول: " + error.message);
         }
     });
 }
