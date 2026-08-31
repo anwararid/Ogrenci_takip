@@ -1,65 +1,84 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="stylesheet" href="style.css?v=2">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyLoop - منصة متابعة الدراسة</title>
+    
+    <!-- خط تجريدي عصري من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --radius: 16px;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: #eef2ff;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-card: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --radius-lg: 24px;
+            --radius-md: 14px;
+            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Tajawal', system-ui, sans-serif;
         }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* --- Auth Screen --- */
+        /* --- AUTHENTICATION SCREEN --- */
         .auth-wrapper {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
         }
 
         .auth-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 40px 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
             width: 100%;
             max-width: 420px;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .auth-header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .auth-header h1 {
-            font-size: 28px;
-            color: var(--primary);
-            margin-bottom: 8px;
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
 
         .auth-header p {
@@ -74,44 +93,50 @@
         .form-group label {
             display: block;
             font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            padding: 14px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
             font-size: 14px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
+            background: rgba(15, 23, 42, 0.6);
+            color: #fff;
         }
 
         .form-group input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
         }
 
         .btn-primary {
             width: 100%;
-            padding: 12px;
-            background: var(--primary);
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
 
         .btn-primary:hover {
-            background: var(--primary-hover);
+            opacity: 0.95;
+            transform: translateY(-1px);
         }
 
         .auth-toggle {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 24px;
             font-size: 14px;
             color: var(--text-muted);
         }
@@ -119,20 +144,27 @@
         .auth-toggle button {
             background: none;
             border: none;
-            color: var(--primary);
-            font-weight: 600;
+            color: #38bdf8;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: underline;
         }
 
-        /* --- App Screen --- */
+        /* --- DASHBOARD SCREEN --- */
         header {
-            background: var(--card-bg);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
-            padding: 16px 24px;
+            padding: 18px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        header h2 {
+            font-weight: 800;
+            background: linear-gradient(135deg, #818cf8, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .user-info {
@@ -142,17 +174,22 @@
         }
 
         .btn-secondary {
-            padding: 8px 16px;
-            background: #f1f5f9;
-            color: var(--text);
+            padding: 8px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .container {
-            max-width: 900px;
+            max-width: 960px;
             margin: 32px auto;
             padding: 0 20px;
             width: 100%;
@@ -166,58 +203,66 @@
         }
 
         .stat-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--radius);
+            background: var(--surface);
+            padding: 24px 20px;
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border);
             text-align: center;
+            box-shadow: var(--shadow-md);
         }
 
         .stat-card h3 {
-            font-size: 28px;
-            color: var(--primary);
+            font-size: 34px;
+            font-weight: 800;
+            color: #38bdf8;
             margin-bottom: 4px;
         }
 
         .stat-card p {
             font-size: 13px;
             color: var(--text-muted);
+            font-weight: 700;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .lessons-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .lesson-card {
-            background: var(--card-bg);
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
+            border-radius: var(--radius-lg);
+            padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 16px;
+            gap: 18px;
+            box-shadow: var(--shadow-md);
         }
 
         .lesson-subject {
             font-size: 12px;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            background: #eeef2a20;
-            padding: 4px 8px;
-            border-radius: 6px;
+            font-weight: 800;
+            color: #818cf8;
+            background: rgba(99, 102, 241, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
             display: inline-block;
             margin-bottom: 8px;
+        }
+
+        .lesson-card h4 {
+            font-size: 20px;
+            font-weight: 700;
         }
 
         .lesson-meta {
@@ -228,63 +273,65 @@
         }
 
         .start-lesson-button {
-            padding: 10px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             width: 100%;
             transition: all 0.2s;
         }
 
         .start-lesson-button:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            opacity: 0.9;
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            border: 1px dashed var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 2px dashed var(--border);
         }
 
-        /* --- Modal --- */
+        /* --- MODAL --- */
         .modal-backdrop {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .modal {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 28px;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 32px;
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .close-btn {
-            background: none;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
             color: var(--text-muted);
@@ -302,10 +349,10 @@
         <div class="auth-card">
             <div class="auth-header">
                 <h1>StudyLoop</h1>
-                <p>منصتك الذكية لمتابعة الدروس والتكرار المتباعد</p>
+                <p>منصتك الذكية لمتابعة الدراسة والتكرار المتباعد</p>
             </div>
 
-            <!-- Login Container -->
+            <!-- Login Form -->
             <div id="loginFormContainer">
                 <form id="loginForm">
                     <div class="form-group">
@@ -323,12 +370,12 @@
                 </div>
             </div>
 
-            <!-- Register Container -->
+            <!-- Register Form -->
             <div id="registerFormContainer" hidden>
                 <form id="registerForm">
                     <div class="form-group">
                         <label for="registerName">الاسم الكامل</label>
-                        <input type="text" id="registerName" placeholder="أنور" required>
+                        <input type="text" id="registerName" placeholder="اسمك" required>
                     </div>
                     <div class="form-group">
                         <label for="registerEmail">البريد الإلكتروني</label>
@@ -347,20 +394,19 @@
         </div>
     </div>
 
-    <!-- MAIN APP SCREEN -->
+    <!-- MAIN DASHBOARD SCREEN -->
     <div id="app" hidden>
         <header>
             <h2>StudyLoop</h2>
             <div class="user-info">
                 <span id="userName">المستخدم</span>
-                <button id="logoutButton" class="btn-secondary" type="button">تسجيل الخروج</button>
+                <button id="logoutButton" class="btn-secondary" type="button">خروج</button>
             </div>
         </header>
 
         <main class="container">
-            <h2 id="welcomeText" style="margin-bottom: 20px;">مرحبًا بك 👋</h2>
+            <h2 id="welcomeText" style="margin-bottom: 24px; font-size: 28px;">مرحبًا بك 👋</h2>
 
-            <!-- Statistics -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3 id="totalLessons">0</h3>
@@ -380,14 +426,13 @@
                 </div>
             </div>
 
-            <!-- Lessons Section -->
             <div class="section-header">
                 <h3>جدول الدروس</h3>
-                <button id="addLessonButton" class="btn-primary" style="width: auto; padding: 8px 16px;" type="button">+ إضافة درس</button>
+                <button id="addLessonButton" class="btn-primary" style="width: auto; padding: 10px 20px;" type="button">+ إضافة درس</button>
             </div>
 
             <div id="emptyState" class="empty-state">
-                <p style="margin-bottom: 12px; color: var(--text-muted);">لا توجد دروس مضافة حتى الآن.</p>
+                <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 16px;">لا توجد دروس مضافة حتى الآن.</p>
                 <button id="emptyAddButton" class="btn-secondary" type="button">إضافة أول درس</button>
             </div>
 
@@ -412,7 +457,7 @@
                     <input type="text" id="lessonName" placeholder="مثال: التكامل المباشر" required>
                 </div>
                 <div class="form-group">
-                    <label for="studyDuration">مدة الدراسة المتوقعة (بالدقائق)</label>
+                    <label for="studyDuration">مدة الدراسة (بالدقائق)</label>
                     <input type="number" id="studyDuration" min="1" placeholder="45" required>
                 </div>
                 <button type="submit" class="btn-primary">حفظ الدرس</button>
@@ -420,7 +465,7 @@
         </div>
     </div>
 
-    <!-- Firebase Code Logic -->
-    <script type="module" src="app.js?v=2"></script>
+    <!-- Firebase Script -->
+    <script type="module" src="app.js?v=3"></script>
 </body>
 </html>
