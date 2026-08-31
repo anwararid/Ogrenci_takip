@@ -1,3 +1,6 @@
+// إلغاء رسائل Alert المنبثقة نهائياً من المتصفح
+window.alert = function() {};
+
 import { 
     auth, 
     db, 
@@ -46,6 +49,15 @@ let currentUser = null;
 let unsubscribeLessons = null;
 let activeTimer = null;
 
+// وظيفة إخفاء دائرة التحميل فوراً
+function hideLoader() {
+    const loader = document.getElementById('authLoading');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.hidden = true, 400);
+    }
+}
+
 // Navigation Logic
 showRegisterButton?.addEventListener('click', () => {
     loginFormContainer.hidden = true;
@@ -68,10 +80,9 @@ addLessonButton?.addEventListener('click', openModal);
 emptyAddButton?.addEventListener('click', openModal);
 closeModalButton?.addEventListener('click', closeModal);
 
-// Auth Observer (حذف الومضات والتنبيهات)
+// Auth Observer
 onAuthStateChanged(auth, (user) => {
-    const loader = document.getElementById('authLoading');
-    if (loader) loader.hidden = true;
+    hideLoader();
 
     if (user) {
         currentUser = user;
@@ -152,7 +163,7 @@ lessonForm?.addEventListener('submit', async (e) => {
     }
 });
 
-// Firestore Realtime Listener
+// Realtime Listener
 function listenToLessons(userId) {
     const q = query(collection(db, "lessons"), where("userId", "==", userId));
     
@@ -177,7 +188,7 @@ function updateStats(lessons) {
     reviewLessonsEl.textContent = lessons.length;
 }
 
-// Render Lessons Grid & Study Timer Button
+// Render Lessons & Dynamic Study Session
 function renderLessons(lessons) {
     if (lessons.length === 0) {
         emptyState.hidden = false;
@@ -200,12 +211,11 @@ function renderLessons(lessons) {
             <div class="lesson-meta">
                 <span>⏱️ ${lesson.duration} دقيقة</span>
             </div>
-            <button class="start-lesson-button" data-id="${lesson.id}" data-name="${lesson.name}" data-duration="${lesson.duration}">
+            <button class="start-lesson-button" type="button">
                 ▶ بدء الدراسة
             </button>
         `;
 
-        // إضافة حدث زر بدء الدراسة
         const startBtn = card.querySelector('.start-lesson-button');
         startBtn.addEventListener('click', () => {
             startStudySession(lesson.name, lesson.duration);
@@ -215,7 +225,7 @@ function renderLessons(lessons) {
     });
 }
 
-// نافذة مؤقت بدء الدراسة التفاعلية
+// نافذة التكرار والمؤقت المباشرة
 function startStudySession(lessonName, durationMinutes) {
     if (activeTimer) clearInterval(activeTimer);
 
@@ -223,22 +233,25 @@ function startStudySession(lessonName, durationMinutes) {
     
     const overlay = document.createElement('div');
     overlay.className = 'modal-backdrop';
-    overlay.id = 'studyTimerModal';
-    overlay.innerHTML = `
-        <div class="modal" style="text-align: center;">
-            <h3 style="font-size: 20px; color: #a78bfa; margin-bottom: 10px;">جلسة دراسة جارية 📚</h3>
-            <h4 style="font-size: 18px; margin-bottom: 20px;">${lessonName}</h4>
-            <div id="timerDisplay" style="font-size: 42px; font-weight: 700; color: #10b981; margin: 20px 0;">
-                ${formatTime(secondsLeft)}
-            </div>
-            <button id="stopTimerBtn" class="btn-primary" style="background: #ef4444; width: 100%;">إنهاء الجلسة</button>
+
+    const box = document.createElement('div');
+    box.className = 'modal';
+    box.style.textAlign = 'center';
+
+    box.innerHTML = `
+        <h3 style="font-size: 18px; color: #a78bfa; margin-bottom: 8px;">جلسة دراسة جارية 📚</h3>
+        <h4 style="font-size: 20px; color: #f8fafc; margin-bottom: 20px;">${lessonName}</h4>
+        <div id="timerDisplay" style="font-size: 48px; font-weight: 700; color: #10b981; margin: 20px 0; font-family: monospace;">
+            ${formatTime(secondsLeft)}
         </div>
+        <button id="stopTimerBtn" class="btn-primary" style="background: #ef4444; width: 100%;">إنهاء الجلسة</button>
     `;
 
+    overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    const timerDisplay = overlay.querySelector('#timerDisplay');
-    const stopBtn = overlay.querySelector('#stopTimerBtn');
+    const timerDisplay = box.querySelector('#timerDisplay');
+    const stopBtn = box.querySelector('#stopTimerBtn');
 
     activeTimer = setInterval(() => {
         secondsLeft--;
@@ -262,3 +275,6 @@ function formatTime(seconds) {
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
+
+// أمان إضافي لإخفاء الـ Loader إن تأخر الاتصال
+setTimeout(hideLoader, 2500);
