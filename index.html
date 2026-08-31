@@ -50,30 +50,6 @@
             background-attachment: fixed;
         }
 
-        #authLoading {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-main);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.4s ease;
-        }
-
-        .spinner {
-            width: 42px;
-            height: 42px;
-            border: 3px solid rgba(139, 92, 246, 0.2);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         .auth-wrapper {
             min-height: 100vh;
             display: flex;
@@ -357,13 +333,13 @@
             display: none !important;
         }
     </style>
+
+    <!-- إلغاء التنبيهات من رأس الصفحة مباشرة بأسلوب آمن 100% -->
+    <script>
+        window.alert = function() {};
+    </script>
 </head>
 <body>
-
-    <!-- LOADER -->
-    <div id="authLoading">
-        <div class="spinner"></div>
-    </div>
 
     <!-- AUTH SCREEN -->
     <div id="authScreen" class="auth-wrapper" hidden>
@@ -484,7 +460,6 @@
         </div>
     </div>
 
-    <!-- كسر كاش المتصفح لضمان قراءة app.js الجديد -->
-    <script type="module" src="app.js?v=999"></script>
+    <script type="module" src="app.js?v=2000"></script>
 </body>
 </html>
