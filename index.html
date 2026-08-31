@@ -40,6 +40,21 @@
             overflow-x: hidden;
         }
 
+        .error-banner {
+            background-color: #ef4444;
+            color: white;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         .auth-wrapper {
             min-height: 100vh;
             display: flex;
@@ -310,14 +325,13 @@
             display: none !important;
         }
     </style>
-
-    <script>
-        window.alert = function() {};
-    </script>
 </head>
 <body>
 
-    <!-- AUTH SCREEN (ظاهرة افتراضياً لمنع الشاشة السوداء) -->
+    <!-- شريط الأخطاء -->
+    <div id="errorBanner" class="error-banner" hidden></div>
+
+    <!-- شاشة تسجيل الدخول / إنشاء الحساب -->
     <div id="authScreen" class="auth-wrapper">
         <div class="auth-card">
             <div class="auth-header">
@@ -325,6 +339,7 @@
                 <p>منصتك الذكية لمتابعة الدراسة</p>
             </div>
 
+            <!-- نموذج تسجيل الدخول -->
             <div id="loginFormContainer">
                 <form id="loginForm">
                     <div class="form-group">
@@ -342,6 +357,7 @@
                 </div>
             </div>
 
+            <!-- نموذج إنشاء الحساب -->
             <div id="registerFormContainer" hidden>
                 <form id="registerForm">
                     <div class="form-group">
@@ -365,7 +381,7 @@
         </div>
     </div>
 
-    <!-- DASHBOARD SCREEN -->
+    <!-- لوحة التحكم الرئيسية -->
     <div id="app" hidden>
         <header>
             <h2>StudyLoop</h2>
@@ -411,7 +427,7 @@
         </main>
     </div>
 
-    <!-- ADD LESSON MODAL -->
+    <!-- نافذة إضافة درس -->
     <div id="lessonModal" class="modal-backdrop" hidden>
         <div class="modal">
             <div class="modal-header">
@@ -436,6 +452,6 @@
         </div>
     </div>
 
-    <script type="module" src="app.js?v=3000"></script>
+    <script type="module" src="app.js?v=4000"></script>
 </body>
 </html>
