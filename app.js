@@ -12,7 +12,7 @@ import {
     onSnapshot,
     serverTimestamp,
     doc,
-    updateDoc
+    setDoc
 } from "./firebase-config.js";
 
 // DOM Elements
@@ -97,7 +97,7 @@ registerForm?.addEventListener('submit', async (e) => {
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await updateDoc(doc(db, "users", userCredential.user.uid), { name, email }).catch(() => {});
+        await setDoc(doc(db, "users", userCredential.user.uid), { name, email }, { merge: true }).catch(() => {});
         registerForm.reset();
     } catch (error) {
         console.error("Register Error:", error.message);
@@ -174,7 +174,7 @@ function updateStats(lessons) {
     reviewLessonsEl.textContent = lessons.length;
 }
 
-// Render Lessons & Dynamic Study Session
+// Render Lessons
 function renderLessons(lessons) {
     if (lessons.length === 0) {
         emptyState.hidden = false;
@@ -211,7 +211,7 @@ function renderLessons(lessons) {
     });
 }
 
-// نافذة بدأ الدراسة للمراجعة
+// Study Session Timer
 function startStudySession(lessonName, durationMinutes) {
     if (activeTimer) clearInterval(activeTimer);
 
