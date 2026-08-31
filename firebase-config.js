@@ -18,13 +18,15 @@ import {
     setDoc 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// إعدادات مشروعك الحقيقية
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDU3O5vBeN7sBA8hNTmAFofkTcWYS1YjsQ",
+    authDomain: "ogrenci-ders-takibi-e7d57.firebaseapp.com",
+    projectId: "ogrenci-ders-takibi-e7d57",
+    storageBucket: "ogrenci-ders-takibi-e7d57.firebasestorage.app",
+    messagingSenderId: "762782404099",
+    appId: "1:762782404099:web:67ba2c4aff1e8230360836",
+    measurementId: "G-GPDLXNL3GZ"
 };
 
 const app = initializeApp(firebaseConfig);
