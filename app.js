@@ -290,6 +290,7 @@ loginForm.addEventListener(
 
         event.preventDefault();
 
+        alert("زر تسجيل الدخول يعمل ✅");
 
         const email =
             document
@@ -297,12 +298,13 @@ loginForm.addEventListener(
                 .value
                 .trim();
 
-
         const password =
             document
                 .getElementById("loginPassword")
                 .value;
 
+        console.log("Email:", email);
+        console.log("Password entered:", password.length > 0);
 
         try {
 
@@ -312,9 +314,7 @@ loginForm.addEventListener(
                 password
             );
 
-
             loginForm.reset();
-
 
         } catch (error) {
 
