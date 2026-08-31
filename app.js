@@ -41,12 +41,23 @@ const lessonModal = document.getElementById('lessonModal');
 const lessonForm = document.getElementById('lessonForm');
 const emptyState = document.getElementById('emptyState');
 const lessonsList = document.getElementById('lessonsList');
+const errorBanner = document.getElementById('errorBanner');
 
 let currentUser = null;
 let unsubscribeLessons = null;
 let activeTimer = null;
 
-// Navigation Logic
+// عرض الأخطاء للمستخدم
+function showError(message) {
+    if (!errorBanner) return;
+    errorBanner.textContent = message;
+    errorBanner.hidden = false;
+    setTimeout(() => {
+        errorBanner.hidden = true;
+    }, 5000);
+}
+
+// التنقل بين النماذج
 showRegisterButton?.addEventListener('click', () => {
     loginFormContainer.hidden = true;
     registerFormContainer.hidden = false;
@@ -57,7 +68,7 @@ showLoginButton?.addEventListener('click', () => {
     loginFormContainer.hidden = false;
 });
 
-// Modal Logic
+// التحكم بالنافذة المنبثقة
 const openModal = () => lessonModal.hidden = false;
 const closeModal = () => {
     lessonModal.hidden = true;
@@ -68,7 +79,7 @@ addLessonButton?.addEventListener('click', openModal);
 emptyAddButton?.addEventListener('click', openModal);
 closeModalButton?.addEventListener('click', closeModal);
 
-// Auth Observer
+// مراقب حالة التسجيل
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUser = user;
@@ -88,11 +99,11 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Authentication Handlers
+// إنشاء حساب
 registerForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('registerName').value;
-    const email = document.getElementById('registerEmail').value;
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value;
 
     try {
@@ -100,38 +111,40 @@ registerForm?.addEventListener('submit', async (e) => {
         await setDoc(doc(db, "users", userCredential.user.uid), { name, email }, { merge: true }).catch(() => {});
         registerForm.reset();
     } catch (error) {
-        console.error("Register Error:", error.message);
+        showError("خطأ في إنشاء الحساب: " + translateError(error.code));
     }
 });
 
+// تسجيل الدخول
 loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
+    const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
         loginForm.reset();
     } catch (error) {
-        console.error("Login Error:", error.message);
+        showError("خطأ في تسجيل الدخول: " + translateError(error.code));
     }
 });
 
+// تسجيل الخروج
 logoutButton?.addEventListener('click', async () => {
     try {
         await signOut(auth);
     } catch (error) {
-        console.error("Logout Error:", error.message);
+        showError("فشل تسجيل الخروج");
     }
 });
 
-// Add Lesson
+// إضافة درس
 lessonForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!currentUser) return;
 
-    const subject = document.getElementById('subjectName').value;
-    const name = document.getElementById('lessonName').value;
+    const subject = document.getElementById('subjectName').value.trim();
+    const name = document.getElementById('lessonName').value.trim();
     const duration = parseInt(document.getElementById('studyDuration').value);
 
     try {
@@ -145,11 +158,11 @@ lessonForm?.addEventListener('submit', async (e) => {
         });
         closeModal();
     } catch (error) {
-        console.error("Add Lesson Error:", error);
+        showError("فشل حفظ الدرس: " + error.message);
     }
 });
 
-// Realtime Listener
+// جلب الدروس
 function listenToLessons(userId) {
     const q = query(collection(db, "lessons"), where("userId", "==", userId));
     
@@ -159,6 +172,8 @@ function listenToLessons(userId) {
 
         updateStats(lessons);
         renderLessons(lessons);
+    }, (error) => {
+        showError("فشل تحميل البيانات من قاعدة البيانات");
     });
 }
 
@@ -174,7 +189,6 @@ function updateStats(lessons) {
     reviewLessonsEl.textContent = lessons.length;
 }
 
-// Render Lessons
 function renderLessons(lessons) {
     if (lessons.length === 0) {
         emptyState.hidden = false;
@@ -211,7 +225,7 @@ function renderLessons(lessons) {
     });
 }
 
-// Study Session Timer
+// مؤقت جلسة الدراسة
 function startStudySession(lessonName, durationMinutes) {
     if (activeTimer) clearInterval(activeTimer);
 
@@ -260,4 +274,24 @@ function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// ترجمة أخطاء Firebase بالعربية
+function translateError(code) {
+    switch (code) {
+        case 'auth/invalid-credential':
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+            return 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+        case 'auth/email-already-in-use':
+            return 'البريد الإلكتروني مستخدم بالفعل';
+        case 'auth/weak-password':
+            return 'كلمة المرور ضعيفة جداً (يجب أن تكون 6 أحرف على الأقل)';
+        case 'auth/invalid-email':
+            return 'صيغة البريد الإلكتروني غير صحيحة';
+        case 'auth/unauthorized-domain':
+            return 'النطاق غير مصرح له في Firebase Console';
+        default:
+            return 'حدث خطأ غير متوقع (' + code + ')';
+    }
 }
