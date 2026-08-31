@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -9,303 +10,321 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>StudyLoop | نظم دراستك بذكاء</title>
-
     <meta
         name="description"
-        content="StudyLoop يساعدك على تنظيم دراستك ومراجعة دروسك في الوقت المناسب."
+        content="StudyLoop - تطبيق ذكي لتنظيم الدراسة ومراجعة الدروس"
     >
 
-    <link rel="stylesheet" href="style.css">
+    <meta
+        name="theme-color"
+        content="#6366f1"
+    >
+
+    <title>StudyLoop | تنظيم دراستك</title>
+
+
+    <!-- Google Fonts -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="styles.css?v=3"
+    >
+
 </head>
 
 
 <body>
 
+
     <!-- =====================================
-         شاشة تسجيل الدخول وإنشاء الحساب
+         Authentication
     ====================================== -->
 
-    <div
+    <section
         id="authScreen"
-        class="auth-screen"
     >
 
-        <div class="auth-card">
+        <div class="auth-container">
 
-            <!-- الشعار -->
-
-            <div class="auth-logo">
-                S
-            </div>
-
-            <h1>
-                StudyLoop
-            </h1>
-
-            <p class="auth-subtitle">
-                ادرس بذكاء، وتذكّر لفترة أطول.
-            </p>
+            <div class="auth-card">
 
 
-            <!-- =================================
-                 تسجيل الدخول
-            ================================== -->
+                <!-- Logo -->
 
-            <div id="loginFormContainer">
-
-                <div class="auth-heading">
-
-                    <h2>
-                        أهلاً بعودتك 👋
-                    </h2>
-
-                    <p>
-                        سجّل الدخول للمتابعة إلى خطتك الدراسية.
-                    </p>
-
+                <div class="logo">
+                    📚
                 </div>
 
 
-                <form id="loginForm">
-
-                    <!-- البريد -->
-
-                    <div class="form-group">
-
-                        <label for="loginEmail">
-                            البريد الإلكتروني
-                        </label>
-
-                        <input
-                            type="email"
-                            id="loginEmail"
-                            placeholder="example@email.com"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- كلمة المرور -->
-
-                    <div class="form-group">
-
-                        <label for="loginPassword">
-                            كلمة المرور
-                        </label>
-
-                        <input
-                            type="password"
-                            id="loginPassword"
-                            placeholder="••••••••"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- زر الدخول -->
-
-                    <button
-                        type="submit"
-                        class="primary-button"
-                    >
-                        تسجيل الدخول
-                    </button>
-
-                </form>
-
-
-                <!-- الانتقال لإنشاء حساب -->
-
-                <p class="auth-switch">
-
-                    ليس لديك حساب؟
-
-                    <button
-                        type="button"
-                        id="showRegisterButton"
-                    >
-                        إنشاء حساب
-                    </button>
-
-                </p>
-
-            </div>
-
-
-            <!-- =================================
-                 إنشاء حساب
-            ================================== -->
-
-            <div
-                id="registerFormContainer"
-                hidden
-            >
-
-                <div class="auth-heading">
-
-                    <h2>
-                        أنشئ حسابك 🚀
-                    </h2>
-
-                    <p>
-                        ابدأ بتنظيم دراستك من اليوم.
-                    </p>
-
-                </div>
-
-
-                <form id="registerForm">
-
-                    <!-- الاسم -->
-
-                    <div class="form-group">
-
-                        <label for="registerName">
-                            الاسم
-                        </label>
-
-                        <input
-                            type="text"
-                            id="registerName"
-                            placeholder="مثال: أحمد"
-                            autocomplete="name"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- البريد -->
-
-                    <div class="form-group">
-
-                        <label for="registerEmail">
-                            البريد الإلكتروني
-                        </label>
-
-                        <input
-                            type="email"
-                            id="registerEmail"
-                            placeholder="example@email.com"
-                            autocomplete="email"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- كلمة المرور -->
-
-                    <div class="form-group">
-
-                        <label for="registerPassword">
-                            كلمة المرور
-                        </label>
-
-                        <input
-                            type="password"
-                            id="registerPassword"
-                            placeholder="6 أحرف على الأقل"
-                            autocomplete="new-password"
-                            minlength="6"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- زر إنشاء الحساب -->
-
-                    <button
-                        type="submit"
-                        class="primary-button"
-                    >
-                        إنشاء الحساب
-                    </button>
-
-                </form>
-
-
-                <!-- الانتقال لتسجيل الدخول -->
-
-                <p class="auth-switch">
-
-                    لديك حساب بالفعل؟
-
-                    <button
-                        type="button"
-                        id="showLoginButton"
-                    >
-                        تسجيل الدخول
-                    </button>
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================
-         التطبيق الرئيسي
-    ====================================== -->
-
-    <div
-        id="app"
-        hidden
-    >
-
-        <!-- =================================
-             الشريط العلوي
-        ================================== -->
-
-        <header class="topbar">
-
-            <div class="brand">
-
-                <div class="brand-icon">
-                    S
-                </div>
-
-                <div>
+                <!-- =============================
+                     Login
+                ============================== -->
+
+                <div
+                    id="loginFormContainer"
+                >
 
                     <h1>
                         StudyLoop
                     </h1>
 
-                    <span>
-                        نظم دراستك بذكاء
-                    </span>
+                    <p class="subtitle">
+                        نظّم دراستك، وراجع دروسك بذكاء.
+                    </p>
+
+
+                    <form
+                        id="loginForm"
+                    >
+
+                        <div class="form-group">
+
+                            <label
+                                for="loginEmail"
+                            >
+                                البريد الإلكتروني
+                            </label>
+
+                            <input
+                                id="loginEmail"
+                                type="email"
+                                placeholder="example@email.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="loginPassword"
+                            >
+                                كلمة المرور
+                            </label>
+
+                            <input
+                                id="loginPassword"
+                                type="password"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            تسجيل الدخول
+                        </button>
+
+                    </form>
+
+
+                    <div class="auth-switch">
+
+                        ليس لديك حساب؟
+
+                        <button
+                            type="button"
+                            id="showRegisterButton"
+                        >
+                            إنشاء حساب
+                        </button>
+
+                    </div>
 
                 </div>
 
+
+                <!-- =============================
+                     Register
+                ============================== -->
+
+                <div
+                    id="registerFormContainer"
+                    hidden
+                >
+
+                    <h1>
+                        إنشاء حساب
+                    </h1>
+
+                    <p class="subtitle">
+                        ابدأ بتنظيم دراستك اليوم.
+                    </p>
+
+
+                    <form
+                        id="registerForm"
+                    >
+
+                        <div class="form-group">
+
+                            <label
+                                for="registerName"
+                            >
+                                الاسم
+                            </label>
+
+                            <input
+                                id="registerName"
+                                type="text"
+                                placeholder="اكتب اسمك"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="registerEmail"
+                            >
+                                البريد الإلكتروني
+                            </label>
+
+                            <input
+                                id="registerEmail"
+                                type="email"
+                                placeholder="example@email.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label
+                                for="registerPassword"
+                            >
+                                كلمة المرور
+                            </label>
+
+                            <input
+                                id="registerPassword"
+                                type="password"
+                                placeholder="6 أحرف على الأقل"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            إنشاء الحساب
+                        </button>
+
+                    </form>
+
+
+                    <div class="auth-switch">
+
+                        لديك حساب بالفعل؟
+
+                        <button
+                            type="button"
+                            id="showLoginButton"
+                        >
+                            تسجيل الدخول
+                        </button>
+
+                    </div>
+
+                </div>
+
+
             </div>
 
+        </div>
 
-            <!-- معلومات المستخدم -->
+    </section>
 
-            <div class="user-area">
 
-                <span id="userName">
-                    المستخدم
-                </span>
 
-                <button
-                    class="profile-button"
-                    id="logoutButton"
-                    type="button"
-                    title="تسجيل الخروج"
-                >
-                    🚪
-                </button>
+    <!-- =====================================
+         Main Application
+    ====================================== -->
+
+    <main
+        id="app"
+        hidden
+    >
+
+
+        <!-- =============================
+             Header
+        ============================== -->
+
+        <header class="app-header">
+
+            <div class="header-inner">
+
+
+                <div class="brand">
+
+                    <div class="brand-logo">
+                        📚
+                    </div>
+
+                    <div class="brand-name">
+                        Study<span>Loop</span>
+                    </div>
+
+                </div>
+
+
+                <div class="header-user">
+
+                    <span
+                        id="userName"
+                        class="user-name"
+                    >
+                        المستخدم
+                    </span>
+
+                    <button
+                        id="logoutButton"
+                        type="button"
+                        class="logout-button"
+                    >
+                        تسجيل الخروج
+                    </button>
+
+                </div>
+
 
             </div>
 
@@ -313,79 +332,50 @@
 
 
 
-        <!-- =================================
-             المحتوى الرئيسي
-        ================================== -->
+        <!-- =============================
+             Dashboard
+        ============================== -->
 
-        <main class="main-content">
+        <div class="dashboard">
 
 
-            <!-- الترحيب -->
+            <!-- Welcome -->
 
             <section class="welcome-section">
 
                 <div>
 
-                    <p
-                        class="welcome-label"
-                        id="welcomeText"
-                    >
-                        مرحبًا بك 👋
-                    </p>
-
-                    <h2>
-
-                        جاهز لدراسة
-
-                        <span>
-                            اليوم؟
-                        </span>
-
+                    <h2 id="welcomeText">
+                        مرحبًا 👋
                     </h2>
 
-                    <p class="welcome-description">
-
-                        خطتك الدراسية ومراجعاتك اليومية في مكان واحد.
-
+                    <p>
+                        جاهز تكمل رحلة الدراسة اليوم؟
                     </p>
 
                 </div>
+
+
+                <button
+                    id="addLessonButton"
+                    type="button"
+                    class="add-lesson-button"
+                >
+                    ＋ إضافة درس
+                </button>
 
             </section>
 
 
 
-            <!-- =================================
-                 الإحصائيات
-            ================================== -->
+            <!-- =============================
+                 Statistics
+            ============================== -->
 
-            <section class="stats-grid">
+            <section
+                class="stats-grid"
+            >
 
-
-                <!-- وقت الدراسة -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-                        ⏱️
-                    </div>
-
-                    <div>
-
-                        <span>
-                            وقت الدراسة
-                        </span>
-
-                        <strong>
-                            0 ساعة
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <!-- الدروس -->
 
                 <div class="stat-card">
 
@@ -393,22 +383,33 @@
                         📚
                     </div>
 
-                    <div>
+                    <h3 id="totalLessons">
+                        0
+                    </h3>
 
-                        <span>
-                            دروس اليوم
-                        </span>
-
-                        <strong>
-                            0
-                        </strong>
-
-                    </div>
+                    <p>
+                        إجمالي الدروس
+                    </p>
 
                 </div>
 
 
-                <!-- المراجعات -->
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📖
+                    </div>
+
+                    <h3 id="totalSubjects">
+                        0
+                    </h3>
+
+                    <p>
+                        المواد
+                    </p>
+
+                </div>
+
 
                 <div class="stat-card">
 
@@ -416,255 +417,127 @@
                         🔄
                     </div>
 
-                    <div>
+                    <h3 id="reviewLessons">
+                        0
+                    </h3>
 
-                        <span>
-                            مراجعات اليوم
-                        </span>
-
-                        <strong>
-                            0
-                        </strong>
-
-                    </div>
+                    <p>
+                        دروس تحتاج مراجعة
+                    </p>
 
                 </div>
 
-
-                <!-- Streak -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
-                        🔥
+                        ⏱️
                     </div>
 
-                    <div>
+                    <h3 id="totalMinutes">
+                        0
+                    </h3>
 
-                        <span>
-                            أيام متتالية
-                        </span>
-
-                        <strong>
-                            0 يوم
-                        </strong>
-
-                    </div>
+                    <p>
+                        دقائق الدراسة
+                    </p>
 
                 </div>
+
 
             </section>
 
 
 
-            <!-- =================================
-                 خطة اليوم
-            ================================== -->
+            <!-- =============================
+                 Lessons Section
+            ============================== -->
 
-            <section class="today-section">
+            <section>
 
 
                 <div class="section-header">
 
-                    <div>
+                    <h3>
+                        دروسي
+                    </h3>
 
-                        <span class="section-label">
-                            خطتك
-                        </span>
-
-                        <h3>
-                            ماذا ستدرس اليوم؟
-                        </h3>
-
-                    </div>
-
-
-                    <button
-                        class="add-button"
-                        id="addLessonButton"
-                        type="button"
-                    >
-                        + إضافة درس
-                    </button>
+                    <span>
+                        خطتك الدراسية
+                    </span>
 
                 </div>
 
 
-
-                <!-- =================================
-                     حالة عدم وجود دروس
-                ================================== -->
+                <!-- Empty State -->
 
                 <div
-                    class="empty-state"
                     id="emptyState"
                 >
 
                     <div class="empty-icon">
-                        📖
+                        📚
                     </div>
 
-                    <h4>
+                    <h3>
                         لا توجد دروس بعد
-                    </h4>
+                    </h3>
 
                     <p>
-                        أضف أول درس لك، وسنساعدك في تنظيم مراجعاته.
+                        أضف أول درس وابدأ بتنظيم دراستك.
                     </p>
 
                     <button
                         id="emptyAddButton"
                         type="button"
                     >
-                        إضافة أول درس
+                        ＋ إضافة أول درس
                     </button>
 
                 </div>
 
 
-
-                <!-- =================================
-                     قائمة الدروس
-                ================================== -->
+                <!-- Lessons -->
 
                 <div
-                    class="lessons-list"
                     id="lessonsList"
                     hidden
-                ></div>
+                >
+                </div>
+
 
             </section>
 
-        </main>
+
+        </div>
 
 
-
-        <!-- =================================
-             التنقل السفلي
-        ================================== -->
-
-        <nav class="bottom-navigation">
-
-
-            <button
-                class="nav-item active"
-                type="button"
-            >
-
-                <span>
-                    🏠
-                </span>
-
-                <small>
-                    الرئيسية
-                </small>
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                type="button"
-            >
-
-                <span>
-                    📚
-                </span>
-
-                <small>
-                    المواد
-                </small>
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                type="button"
-            >
-
-                <span>
-                    📅
-                </span>
-
-                <small>
-                    الخطة
-                </small>
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                type="button"
-            >
-
-                <span>
-                    📊
-                </span>
-
-                <small>
-                    التقدم
-                </small>
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                type="button"
-            >
-
-                <span>
-                    ⚙️
-                </span>
-
-                <small>
-                    الحساب
-                </small>
-
-            </button>
-
-        </nav>
-
-    </div>
+    </main>
 
 
 
     <!-- =====================================
-         نافذة إضافة درس
+         Add Lesson Modal
     ====================================== -->
 
     <div
-        class="modal-overlay"
         id="lessonModal"
         hidden
     >
 
-        <div class="modal">
+        <div class="modal-content">
 
-
-            <!-- رأس النافذة -->
 
             <div class="modal-header">
 
-                <div>
-
-                    <span class="section-label">
-                        درس جديد
-                    </span>
-
-                    <h3>
-                        أضف درسًا
-                    </h3>
-
-                </div>
-
+                <h3>
+                    إضافة درس جديد
+                </h3>
 
                 <button
-                    class="close-button"
                     id="closeModalButton"
                     type="button"
+                    class="close-modal"
                     aria-label="إغلاق"
                 >
                     ×
@@ -673,89 +546,79 @@
             </div>
 
 
+            <form
+                id="lessonForm"
+            >
 
-            <!-- نموذج إضافة الدرس -->
-
-            <form id="lessonForm">
-
-
-                <!-- المادة -->
 
                 <div class="form-group">
 
-                    <label for="subjectName">
-                        اسم المادة
+                    <label
+                        for="subjectName"
+                    >
+                        المادة
                     </label>
 
                     <input
-                        type="text"
                         id="subjectName"
+                        type="text"
                         placeholder="مثال: الرياضيات"
+                        autocomplete="off"
                         required
                     >
 
                 </div>
 
 
-                <!-- الدرس -->
-
                 <div class="form-group">
 
-                    <label for="lessonName">
+                    <label
+                        for="lessonName"
+                    >
                         اسم الدرس
                     </label>
 
                     <input
-                        type="text"
                         id="lessonName"
+                        type="text"
                         placeholder="مثال: المشتقات"
+                        autocomplete="off"
                         required
                     >
 
                 </div>
 
 
-                <!-- مدة الدراسة -->
-
                 <div class="form-group">
 
-                    <label for="studyDuration">
-                        مدة الدراسة
+                    <label
+                        for="studyDuration"
+                    >
+                        مدة الدراسة بالدقائق
                     </label>
 
-                    <select id="studyDuration">
-
-                        <option value="25">
-                            25 دقيقة
-                        </option>
-
-                        <option value="45">
-                            45 دقيقة
-                        </option>
-
-                        <option value="60">
-                            ساعة
-                        </option>
-
-                        <option value="90">
-                            ساعة ونصف
-                        </option>
-
-                    </select>
+                    <input
+                        id="studyDuration"
+                        type="number"
+                        min="1"
+                        max="1440"
+                        value="45"
+                        required
+                    >
 
                 </div>
 
-
-                <!-- الحفظ -->
 
                 <button
                     type="submit"
                     class="primary-button"
                 >
-                    إضافة الدرس
+                    حفظ الدرس
                 </button>
 
+
             </form>
+
 
         </div>
 
@@ -764,13 +627,14 @@
 
 
     <!-- =====================================
-         JavaScript
+         Firebase / Application
     ====================================== -->
 
     <script
         type="module"
-        src="app.js?v=9"
+        src="app.js?v=10"
     ></script>
+
 
 </body>
 
