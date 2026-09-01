@@ -1,0 +1,84 @@
+rules_version = '2';
+
+service cloud.firestore {
+
+    match /databases/{database}/documents {
+
+        /*
+         * المستخدم يستطيع قراءة وتعديل
+         * بيانات حسابه فقط.
+         */
+
+        match /users/{userId} {
+
+            allow read, create, update:
+                if request.auth != null
+                && request.auth.uid == userId;
+
+            allow delete:
+                if false;
+        }
+
+
+        /*
+         * الدروس:
+         * كل مستخدم يستطيع الوصول إلى دروسه فقط.
+         */
+
+        match /lessons/{lessonId} {
+
+            allow read:
+                if request.auth != null
+                && resource.data.userId == request.auth.uid;
+
+            allow create:
+                if request.auth != null
+                && request.resource.data.userId == request.auth.uid;
+
+            allow update:
+                if request.auth != null
+                && resource.data.userId == request.auth.uid
+                && request.resource.data.userId == request.auth.uid;
+
+            allow delete:
+                if request.auth != null
+                && resource.data.userId == request.auth.uid;
+        }
+
+
+        /*
+         * جلسات الدراسة:
+         * المستخدم يرى ويسجل جلساته فقط.
+         */
+
+        match /studySessions/{sessionId} {
+
+            allow read:
+                if request.auth != null
+                && resource.data.userId == request.auth.uid;
+
+            allow create:
+                if request.auth != null
+                && request.resource.data.userId == request.auth.uid;
+
+            allow update:
+                if request.auth != null
+                && resource.data.userId == request.auth.uid
+                && request.resource.data.userId == request.auth.uid;
+
+            allow delete:
+                if request.auth != null
+                && resource.data.userId == request.auth.uid;
+        }
+
+
+        /*
+         * منع أي وصول غير مصرح
+         * إلى Collections أخرى.
+         */
+
+        match /{document=**} {
+            allow read, write: if false;
+        }
+    }
+}
