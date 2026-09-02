@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyLoop — منصة الدراسة الذكية</title>
+
+    <meta
+        name="description"
+        content="StudyLoop - منصة ذكية لتنظيم الدراسة ومتابعة جلسات التعلم والمراجعة."
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css?v=5000">
+</head>
+
+<body>
+
+    <!-- Ambient background -->
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="ambient ambient-three"></div>
+
+    <!-- Toast -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <!-- Error banner -->
+    <div id="errorBanner" class="error-banner" hidden></div>
+
+    <!-- ================= AUTH ================= -->
+
+    <section id="authScreen" class="auth-screen">
+
+        <div class="auth-decoration auth-decoration-one"></div>
+        <div class="auth-decoration auth-decoration-two"></div>
+
+        <div class="auth-card">
+
+            <div class="brand-mark">
+                <div class="brand-icon">
+                    <span>✦</span>
+                </div>
+
+                <div>
+                    <div class="brand-name">StudyLoop</div>
+                    <div class="brand-caption">SMART STUDY SYSTEM</div>
+                </div>
+            </div>
+
+            <div class="auth-header">
+                <span class="eyebrow">WELCOME BACK</span>
+
+                <h1 id="authTitle">
+                    ركّز أكثر، أنجز أكثر.
+                </h1>
+
+                <p id="authSubtitle">
+                    منصتك الذكية لتنظيم الدراسة وتحويل وقتك إلى إنجاز حقيقي.
+                </p>
+            </div>
+
+            <!-- Login -->
+
+            <div id="loginFormContainer">
+
+                <form id="loginForm" class="form">
+
+                    <div class="form-group">
+                        <label for="loginEmail">
+                            البريد الإلكتروني
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉</span>
+
+                            <input
+                                type="email"
+                                id="loginEmail"
+                                placeholder="example@email.com"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">
+                            كلمة المرور
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">●</span>
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="loginPassword"
+                                aria-label="إظهار كلمة المرور"
+                            >
+                                ◉
+                            </button>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-large"
+                        id="loginSubmitButton"
+                    >
+                        <span>تسجيل الدخول</span>
+                        <span class="btn-arrow">←</span>
+                    </button>
+
+                </form>
+
+                <div class="auth-toggle">
+                    ليس لديك حساب؟
+                    <button
+                        id="showRegisterButton"
+                        type="button"
+                    >
+                        إنشاء حساب جديد
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Register -->
+
+            <div id="registerFormContainer" hidden>
+
+                <form id="registerForm" class="form">
+
+                    <div class="form-group">
+                        <label for="registerName">
+                            الاسم الكامل
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">✦</span>
+
+                            <input
+                                type="text"
+                                id="registerName"
+                                placeholder="اكتب اسمك"
+                                autocomplete="name"
+                                maxlength="60"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">
+                            البريد الإلكتروني
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉</span>
+
+                            <input
+                                type="email"
+                                id="registerEmail"
+                                placeholder="example@email.com"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">
+                            كلمة المرور
+                        </label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">●</span>
+
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                placeholder="6 أحرف على الأقل"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="registerPassword"
+                                aria-label="إظهار كلمة المرور"
+                            >
+                                ◉
+                            </button>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-large"
+                        id="registerSubmitButton"
+                    >
+                        <span>إنشاء الحساب</span>
+                        <span class="btn-arrow">←</span>
+                    </button>
+
+                </form>
+
+                <div class="auth-toggle">
+                    لديك حساب بالفعل؟
+                    <button
+                        id="showLoginButton"
+                        type="button"
+                    >
+                        تسجيل الدخول
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="auth-footer">
+                <span>✦</span>
+                صُمم للطلاب الذين يريدون نتائج أفضل.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= APPLICATION ================= -->
+
+    <div id="app" class="app-shell" hidden>
+
+        <!-- Mobile overlay -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+
+        <aside id="sidebar" class="sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="brand-icon small">
+                    <span>✦</span>
+                </div>
+
+                <div>
+                    <div class="brand-name">StudyLoop</div>
+                    <div class="brand-caption">STUDY SMART</div>
+                </div>
+
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <button
+                    class="nav-item active"
+                    data-section="dashboardSection"
+                    type="button"
+                >
+                    <span class="nav-icon">⌂</span>
+                    <span>الرئيسية</span>
+                </button>
+
+                <button
+                    class="nav-item"
+                    data-section="lessonsSection"
+                    type="button"
+                >
+                    <span class="nav-icon">▣</span>
+                    <span>دروسي</span>
+                </button>
+
+                <button
+                    class="nav-item"
+                    data-section="reviewsSection"
+                    type="button"
+                >
+                    <span class="nav-icon">↻</span>
+                    <span>المراجعة</span>
+                    <span id="reviewBadge" class="nav-badge">0</span>
+                </button>
+
+                <button
+                    class="nav-item"
+                    data-section="analyticsSection"
+                    type="button"
+                >
+                    <span class="nav-icon">◒</span>
+                    <span>الإحصائيات</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-tip">
+                    <div class="tip-icon">✦</div>
+
+                    <strong>نصيحة اليوم</strong>
+
+                    <p>
+                        الدراسة المنتظمة لمدة قصيرة أفضل من جلسة طويلة متقطعة.
+                    </p>
+                </div>
+
+                <button
+                    id="sidebarProfileButton"
+                    class="sidebar-profile"
+                    type="button"
+                >
+
+                    <div id="sidebarAvatar" class="avatar">
+                        م
+                    </div>
+
+                    <div class="profile-mini">
+                        <strong id="sidebarUserName">المستخدم</strong>
+                        <span>حسابي</span>
+                    </div>
+
+                    <span class="profile-arrow">‹</span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main -->
+
+        <main class="main-content">
+
+            <!-- Topbar -->
+
+            <header class="topbar">
+
+                <div class="topbar-right">
+
+                    <button
+                        id="mobileMenuButton"
+                        class="icon-button mobile-menu-button"
+                        type="button"
+                        aria-label="فتح القائمة"
+                    >
+                        ☰
+                    </button>
+
+                    <div>
+                        <span class="topbar-label">
+                            لوحة التحكم
+                        </span>
+
+                        <h2 id="pageTitle">
+                            الرئيسية
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div class="topbar-left">
+
+                    <div class="date-chip">
+                        <span>◷</span>
+                        <span id="currentDate">
+                            اليوم
+                        </span>
+                    </div>
+
+                    <button
+                        id="profileButton"
+                        class="user-avatar-button"
+                        type="button"
+                        aria-label="الملف الشخصي"
+                    >
+                        <span id="topAvatar" class="avatar">
+                            م
+                        </span>
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <div class="content-wrapper">
+
+                <!-- ================= DASHBOARD ================= -->
+
+                <section
+                    id="dashboardSection"
+                    class="page-section active"
+                >
+
+                    <div class="hero-section">
+
+                        <div class="hero-content">
+
+                            <span class="eyebrow">
+                                ✦ YOUR STUDY SPACE
+                            </span>
+
+                            <h1 id="welcomeText">
+                                مرحبًا بك 👋
+                            </h1>
+
+                            <p>
+                                كل جلسة دراسة تقرّبك خطوة من أهدافك.
+                                استمر، والنتيجة ستأتي.
+                            </p>
+
+                            <div class="hero-actions">
+
+                                <button
+                                    id="heroAddLessonButton"
+                                    class="btn btn-primary"
+                                    type="button"
+                                >
+                                    <span>+ إضافة درس</span>
+                                </button>
+
+                                <button
+                                    id="heroStartButton"
+                                    class="btn btn-ghost"
+                                    type="button"
+                                >
+                                    <span>▶ ابدأ جلسة</span>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="hero-orbit">
+
+                            <div class="orbit-ring ring-one"></div>
+                            <div class="orbit-ring ring-two"></div>
+                            <div class="orbit-ring ring-three"></div>
+
+                            <div class="hero-core">
+                                <span>✦</span>
+                            </div>
+
+                            <div class="orbit-dot dot-one"></div>
+                            <div class="orbit-dot dot-two"></div>
+                            <div class="orbit-dot dot-three"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Stats -->
+
+                    <div class="stats-grid">
+
+                        <article class="stat-card">
+                            <div class="stat-card-top">
+                                <span class="stat-icon purple">▣</span>
+                                <span class="stat-trend">الدروس</span>
+                            </div>
+
+                            <div
+                                id="totalLessons"
+                                class="stat-value"
+                            >
+                                0
+                            </div>
+
+                            <div class="stat-label">
+                                إجمالي الدروس
+                            </div>
+                        </article>
+
+
+                        <article class="stat-card">
+                            <div class="stat-card-top">
+                                <span class="stat-icon cyan">◈</span>
+                                <span class="stat-trend">المواد</span>
+                            </div>
+
+                            <div
+                                id="totalSubjects"
+                                class="stat-value"
+                            >
+                                0
+                            </div>
+
+                            <div class="stat-label">
+                                المواد الدراسية
+                            </div>
+                        </article>
+
+
+                        <article class="stat-card">
+                            <div class="stat-card-top">
+                                <span class="stat-icon green">◷</span>
+                                <span class="stat-trend">الوقت</span>
+                            </div>
+
+                            <div
+                                id="totalMinutes"
+                                class="stat-value"
+                            >
+                                0
+                            </div>
+
+                            <div class="stat-label">
+                                دقيقة دراسة
+                            </div>
+                        </article>
+
+
+                        <article class="stat-card">
+                            <div class="stat-card-top">
+                                <span class="stat-icon orange">↻</span>
+                                <span class="stat-trend">اليوم</span>
+                            </div>
+
+                            <div
+                                id="reviewLessons"
+                                class="stat-value"
+                            >
+                                0
+                            </div>
+
+                            <div class="stat-label">
+                                دروس للمراجعة
+                            </div>
+                        </article>
+
+                    </div>
+
+
+                    <!-- Dashboard grid -->
+
+                    <div class="dashboard-grid">
+
+                        <!-- Activity -->
+
+                        <section class="glass-panel activity-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-kicker">
+                                        OVERVIEW
+                                    </span>
+
+                                    <h3>
+                                        نشاط الدراسة
+                                    </h3>
+                                </div>
+
+                                <div class="period-switch">
+                                    <span class="active">7 أيام</span>
+                                </div>
+
+                            </div>
+
+                            <div
+                                id="weeklyChart"
+                                class="weekly-chart"
+                            ></div>
+
+                            <div class="chart-days">
+                                <span>السبت</span>
+                                <span>الأحد</span>
+                                <span>الإثنين</span>
+                                <span>الثلاثاء</span>
+                                <span>الأربعاء</span>
+                                <span>الخميس</span>
+                                <span>الجمعة</span>
+                            </div>
+
+                        </section>
+
+
+                        <!-- Focus -->
+
+                        <section class="glass-panel focus-panel">
+
+                            <div class="panel-header">
+                                <div>
+                                    <span class="panel-kicker">
+                                        TODAY
+                                    </span>
+
+                                    <h3>
+                                        تركيز اليوم
+                                    </h3>
+                                </div>
+
+                                <span class="focus-star">
+                                    ✦
+                                </span>
+                            </div>
+
+                            <div class="focus-ring">
+
+                                <div class="focus-ring-inner">
+
+                                    <strong id="todayMinutes">
+                                        0
+                                    </strong>
+
+                                    <span>
+                                        دقيقة
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="focus-meta">
+                                <span>
+                                    هدفك اليوم
+                                </span>
+
+                                <strong>
+                                    60 دقيقة
+                                </strong>
+                            </div>
+
+                            <div class="progress">
+                                <span
+                                    id="todayProgress"
+                                    style="width:0%"
+                                ></span>
+                            </div>
+
+                            <p id="focusMessage">
+                                ابدأ أول جلسة اليوم.
+                            </p>
+
+                        </section>
+
+                    </div>
+
+
+                    <!-- Recent lessons -->
+
+                    <section class="glass-panel recent-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="panel-kicker">
+                                    CONTINUE
+                                </span>
+
+                                <h3>
+                                    تابع دراستك
+                                </h3>
+                            </div>
+
+                            <button
+                                class="text-button"
+                                data-section="lessonsSection"
+                                type="button"
+                            >
+                                عرض الكل ←
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="recentLessons"
+                            class="recent-lessons"
+                        ></div>
+
+                    </section>
+
+                </section>
+
+
+                <!-- ================= LESSONS ================= -->
+
+                <section
+                    id="lessonsSection"
+                    class="page-section"
+                >
+
+                    <div class="section-intro">
+
+                        <div>
+                            <span class="eyebrow">
+                                YOUR LIBRARY
+                            </span>
+
+                            <h1>
+                                دروسي
+                            </h1>
+
+                            <p>
+                                نظم موادك ودروسك في مكان واحد.
+                            </p>
+                        </div>
+
+                        <button
+                            id="addLessonButton"
+                            class="btn btn-primary"
+                            type="button"
+                        >
+                            + إضافة درس
+                        </button>
+
+                    </div>
+
+
+                    <div class="toolbar">
+
+                        <div class="search-box">
+
+                            <span>⌕</span>
+
+                            <input
+                                id="lessonSearch"
+                                type="search"
+                                placeholder="ابحث عن درس أو مادة..."
+                            >
+
+                        </div>
+
+                        <div class="filter-group">
+
+                            <button
+                                class="filter-button active"
+                                data-filter="all"
+                                type="button"
+                            >
+                                الكل
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="new"
+                                type="button"
+                            >
+                                جديد
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="review"
+                                type="button"
+                            >
+                                مراجعة
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-filter="completed"
+                                type="button"
+                            >
+                                مكتمل
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="lessonsList"
+                        class="lessons-grid"
+                    ></div>
+
+
+                    <div
+                        id="lessonsEmptyState"
+                        class="empty-state"
+                        hidden
+                    >
+                        <div class="empty-icon">
+                            ✦
+                        </div>
+
+                        <h3>
+                            لا توجد دروس
+                        </h3>
+
+                        <p>
+                            أضف أول درس إلى مكتبتك وابدأ رحلة الدراسة.
+                        </p>
+
+                        <button
+                            id="emptyAddButton"
+                            class="btn btn-primary"
+                            type="button"
+                        >
+                            + إضافة أول درس
+                        </button>
+                    </div>
+
+                </section>
+
+
+                <!-- ================= REVIEWS ================= -->
+
+                <section
+                    id="reviewsSection"
+                    class="page-section"
+                >
+
+                    <div class="section-intro">
+
+                        <div>
+                            <span class="eyebrow">
+                                SMART REVIEW
+                            </span>
+
+                            <h1>
+                                المراجعة
+                            </h1>
+
+                            <p>
+                                لا تدع ما تعلمته يضيع. راجع في الوقت المناسب.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="review-hero">
+
+                        <div>
+                            <span class="review-hero-icon">
+                                ↻
+                            </span>
+
+                            <h2 id="reviewHeroTitle">
+                                لا توجد مراجعات مستحقة 🎉
+                            </h2>
+
+                            <p id="reviewHeroText">
+                                أنت على الطريق الصحيح. استمر في الدراسة.
+                            </p>
+                        </div>
+
+                        <div class="review-count">
+                            <strong id="reviewCountLarge">0</strong>
+                            <span>للمراجعة</span>
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="reviewList"
+                        class="lessons-grid"
+                    ></div>
+
+                </section>
+
+
+                <!-- ================= ANALYTICS ================= -->
+
+                <section
+                    id="analyticsSection"
+                    class="page-section"
+                >
+
+                    <div class="section-intro">
+
+                        <div>
+                            <span class="eyebrow">
+                                PERFORMANCE
+                            </span>
+
+                            <h1>
+                                الإحصائيات
+                            </h1>
+
+                            <p>
+                                شاهد تطورك الدراسي بالأرقام.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="analytics-grid">
+
+                        <div class="glass-panel analytics-main">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-kicker">
+                                        LAST 7 DAYS
+                                    </span>
+
+                                    <h3>
+                                        وقت الدراسة
+                                    </h3>
+                                </div>
+
+                                <strong
+                                    id="analyticsTotal"
+                                    class="analytics-total"
+                                >
+                                    0 دقيقة
+                                </strong>
+
+                            </div>
+
+                            <div
+                                id="analyticsChart"
+                                class="analytics-chart"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="glass-panel achievement-panel">
+
+                            <span class="panel-kicker">
+                                ACHIEVEMENT
+                            </span>
+
+                            <div class="achievement-icon">
+                                🔥
+                            </div>
+
+                            <strong id="streakValue">
+                                0
+                            </strong>
+
+                            <h3>
+                                يوم متتالي
+                            </h3>
+
+                            <p>
+                                حافظ على سلسلة دراستك لتحصل على نتائج أقوى.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="analytics-cards">
+
+                        <div class="mini-analytics">
+                            <span>متوسط الجلسة</span>
+                            <strong id="averageSession">0 دقيقة</strong>
+                        </div>
+
+                        <div class="mini-analytics">
+                            <span>جلسات الدراسة</span>
+                            <strong id="sessionCount">0</strong>
+                        </div>
+
+                        <div class="mini-analytics">
+                            <span>أكثر مادة</span>
+                            <strong id="topSubject">—</strong>
+                        </div>
+
+                        <div class="mini-analytics">
+                            <span>معدل الإنجاز</span>
+                            <strong id="completionRate">0%</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= LESSON MODAL ================= -->
+
+    <div
+        id="lessonModal"
+        class="modal-backdrop"
+        hidden
+    >
+
+        <div
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="lessonModalTitle"
+        >
+
+            <button
+                id="closeModalButton"
+                class="modal-close"
+                type="button"
+                aria-label="إغلاق"
+            >
+                ×
+            </button>
+
+            <div class="modal-heading">
+
+                <span class="modal-icon">
+                    ✦
+                </span>
+
+                <div>
+                    <span class="panel-kicker">
+                        STUDY LIBRARY
+                    </span>
+
+                    <h2 id="lessonModalTitle">
+                        إضافة درس جديد
+                    </h2>
+                </div>
+
+            </div>
+
+            <form id="lessonForm" class="form">
+
+                <input
+                    type="hidden"
+                    id="editingLessonId"
+                >
+
+                <div class="form-group">
+                    <label for="subjectName">
+                        اسم المادة
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subjectName"
+                        placeholder="مثال: الرياضيات"
+                        maxlength="80"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="lessonName">
+                        اسم الدرس
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lessonName"
+                        placeholder="مثال: التكامل المباشر"
+                        maxlength="120"
+                        required
+                    >
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="studyDuration">
+                            مدة الدراسة
+                        </label>
+
+                        <div class="input-suffix">
+                            <input
+                                type="number"
+                                id="studyDuration"
+                                min="1"
+                                max="1440"
+                                placeholder="45"
+                                required
+                            >
+
+                            <span>
+                                دقيقة
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewDate">
+                            موعد المراجعة
+                        </label>
+
+                        <input
+                            type="date"
+                            id="reviewDate"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">حفظ الدرس</button>
+                    <button type="button" class="btn btn-ghost" id="cancelLessonModal">إلغاء</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
