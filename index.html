@@ -6,13 +6,16 @@
 
     <title>StudyDay | خطتك للدراسة</title>
 
+    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet"
     >
 
+    <!-- Main CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -20,50 +23,79 @@
 
 <div class="app">
 
-    <!-- Sidebar -->
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
     <aside class="sidebar">
 
         <div class="logo">
+
             <div class="logo-icon">S</div>
+
             <div>
                 <strong>StudyDay</strong>
                 <span>Study smarter</span>
             </div>
+
         </div>
+
 
         <nav class="navigation">
 
-            <button class="nav-item active" data-page="home">
+            <button
+                class="nav-item active"
+                data-page="home"
+                type="button"
+            >
                 <span>⌂</span>
                 <label>الرئيسية</label>
             </button>
 
-            <button class="nav-item" data-page="subjects">
+
+            <button
+                class="nav-item"
+                data-page="subjects"
+                type="button"
+            >
                 <span>▣</span>
                 <label>المواد</label>
             </button>
 
-            <button class="nav-item" data-page="progress">
+
+            <button
+                class="nav-item"
+                data-page="progress"
+                type="button"
+            >
                 <span>◒</span>
                 <label>التقدم</label>
             </button>
 
-            <button class="nav-item" data-page="settings">
+
+            <button
+                class="nav-item"
+                data-page="settings"
+                type="button"
+            >
                 <span>⚙</span>
                 <label>الإعدادات</label>
             </button>
 
         </nav>
 
+
         <div class="sidebar-bottom">
 
             <div class="mini-profile">
+
                 <div class="avatar">أ</div>
 
                 <div>
                     <strong>أحمد</strong>
                     <span>طالب جامعي</span>
                 </div>
+
             </div>
 
         </div>
@@ -71,14 +103,25 @@
     </aside>
 
 
-    <!-- Main -->
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
     <main class="main">
 
-        <!-- Header -->
+        <!-- =========================
+             TOPBAR
+        ========================== -->
+
         <header class="topbar">
 
             <div>
-                <p class="small-date" id="currentDate"></p>
+
+                <p
+                    class="small-date"
+                    id="currentDate"
+                ></p>
 
                 <h1>
                     صباح الخير، أحمد
@@ -88,16 +131,27 @@
                 <p class="subtitle">
                     جاهز تحقق إنجاز جديد اليوم؟
                 </p>
+
             </div>
+
 
             <div class="top-actions">
 
-                <button class="icon-button">
+                <button
+                    class="icon-button"
+                    type="button"
+                    aria-label="الإشعارات"
+                >
                     🔔
                     <span class="notification-dot"></span>
                 </button>
 
-                <button class="profile-button">
+
+                <button
+                    class="profile-button"
+                    type="button"
+                    aria-label="الملف الشخصي"
+                >
                     <div class="avatar">أ</div>
                 </button>
 
@@ -106,12 +160,18 @@
         </header>
 
 
-        <!-- Pages -->
 
-        <!-- HOME -->
-        <section id="home" class="page active-page">
+        <!-- =========================
+             HOME PAGE
+        ========================== -->
 
-            <!-- Hero -->
+        <section
+            id="home"
+            class="page active-page"
+        >
+
+            <!-- HERO -->
+
             <div class="hero-card">
 
                 <div class="hero-content">
@@ -128,23 +188,35 @@
                         كل يوم دراسة هو خطوة نحو مستقبلك.
                     </p>
 
+
                     <div class="hero-progress">
 
                         <div class="progress-info">
-                            <span>أنجزت 2 من 3 جلسات</span>
-                            <strong>80%</strong>
+
+                            <span>
+                                أنجزت 2 من 3 جلسات
+                            </span>
+
+                            <strong>
+                                80%
+                            </strong>
+
                         </div>
 
+
                         <div class="progress-track">
+
                             <div
                                 class="progress-fill"
                                 style="width:80%"
                             ></div>
+
                         </div>
 
                     </div>
 
                 </div>
+
 
                 <div class="hero-decoration">
                     ✨
@@ -153,16 +225,27 @@
             </div>
 
 
-            <!-- Today's Plan -->
+
+            <!-- TODAY'S PLAN -->
+
             <div class="section-header">
 
                 <div>
-                    <span class="section-kicker">TODAY</span>
-                    <h2>خطتك لليوم 📚</h2>
+
+                    <span class="section-kicker">
+                        TODAY
+                    </span>
+
+                    <h2>
+                        خطتك لليوم 📚
+                    </h2>
+
                 </div>
+
 
                 <button
                     class="add-task-small"
+                    type="button"
                     onclick="openModal()"
                 >
                     + إضافة جلسة
@@ -171,18 +254,27 @@
             </div>
 
 
-            <div id="tasksContainer" class="tasks">
 
-                <!-- Task -->
+            <!-- TASKS -->
+
+            <div
+                id="tasksContainer"
+                class="tasks"
+            >
+
+                <!-- TASK 1 -->
+
                 <article class="task-card">
 
                     <div class="task-number">
                         01
                     </div>
 
+
                     <div class="subject-icon purple">
                         ∫
                     </div>
+
 
                     <div class="task-info">
 
@@ -200,8 +292,10 @@
 
                     </div>
 
+
                     <button
                         class="start-button purple-button"
+                        type="button"
                         onclick="startStudy('التكامل والتفاضل',45)"
                     >
                         ابدأ الدراسة
@@ -211,16 +305,20 @@
                 </article>
 
 
-                <!-- Task -->
+
+                <!-- TASK 2 -->
+
                 <article class="task-card">
 
                     <div class="task-number">
                         02
                     </div>
 
+
                     <div class="subject-icon blue">
                         &lt;/&gt;
                     </div>
+
 
                     <div class="task-info">
 
@@ -238,8 +336,10 @@
 
                     </div>
 
+
                     <button
                         class="start-button blue-button"
+                        type="button"
                         onclick="startStudy('Arrays',30)"
                     >
                         ابدأ الدراسة
@@ -249,16 +349,20 @@
                 </article>
 
 
-                <!-- Task -->
+
+                <!-- TASK 3 -->
+
                 <article class="task-card completed">
 
                     <div class="task-number">
                         03
                     </div>
 
+
                     <div class="subject-icon green">
                         A
                     </div>
+
 
                     <div class="task-info">
 
@@ -276,8 +380,10 @@
 
                     </div>
 
+
                     <button
                         class="start-button completed-button"
+                        type="button"
                         disabled
                     >
                         مكتملة ✓
@@ -288,12 +394,15 @@
             </div>
 
 
-            <!-- Streak -->
+
+            <!-- STREAK -->
+
             <div class="streak-card">
 
                 <div class="streak-icon">
                     🔥
                 </div>
+
 
                 <div class="streak-info">
 
@@ -307,6 +416,7 @@
 
                 </div>
 
+
                 <div class="rocket">
                     🚀
                 </div>
@@ -314,13 +424,23 @@
             </div>
 
 
-            <!-- Statistics -->
+
+            <!-- STATISTICS HEADER -->
+
             <div class="section-header statistics-header">
 
                 <div>
-                    <span class="section-kicker">YOUR WEEK</span>
-                    <h2>ملخص الأسبوع 📈</h2>
+
+                    <span class="section-kicker">
+                        YOUR WEEK
+                    </span>
+
+                    <h2>
+                        ملخص الأسبوع 📈
+                    </h2>
+
                 </div>
+
 
                 <span class="week-label">
                     هذا الأسبوع
@@ -329,7 +449,12 @@
             </div>
 
 
+
+            <!-- STATISTICS -->
+
             <div class="stats-grid">
+
+                <!-- STAT 1 -->
 
                 <div class="stat-card">
 
@@ -337,7 +462,9 @@
                         ◷
                     </div>
 
-                    <strong>4س 35د</strong>
+                    <strong>
+                        4س 35د
+                    </strong>
 
                     <span>
                         وقت الدراسة
@@ -346,13 +473,17 @@
                 </div>
 
 
+                <!-- STAT 2 -->
+
                 <div class="stat-card">
 
                     <div class="stat-icon green-bg">
                         ✓
                     </div>
 
-                    <strong>12</strong>
+                    <strong>
+                        12
+                    </strong>
 
                     <span>
                         جلسة مكتملة
@@ -361,13 +492,17 @@
                 </div>
 
 
+                <!-- STAT 3 -->
+
                 <div class="stat-card">
 
                     <div class="stat-icon orange-bg">
                         🎯
                     </div>
 
-                    <strong>86%</strong>
+                    <strong>
+                        86%
+                    </strong>
 
                     <span>
                         تحقيق الهدف
@@ -376,13 +511,17 @@
                 </div>
 
 
+                <!-- STAT 4 -->
+
                 <div class="stat-card">
 
                     <div class="stat-icon pink-bg">
                         ★
                     </div>
 
-                    <strong>320</strong>
+                    <strong>
+                        320
+                    </strong>
 
                     <span>
                         نقطة XP
@@ -395,8 +534,15 @@
         </section>
 
 
-        <!-- SUBJECTS -->
-        <section id="subjects" class="page">
+
+        <!-- =========================
+             SUBJECTS PAGE
+        ========================== -->
+
+        <section
+            id="subjects"
+            class="page"
+        >
 
             <div class="page-title">
 
@@ -414,7 +560,10 @@
 
             </div>
 
+
             <div class="subjects-grid">
+
+                <!-- MATH -->
 
                 <div class="subject-large purple-card">
 
@@ -422,16 +571,24 @@
                         ∫
                     </div>
 
-                    <h3>رياضيات</h3>
+                    <h3>
+                        رياضيات
+                    </h3>
 
-                    <strong>68%</strong>
+                    <strong>
+                        68%
+                    </strong>
+
 
                     <div class="progress-track">
+
                         <div
                             class="progress-fill"
                             style="width:68%"
                         ></div>
+
                     </div>
+
 
                     <span>
                         170 دقيقة من 250
@@ -440,22 +597,33 @@
                 </div>
 
 
+
+                <!-- PROGRAMMING -->
+
                 <div class="subject-large blue-card">
 
                     <div class="subject-large-icon">
                         &lt;/&gt;
                     </div>
 
-                    <h3>برمجة</h3>
+                    <h3>
+                        برمجة
+                    </h3>
 
-                    <strong>91%</strong>
+                    <strong>
+                        91%
+                    </strong>
+
 
                     <div class="progress-track">
+
                         <div
                             class="progress-fill"
                             style="width:91%"
                         ></div>
+
                     </div>
+
 
                     <span>
                         230 دقيقة من 300
@@ -464,22 +632,33 @@
                 </div>
 
 
+
+                <!-- ENGLISH -->
+
                 <div class="subject-large green-card">
 
                     <div class="subject-large-icon">
                         A
                     </div>
 
-                    <h3>إنجليزي</h3>
+                    <h3>
+                        إنجليزي
+                    </h3>
 
-                    <strong>82%</strong>
+                    <strong>
+                        82%
+                    </strong>
+
 
                     <div class="progress-track">
+
                         <div
                             class="progress-fill"
                             style="width:82%"
                         ></div>
+
                     </div>
+
 
                     <span>
                         120 دقيقة من 180
@@ -488,22 +667,33 @@
                 </div>
 
 
+
+                <!-- PHYSICS -->
+
                 <div class="subject-large orange-card">
 
                     <div class="subject-large-icon">
                         ⚛
                     </div>
 
-                    <h3>فيزياء</h3>
+                    <h3>
+                        فيزياء
+                    </h3>
 
-                    <strong>54%</strong>
+                    <strong>
+                        54%
+                    </strong>
+
 
                     <div class="progress-track">
+
                         <div
                             class="progress-fill"
                             style="width:54%"
                         ></div>
+
                     </div>
+
 
                     <span>
                         95 دقيقة من 200
@@ -516,8 +706,15 @@
         </section>
 
 
-        <!-- PROGRESS -->
-        <section id="progress" class="page">
+
+        <!-- =========================
+             PROGRESS PAGE
+        ========================== -->
+
+        <section
+            id="progress"
+            class="page"
+        >
 
             <div class="page-title">
 
@@ -541,6 +738,7 @@
                 <div class="progress-heading">
 
                     <div>
+
                         <span>
                             وقت الدراسة هذا الأسبوع
                         </span>
@@ -548,7 +746,9 @@
                         <strong>
                             4س 35د
                         </strong>
+
                     </div>
+
 
                     <div class="growth">
                         +23%
@@ -557,33 +757,61 @@
                 </div>
 
 
+
                 <div class="chart">
 
-                    <div class="chart-bar" style="height:35%">
+                    <div
+                        class="chart-bar"
+                        style="height:35%"
+                    >
                         <span>س</span>
                     </div>
 
-                    <div class="chart-bar" style="height:58%">
+
+                    <div
+                        class="chart-bar"
+                        style="height:58%"
+                    >
                         <span>ح</span>
                     </div>
 
-                    <div class="chart-bar" style="height:42%">
+
+                    <div
+                        class="chart-bar"
+                        style="height:42%"
+                    >
                         <span>ن</span>
                     </div>
 
-                    <div class="chart-bar" style="height:78%">
+
+                    <div
+                        class="chart-bar"
+                        style="height:78%"
+                    >
                         <span>ث</span>
                     </div>
 
-                    <div class="chart-bar selected" style="height:92%">
+
+                    <div
+                        class="chart-bar selected"
+                        style="height:92%"
+                    >
                         <span>ر</span>
                     </div>
 
-                    <div class="chart-bar" style="height:55%">
+
+                    <div
+                        class="chart-bar"
+                        style="height:55%"
+                    >
                         <span>خ</span>
                     </div>
 
-                    <div class="chart-bar" style="height:28%">
+
+                    <div
+                        class="chart-bar"
+                        style="height:28%"
+                    >
                         <span>ج</span>
                     </div>
 
@@ -594,8 +822,15 @@
         </section>
 
 
-        <!-- SETTINGS -->
-        <section id="settings" class="page">
+
+        <!-- =========================
+             SETTINGS PAGE
+        ========================== -->
+
+        <section
+            id="settings"
+            class="page"
+        >
 
             <div class="page-title">
 
@@ -609,14 +844,25 @@
 
             </div>
 
+
             <div class="settings-card">
+
+                <!-- DARK MODE -->
 
                 <div class="setting-row">
 
                     <div>
-                        <strong>الوضع الداكن</strong>
-                        <span>استخدم المظهر الداكن ليلًا</span>
+
+                        <strong>
+                            الوضع الداكن
+                        </strong>
+
+                        <span>
+                            استخدم المظهر الداكن ليلًا
+                        </span>
+
                     </div>
+
 
                     <label class="switch">
 
@@ -632,12 +878,23 @@
                 </div>
 
 
+
+                <!-- REMINDERS -->
+
                 <div class="setting-row">
 
                     <div>
-                        <strong>التذكيرات</strong>
-                        <span>ذكّرني بجلسات الدراسة</span>
+
+                        <strong>
+                            التذكيرات
+                        </strong>
+
+                        <span>
+                            ذكّرني بجلسات الدراسة
+                        </span>
+
                     </div>
+
 
                     <label class="switch">
 
@@ -661,7 +918,10 @@
 </div>
 
 
-<!-- Add Task Modal -->
+
+<!-- =========================
+     ADD TASK MODAL
+========================== -->
 
 <div
     class="modal-overlay"
@@ -676,26 +936,32 @@
 
         <button
             class="modal-close"
+            type="button"
             onclick="closeModal()"
+            aria-label="إغلاق"
         >
             ×
         </button>
+
 
         <div class="modal-icon">
             ✨
         </div>
 
+
         <h2>
             أضف جلسة جديدة
         </h2>
+
 
         <p>
             ماذا تريد أن تدرس اليوم؟
         </p>
 
+
         <form id="taskForm">
 
-            <label>
+            <label for="taskTitle">
                 اسم المهمة
             </label>
 
@@ -707,21 +973,32 @@
             >
 
 
-            <label>
+            <label for="taskSubject">
                 المادة
             </label>
 
             <select id="taskSubject">
 
-                <option>رياضيات</option>
-                <option>برمجة</option>
-                <option>إنجليزي</option>
-                <option>فيزياء</option>
+                <option value="رياضيات">
+                    رياضيات
+                </option>
+
+                <option value="برمجة">
+                    برمجة
+                </option>
+
+                <option value="إنجليزي">
+                    إنجليزي
+                </option>
+
+                <option value="فيزياء">
+                    فيزياء
+                </option>
 
             </select>
 
 
-            <label>
+            <label for="taskMinutes">
                 مدة الدراسة
             </label>
 
@@ -749,7 +1026,10 @@
 </div>
 
 
-<!-- Study Timer -->
+
+<!-- =========================
+     STUDY TIMER
+========================== -->
 
 <div
     class="timer-overlay"
@@ -760,18 +1040,23 @@
 
         <button
             class="modal-close"
+            type="button"
             onclick="closeTimer()"
+            aria-label="إغلاق"
         >
             ×
         </button>
+
 
         <span class="timer-label">
             جلسة الدراسة
         </span>
 
+
         <h2 id="timerTitle">
             التكامل والتفاضل
         </h2>
+
 
         <div class="timer-circle">
 
@@ -789,18 +1074,22 @@
 
         </div>
 
+
         <div class="timer-buttons">
 
             <button
                 id="timerStart"
                 class="timer-start"
+                type="button"
                 onclick="toggleTimer()"
             >
                 ▶ ابدأ التركيز
             </button>
 
+
             <button
                 class="timer-finish"
+                type="button"
                 onclick="finishTimer()"
             >
                 إنهاء
@@ -812,6 +1101,11 @@
 
 </div>
 
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
 
 <script src="app.js"></script>
 
