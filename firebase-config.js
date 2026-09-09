@@ -1,30 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-    updateProfile
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    query,
-    where,
-    onSnapshot,
-    serverTimestamp,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-    deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-
+// إعدادات Firebase الخاصة بمشروعك
 const firebaseConfig = {
     apiKey: "AIzaSyDU3O5vBeN7sBA8hNTmAFofkTcWYS1YjsQ",
     authDomain: "ogrenci-ders-takibi-e7d57.firebaseapp.com",
@@ -35,33 +9,5 @@ const firebaseConfig = {
     measurementId: "G-GPDLXNL3GZ"
 };
 
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-
-export {
-    auth,
-    db,
-
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-    updateProfile,
-
-    collection,
-    addDoc,
-    query,
-    where,
-    onSnapshot,
-    serverTimestamp,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-    deleteDoc
-};
+// التهيئة باستخدام مكتبات الـ Compat المتوافقة مع التطبيق
+firebase.initializeApp(firebaseConfig);
