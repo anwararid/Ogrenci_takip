@@ -3,1029 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyDay | خطتك للدراسة الشخصية</title>
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Embedded Comprehensive CSS (لتجنب أي مشاكل في مسارات الـ CSS) -->
-    <style>
-        :root {
-            --bg: #f8f9fa;
-            --card: #ffffff;
-            --text: #1a1a1a;
-            --muted: #71717a;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --border: #e4e4e7;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-        }
-
-        body.dark-mode {
-            --bg: #09090b;
-            --card: #121215;
-            --text: #f4f4f5;
-            --muted: #a1a1aa;
-            --primary: #818cf8;
-            --primary-hover: #6366f1;
-            --border: #27272a;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        /* =========================
-           AUTH SCREEN STYLES
-        ========================= */
-        .auth-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 20px;
-        }
-
-        .auth-card {
-            width: min(440px, 100%);
-            background: var(--card);
-            padding: 40px;
-            border-radius: 32px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .auth-card .logo-icon {
-            width: 64px;
-            height: 64px;
-            background: var(--primary);
-            color: white;
-            font-size: 28px;
-            font-weight: 900;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-        }
-
-        .auth-card h2 {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 8px;
-        }
-
-        .auth-card p {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
-
-        .auth-card form {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            text-align: right;
-        }
-
-        .auth-card label {
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .auth-card input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            outline: none;
-            font-family: inherit;
-            font-size: 14px;
-        }
-
-        .auth-card input:focus {
-            border-color: var(--primary);
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-        }
-
-        .submit-button:hover {
-            background: var(--primary-hover);
-        }
-
-        .auth-switch-text {
-            margin-top: 20px;
-            font-size: 13px;
-            color: var(--muted);
-        }
-
-        .text-link-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-weight: 800;
-            cursor: pointer;
-            font-family: inherit;
-            margin-right: 5px;
-        }
-
-        .auth-error {
-            color: #ff4e7b;
-            font-size: 12px;
-            margin-top: 15px;
-            font-weight: 700;
-        }
-
-        /* =========================
-           MAIN APP LAYOUT
-        ========================= */
-        .app {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: var(--card);
-            border-left: 1px solid var(--border);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .logo .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--primary);
-            color: white;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 900;
-        }
-
-        .logo strong {
-            display: block;
-            font-size: 16px;
-            font-weight: 900;
-        }
-
-        .logo span {
-            font-size: 11px;
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        .navigation {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 35px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            border-radius: 16px;
-            background: none;
-            border: none;
-            color: var(--muted);
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            text-align: right;
-            width: 100%;
-            transition: 0.2s;
-        }
-
-        .nav-item span {
-            font-size: 18px;
-        }
-
-        .nav-item.active, .nav-item:hover {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-        }
-
-        .sidebar-bottom {
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
-        }
-
-        .mini-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-        }
-
-        .mini-profile strong {
-            display: block;
-            font-size: 13px;
-            font-weight: 800;
-            max-width: 160px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mini-profile span {
-            font-size: 11px;
-            color: var(--muted);
-            max-width: 160px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Main Content Area */
-        .main {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-            max-width: 1200px;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 35px;
-        }
-
-        .small-date {
-            font-size: 12px;
-            color: var(--muted);
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .topbar h1 {
-            font-size: 26px;
-            font-weight: 900;
-        }
-
-        .subtitle {
-            font-size: 13px;
-            color: var(--muted);
-            margin-top: 4px;
-        }
-
-        .icon-button {
-            width: 44px;
-            height: 44px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: 0.2s;
-        }
-
-        .icon-button:hover {
-            border-color: var(--primary);
-        }
-
-        /* Pages */
-        .page {
-            display: none;
-        }
-
-        .page.active-page {
-            display: block;
-        }
-
-        /* Hero Banner */
-        .hero-card {
-            background: linear-gradient(135deg, var(--primary), #4f46e5);
-            color: white;
-            padding: 35px;
-            border-radius: 28px;
-            margin-bottom: 35px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .hero-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 800;
-            display: inline-block;
-            margin-bottom: 12px;
-        }
-
-        .hero-card h2 {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 8px;
-        }
-
-        .hero-card p {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-
-        .hero-progress {
-            background: rgba(0, 0, 0, 0.15);
-            padding: 15px 20px;
-            border-radius: 16px;
-            width: 280px;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .progress-track {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: white;
-            border-radius: 4px;
-            transition: width 0.4s ease;
-        }
-
-        .hero-decoration {
-            font-size: 80px;
-            opacity: 0.2;
-            font-weight: 900;
-        }
-
-        /* Section Header */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-kicker {
-            font-size: 11px;
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-            display: block;
-        }
-
-        .section-header h2 {
-            font-size: 20px;
-            font-weight: 900;
-        }
-
-        .add-task-small {
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 18px;
-            border-radius: 14px;
-            font-weight: 800;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: 0.2s;
-        }
-
-        .add-task-small:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Subjects Grid */
-        .subjects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .subject-card {
-            background: var(--card);
-            padding: 24px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: 0.2s;
-            position: relative;
-        }
-
-        .subject-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-        }
-
-        /* Tasks / Lessons List */
-        .tasks {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .task-card {
-            background: var(--card);
-            padding: 18px 24px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: 0.2s;
-        }
-
-        .task-card:hover {
-            border-color: var(--primary);
-        }
-
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal {
-            background: var(--card);
-            width: min(440px, 100%);
-            padding: 35px;
-            border-radius: 28px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--muted);
-        }
-
-        .modal-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 15px;
-        }
-
-        .modal h2 {
-            font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 5px;
-        }
-
-        .modal p {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .modal form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            text-align: right;
-        }
-
-        .modal label {
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .modal input, .modal select {
-            width: 100%;
-            padding: 13px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            outline: none;
-            font-family: inherit;
-        }
-
-        .modal input:focus, .modal select:focus {
-            border-color: var(--primary);
-        }
-
-        /* Study Timer Overlay */
-        .timer-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .timer-modal {
-            background: var(--card);
-            padding: 45px;
-            border-radius: 36px;
-            text-align: center;
-            width: min(380px, 90%);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .timer-label {
-            font-size: 12px;
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .timer-modal h2 {
-            font-size: 20px;
-            font-weight: 900;
-            margin: 8px 0 20px;
-        }
-
-        .timer-circle {
-            width: 200px;
-            height: 200px;
-            border: 8px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-        }
-
-        .timer-circle strong {
-            font-size: 42px;
-            font-weight: 900;
-        }
-
-        .timer-circle span {
-            display: block;
-            font-size: 11px;
-            color: var(--muted);
-            font-weight: 700;
-        }
-
-        .timer-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .timer-start {
-            flex: 1;
-            padding: 14px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .timer-finish {
-            flex: 1;
-            padding: 14px;
-            background: rgba(255, 78, 123, 0.1);
-            color: #ff4e7b;
-            border: none;
-            border-radius: 16px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        /* Progress Card & Settings */
-        .progress-big-card, .settings-card {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-        }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .setting-row span {
-            font-size: 12px;
-            color: var(--muted);
-            display: block;
-            margin-top: 3px;
-        }
-
-        /* Switch Toggle */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background-color: var(--border);
-            transition: .3s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--primary);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-    </style>
+    <title>StudyDay - رفيقك الدراسي الذكي</title>
+    <!-- ربط ملف التصميم الاحترافي -->
+    <link rel="stylesheet" href="style.css">
+    <!-- مكتبات FontAwesome للأيقونات الجذابة -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- =========================
-         AUTH SCREEN (LOGIN / REGISTER)
-    ========================== -->
-    <div id="authScreen" class="auth-screen">
+    <!-- 1. شاشة تسجيل الدخول / إنشاء الحساب (تظهر للمستخدم غير المسجل) -->
+    <div id="authScreen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="logo-icon">S</div>
+            <div class="logo-icon" style="margin: 0 auto 16px auto;">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
             <h2 id="authTitle">تسجيل الدخول</h2>
             <p id="authSubtitle">أهلاً بك مجدداً، أدخل بيانات حسابك للمتابعة</p>
-
+            
             <form id="authForm">
-                <label for="authEmail">البريد الإلكتروني</label>
-                <input type="email" id="authEmail" placeholder="name@example.com" required>
-
-                <label for="authPassword">كلمة المرور</label>
-                <input type="password" id="authPassword" placeholder="••••••••" required>
-
-                <button type="submit" id="authSubmitBtn" class="submit-button">دخول</button>
+                <div class="form-group">
+                    <input type="email" id="authEmail" placeholder="البريد الإلكتروني" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="authPassword" placeholder="كلمة المرور" required>
+                </div>
+                <p id="authError" style="color: var(--danger); font-size: 13px; margin-bottom: 12px;"></p>
+                <button type="submit" id="authSubmitBtn">دخول</button>
             </form>
 
-            <p class="auth-switch-text">
+            <div style="margin-top: 20px; font-size: 14px;">
                 <span id="authToggleText">ليس لديك حساب؟</span>
-                <button type="button" id="authToggleBtn" class="text-link-btn">أنشئ حساباً جديداً</button>
-            </p>
-            <div id="authError" class="auth-error"></div>
+                <button id="authToggleBtn" class="btn-secondary" style="margin-top: 8px; border: none; background: none; color: var(--primary); cursor: pointer; font-weight: bold;">أنشئ حساباً جديداً</button>
+            </div>
         </div>
     </div>
 
-    <!-- =========================
-         MAIN APP (HIDDEN UNTIL LOGIN)
-    ========================== -->
-    <div class="app" id="mainApp" style="display: none;">
-
-        <!-- SIDEBAR -->
+    <!-- 2. واجهة التطبيق الرئيسية (تظهر بعد تسجيل الدخول) -->
+    <div id="appScreen" class="app-container" style="display: none;">
+        
+        <!-- الشريط الجانبي الاحترافي -->
         <aside class="sidebar">
             <div>
-                <div class="logo">
-                    <div class="logo-icon">S</div>
-                    <div>
-                        <strong>StudyDay</strong>
+                <div class="logo-area">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>StudyDay</h1>
                         <span>Personal Planner</span>
                     </div>
                 </div>
 
-                <nav class="navigation">
-                    <button class="nav-item active" data-page="home" type="button">
-                        <span>⌂</span>
-                        <label>الرئيسية</label>
-                    </button>
-                    <button class="nav-item" data-page="subjects" type="button">
-                        <span>▣</span>
-                        <label>موادي</label>
-                    </button>
-                    <button class="nav-item" data-page="progress" type="button">
-                        <span>◒</span>
-                        <label>التقدم</label>
-                    </button>
-                    <button class="nav-item" data-page="settings" type="button">
-                        <span>⚙</span>
-                        <label>الإعدادات</label>
-                    </button>
-                </nav>
+                <ul class="nav-links">
+                    <li class="active"><a href="#" data-target="homeSection"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
+                    <li><a href="#" data-target="subjectsSection"><i class="fa-solid fa-book-open"></i> موادـي والجلسات</a></li>
+                    <li><a href="#" data-target="progressSection"><i class="fa-solid fa-chart-line"></i> التقدم والإحصائيات</a></li>
+                    <li><a href="#" data-target="settingsSection"><i class="fa-solid fa-gear"></i> الإعدادات</a></li>
+                </ul>
             </div>
 
-            <div class="sidebar-bottom">
-                <div class="mini-profile">
-                    <div class="avatar" id="userAvatar">ط</div>
-                    <div>
-                        <strong id="userNameDisplay">طالب</strong>
-                        <span id="userEmailDisplay">user@email.com</span>
-                    </div>
-                </div>
+            <!-- زر تسجيل الخروج في الأسفل -->
+            <div>
+                <button id="logoutBtn" class="btn-danger" style="width: 100%; padding: 12px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+                </button>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
-        <main class="main">
+        <!-- المحتوى الرئيسي المتطور -->
+        <main class="main-content">
             
-            <!-- TOPBAR -->
-            <header class="topbar">
-                <div>
-                    <p class="small-date" id="currentDate"></p>
-                    <h1>مرحباً بك، <span id="welcomeName">طالبنا العزيز</span> 👋</h1>
-                    <p class="subtitle">نظم موادك ودروسك وابدأ التركيز الآن.</p>
+            <!-- قسم الرئيسية -->
+            <section id="homeSection" class="content-section">
+                <div class="card">
+                    <h2><i class="fa-solid fa-hand-wave"></i> مرحباً بك في لوحة التحكم</h2>
+                    <p style="color: var(--text-muted); margin-top: 8px;">نظم موادك وجلساتك الدراسية بكفاءة عالية وتابع تركيزك الآن.</p>
                 </div>
-                <div class="top-actions">
-                    <button class="icon-button" type="button" id="logoutBtn" title="تسجيل الخروج">🚪</button>
-                </div>
-            </header>
+            </section>
 
-            <!-- 1. HOME PAGE -->
-            <section id="home" class="page active-page">
-                <div class="hero-card">
-                    <div class="hero-content">
-                        <div class="hero-badge">🎯 هدفك اليومي</div>
-                        <h2>تابع إنجازاتك الدراسية</h2>
-                        <p>كل دقيقة تركز فيها تقربك خطوة نحو هدفك ومستقبلك.</p>
-                        <div class="hero-progress">
-                            <div class="progress-info">
-                                <span>المهام المنجزة</span>
-                                <strong id="heroPercentage">0%</strong>
+            <!-- قسم موادي والجلسات الدراسية (الطلب الأساسي) -->
+            <section id="subjectsSection" class="content-section" style="display: none;">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2><i class="fa-solid fa-book"></i> إدارة المواد وجلسات الدراسة</h2>
+                        <button id="addSubjectBtn" style="width: auto; padding: 10px 18px;"><i class="fa-solid fa-plus"></i> إضافة مادة جديدة</button>
+                    </div>
+
+                    <!-- نموذج إضافة مادة (مخفي افتراضياً أو يظهر عند الحاجة) -->
+                    <div id="subjectFormContainer" class="module-box" style="margin-bottom: 24px; display: none;">
+                        <h3 style="margin-bottom: 12px; font-size: 16px;">إضافة مادة دراسية جديدة</h3>
+                        <form id="newSubjectForm">
+                            <div class="form-group">
+                                <input type="text" id="subjectNameInput" placeholder="اسم المادة (مثال: شبكات حاسوب، رياضيات...)" required>
                             </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" id="heroProgressFill" style="width:0%"></div>
+                            <button type="submit">حفظ المادة</button>
+                        </form>
+                    </div>
+
+                    <!-- قائمة المواد مع الجلسات الخاصة بها -->
+                    <div id="subjectsListContainer">
+                        <!-- سيتم تعبئة المواد والجلسات ديناميكياً من ملف app.js -->
+                        <div class="module-box">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3>الرياضيات المتقدمة</h3>
+                                <button class="btn-secondary" style="width: auto; padding: 6px 12px; font-size: 13px;"><i class="fa-solid fa-plus"></i> إضافة جلسة</button>
+                            </div>
+                            <!-- قائمة الجلسات التابعة للمادة -->
+                            <div style="margin-top: 14px; border-top: 1px solid var(--border); pt: 10px;">
+                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">جلسات الدراسة المسجلة:</p>
+                                <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
+                                    <li style="background: var(--bg-main); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                        <span>جلسة حل تفاضل وتكامل (45 دقيقة)</span>
+                                        <span style="color: var(--success); font-size: 12px; font-weight: bold;"><i class="fa-solid fa-check"></i> مكتملة</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="hero-decoration">✨</div>
-                </div>
-
-                <div class="section-header">
-                    <div>
-                        <span class="section-kicker">TASKS</span>
-                        <h2>جلسات ودروس اليوم 📚</h2>
-                    </div>
-                    <button class="add-task-small" type="button" onclick="openTaskModal()">+ إضافة جلسة</button>
-                </div>
-
-                <div id="tasksContainer" class="tasks"></div>
-            </section>
-
-            <!-- 2. SUBJECTS PAGE (MY SUBJECTS) -->
-            <section id="subjects" class="page">
-                <div class="section-header" style="margin-bottom: 25px;">
-                    <div>
-                        <span class="section-kicker">MY SUBJECTS</span>
-                        <h2>موادي الدراسية ▣</h2>
-                        <p class="subtitle">أضف موادك الخاصة وانقر على أي مادة لإدارة دروسها وجلساتها.</p>
-                    </div>
-                    <button class="add-task-small" type="button" onclick="openSubjectModal()" style="padding: 12px 20px;">+ إضافة مادة جديدة</button>
-                </div>
-
-                <div class="subjects-grid" id="subjectsGrid"></div>
-            </section>
-
-            <!-- 3. SUBJECT DETAILS PAGE -->
-            <section id="subjectDetailsPage" class="page">
-                <div class="section-header" style="margin-bottom: 25px;">
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <button class="add-task-small" type="button" onclick="backToSubjects()">← رجوع للمواد</button>
-                        <div>
-                            <span class="section-kicker" id="detailSubjectKicker">SUBJECT</span>
-                            <h2 id="detailSubjectTitle">اسم المادة</h2>
-                        </div>
-                    </div>
-                    <button class="add-task-small" type="button" onclick="openLessonModal()">+ إضافة درس للمادة</button>
-                </div>
-
-                <div id="subjectLessonsContainer" class="tasks"></div>
-            </section>
-
-            <!-- 4. PROGRESS PAGE -->
-            <section id="progress" class="page">
-                <div class="section-header" style="margin-bottom: 25px;">
-                    <div>
-                        <span class="section-kicker">PROGRESS</span>
-                        <h2>تقدمي الإجمالي 📈</h2>
-                        <p class="subtitle">أنت تبني نسخة أفضل وأكثر تنظيماً من نفسك كل يوم.</p>
-                    </div>
-                </div>
-                <div class="progress-big-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <span style="color: var(--muted); font-size: 13px; font-weight: 700;">إجمالي الوقت المدروس</span>
-                            <strong id="totalStudyTime" style="font-size: 28px; font-weight: 900; display: block; margin-top: 5px;">0 دقيقة</strong>
-                        </div>
-                    </div>
                 </div>
             </section>
 
-            <!-- 5. SETTINGS PAGE -->
-            <section id="settings" class="page">
-                <div class="section-header" style="margin-bottom: 25px;">
-                    <div>
-                        <span class="section-kicker">SETTINGS</span>
-                        <h2>الإعدادات ⚙️</h2>
-                    </div>
+            <!-- قسم التقدم -->
+            <section id="progressSection" class="content-section" style="display: none;">
+                <div class="card">
+                    <h2><i class="fa-solid fa-chart-pie"></i> إحصائيات الأداء</h2>
+                    <p style="color: var(--text-muted); margin-top: 8px;">تابع عدد الساعات والجلسات التي أنجزتها خلال الأسبوع.</p>
                 </div>
-                <div class="settings-card">
-                    <div class="setting-row">
-                        <div>
-                            <strong>الوضع الداكن</strong>
-                            <span>تفعيل المظهر الداكن لراحة عينيك</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="darkModeToggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
+            </section>
+
+            <!-- قسم الإعدادات -->
+            <section id="settingsSection" class="content-section" style="display: none;">
+                <div class="card">
+                    <h2><i class="fa-solid fa-sliders"></i> إعدادات التطبيق</h2>
+                    <p style="color: var(--text-muted); margin-top: 8px;">تخصيص المظهر وتفضيلات الحساب.</p>
                 </div>
             </section>
 
         </main>
     </div>
 
-    <!-- =========================
-         MODALS
-    ========================== -->
-
-    <!-- ADD SUBJECT MODAL -->
-    <div class="modal-overlay" id="subjectModal" onclick="closeSubjectModalOutside(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <button class="modal-close" type="button" onclick="closeSubjectModal()">×</button>
-            <div class="modal-icon">▣</div>
-            <h2>إضافة مادة جديدة</h2>
-            <p>أدخل اسم المادة واللون المفضل لها</p>
-            <form id="subjectForm">
-                <label for="subName">اسم المادة</label>
-                <input type="text" id="subName" placeholder="مثلاً: شبكات حاسوب" required>
-                
-                <label for="subColor">لون المادة / التصنيف</label>
-                <select id="subColor">
-                    <option value="purple">بنفسجي</option>
-                    <option value="blue">أزرق</option>
-                    <option value="green">أخضر</option>
-                    <option value="orange">برتقالي</option>
-                </select>
-
-                <button type="submit" class="submit-button">حفظ المادة</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ADD TASK / LESSON MODAL -->
-    <div class="modal-overlay" id="taskModal" onclick="closeTaskModalOutside(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <button class="modal-close" type="button" onclick="closeTaskModal()">×</button>
-            <div class="modal-icon">✨</div>
-            <h2 id="taskModalTitle">أضف جلسة دراسية</h2>
-            <p>اختر المادة وحدد مدة التركيز</p>
-            <form id="taskForm">
-                <label for="taskTitleInput">عنوان الدرس أو المهمة</label>
-                <input type="text" id="taskTitleInput" placeholder="مثلاً: دراسة الفصل الأول" required>
-
-                <label for="taskSubjectSelect">المادة الدراسية</label>
-                <select id="taskSubjectSelect"></select>
-
-                <label for="taskMinutesInput">مدة الدراسة (بالدقائق)</label>
-                <input type="number" id="taskMinutesInput" value="30" min="1" max="300" required>
-
-                <button type="submit" class="submit-button">إضافة الجلسة</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- STUDY TIMER OVERLAY -->
-    <div class="timer-overlay" id="timerOverlay">
-        <div class="timer-modal">
-            <button class="modal-close" type="button" onclick="closeTimer()">×</button>
-            <span class="timer-label">جلسة التركيز</span>
-            <h2 id="timerTitle">عنوان الدرس</h2>
-            <div class="timer-circle">
-                <div>
-                    <strong id="timerDisplay">25:00</strong>
-                    <span>ركّز الآن</span>
-                </div>
-            </div>
-            <div class="timer-buttons">
-                <button id="timerStart" class="timer-start" type="button" onclick="toggleTimer()">▶ ابدأ التركيز</button>
-                <button class="timer-finish" type="button" onclick="finishTimer()">إنهاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Firebase SDKs -->
+    <!-- ربط ملفات سكربت Firebase والتشغيل -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-    <!-- Project Scripts -->
+    
     <script src="firebase-config.js"></script>
     <script src="app.js"></script>
 </body>
