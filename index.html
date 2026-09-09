@@ -68,6 +68,30 @@
     <main class="main">
 
         <!-- TOPBAR (الشريط العلوي) -->
+        <!-- TOPBAR (الشريط العلوي) -->
+        <header class="topbar">
+          <div style="display: flex; align-items: center; gap: 16px;">
+        <!-- زر إزاحة / تبديل القائمة الجانبية -->
+        <button class="icon-button" id="sidebarToggleBtn" type="button" aria-label="تبديل القائمة">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div>
+            <p class="small-date" id="currentDate"></p>
+            <h1>صباح الخير، أنور <span>👋</span></h1>
+            <p class="subtitle">جاهز تحقق إنجاز جديد اليوم؟</p>
+        </div>
+    </div>
+
+    <div class="top-actions">
+        <button class="icon-button" type="button" aria-label="الإشعارات">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notification-dot"></span>
+        </button>
+        <button class="profile-button" type="button" aria-label="الملف الشخصي">
+            <div class="avatar">أ</div>
+        </button>
+    </div>
+</header>
         <header class="topbar">
             <div>
                 <p class="small-date" id="currentDate"></p>
