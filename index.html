@@ -3,45 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyDay - رفيقك الدراسي الذكي</title>
-    <!-- ربط ملف التصميم الاحترافي -->
+    <title>StudyDay - رفيقك الدراسي الذكي المتكامل</title>
+    <!-- ربط ملف التصميم الاحترافي الشامل -->
     <link rel="stylesheet" href="style.css">
-    <!-- مكتبات FontAwesome للأيقونات الجذابة -->
+    <!-- مكتبة الأيقونات الفخمة FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول / إنشاء الحساب (تظهر للمستخدم غير المسجل) -->
+    <!-- ==========================================
+       1. شاشة المصادقة (تسجيل الدخول / إنشاء حساب)
+       ========================================== -->
     <div id="authScreen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="logo-icon" style="margin: 0 auto 16px auto;">
+            <div class="logo-icon" style="margin: 0 auto 18px auto; width: 56px; height: 56px; font-size: 26px;">
                 <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <h2 id="authTitle">تسجيل الدخول</h2>
-            <p id="authSubtitle">أهلاً بك مجدداً، أدخل بيانات حسابك للمتابعة</p>
+            <p id="authSubtitle">أهلاً بك مجدداً في مساحتك الدراسية الذكية</p>
             
             <form id="authForm">
-                <div class="form-group">
-                    <input type="email" id="authEmail" placeholder="البريد الإلكتروني" required>
+                <div class="form-group" style="text-align: right;">
+                    <label for="authEmail">البريد الإلكتروني</label>
+                    <input type="email" id="authEmail" placeholder="name@example.com" required>
                 </div>
-                <div class="form-group">
-                    <input type="password" id="authPassword" placeholder="كلمة المرور" required>
+                <div class="form-group" style="text-align: right;">
+                    <label for="authPassword">كلمة المرور</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" required>
                 </div>
-                <p id="authError" style="color: var(--danger); font-size: 13px; margin-bottom: 12px;"></p>
-                <button type="submit" id="authSubmitBtn">دخول</button>
+                <p id="authError" style="color: var(--danger); font-size: 13px; margin-bottom: 14px; font-weight: 600;"></p>
+                <button type="submit" id="authSubmitBtn" class="btn" style="width: 100%;">دخول</button>
             </form>
 
-            <div style="margin-top: 20px; font-size: 14px;">
-                <span id="authToggleText">ليس لديك حساب؟</span>
-                <button id="authToggleBtn" class="btn-secondary" style="margin-top: 8px; border: none; background: none; color: var(--primary); cursor: pointer; font-weight: bold;">أنشئ حساباً جديداً</button>
+            <div style="margin-top: 24px; font-size: 14px; border-top: 1px solid var(--border); padding-top: 16px;">
+                <span id="authToggleText" style="color: var(--text-muted);">ليس لديك حساب؟</span>
+                <button id="authToggleBtn" class="btn-secondary" style="margin-top: 8px; width: 100%; border: 1.5px solid var(--border); background: transparent; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; color: var(--primary);">أنشئ حساباً جديداً</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. واجهة التطبيق الرئيسية (تظهر بعد تسجيل الدخول) -->
+    <!-- ==========================================
+       2. واجهة التطبيق الرئيسية (تظهر بعد الدخول)
+       ========================================== -->
     <div id="appScreen" class="app-container" style="display: none;">
         
-        <!-- الشريط الجانبي الاحترافي -->
+        <!-- الشريط الجانبي الاحترافي (Sidebar) -->
         <aside class="sidebar">
             <div>
                 <div class="logo-area">
@@ -55,66 +61,148 @@
                 </div>
 
                 <ul class="nav-links">
-                    <li class="active"><a href="#" data-target="homeSection"><i class="fa-solid fa-house"></i> الرئيسية</a></li>
-                    <li><a href="#" data-target="subjectsSection"><i class="fa-solid fa-book-open"></i> موادـي والجلسات</a></li>
-                    <li><a href="#" data-target="progressSection"><i class="fa-solid fa-chart-line"></i> التقدم والإحصائيات</a></li>
-                    <li><a href="#" data-target="settingsSection"><i class="fa-solid fa-gear"></i> الإعدادات</a></li>
+                    <li class="active">
+                        <a href="#" data-target="homeSection">
+                            <i class="fa-solid fa-house"></i> الرئيسية
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="subjectsSection">
+                            <i class="fa-solid fa-book-open"></i> موادـي والجلسات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="progressSection">
+                            <i class="fa-solid fa-chart-line"></i> التقدم والإحصائيات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="settingsSection">
+                            <i class="fa-solid fa-gear"></i> إعدادات التطبيق
+                        </a>
+                    </li>
                 </ul>
             </div>
 
-            <!-- زر تسجيل الخروج في الأسفل -->
-            <div>
-                <button id="logoutBtn" class="btn-danger" style="width: 100%; padding: 12px;">
+            <!-- زر تسجيل الخروج السفلي -->
+            <div style="padding-top: 20px; border-top: 1px solid var(--border);">
+                <button id="logoutBtn" class="btn-danger" style="width: 100%; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
                 </button>
             </div>
         </aside>
 
-        <!-- المحتوى الرئيسي المتطور -->
+        <!-- المحتوى الرئيسي للمنصة (Main Content) -->
         <main class="main-content">
             
-            <!-- قسم الرئيسية -->
+            <!-- أ) قسم الرئيسية -->
             <section id="homeSection" class="content-section">
-                <div class="card">
-                    <h2><i class="fa-solid fa-hand-wave"></i> مرحباً بك في لوحة التحكم</h2>
-                    <p style="color: var(--text-muted); margin-top: 8px;">نظم موادك وجلساتك الدراسية بكفاءة عالية وتابع تركيزك الآن.</p>
+                <div class="card" style="margin-bottom: 24px;">
+                    <h2><i class="fa-solid fa-hand-wave" style="color: var(--primary);"></i> أهلاً بك يا أنور في لوحة التحكم</h2>
+                    <p style="color: var(--text-muted); margin-top: 10px; font-size: 15px; line-height: 1.6;">
+                        هنا مساحتك الخاصة لتنظيم المواد الدراسية، جدولة جلسات التركيز، ومتابعة إنجازك اليومي والأسبوعي بكفاءة عالية.
+                    </p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                    <div class="stat-card card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="color: var(--text-muted); font-size: 13px; font-weight: 600;">المواد المسجلة</span>
+                                <h3 id="totalSubjectsCount" style="font-size: 24px; margin-top: 4px; color: var(--primary);">0</h3>
+                            </div>
+                            <div style="width: 48px; height: 48px; background: var(--primary-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;">
+                                <i class="fa-solid fa-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="color: var(--text-muted); font-size: 13px; font-weight: 600;">جلسات الدراسة</span>
+                                <h3 id="totalSessionsCount" style="font-size: 24px; margin-top: 4px; color: var(--accent);">0</h3>
+                            </div>
+                            <div style="width: 48px; height: 48px; background: rgba(6, 182, 212, 0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 20px;">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- قسم موادي والجلسات الدراسية (الطلب الأساسي) -->
+            <!-- ب) قسم موادي وجلسات الدراسة (متكامل تماماً) -->
             <section id="subjectsSection" class="content-section" style="display: none;">
                 <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2><i class="fa-solid fa-book"></i> إدارة المواد وجلسات الدراسة</h2>
-                        <button id="addSubjectBtn" style="width: auto; padding: 10px 18px;"><i class="fa-solid fa-plus"></i> إضافة مادة جديدة</button>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 24px;">
+                        <div>
+                            <h2><i class="fa-solid fa-book-bookmark" style="color: var(--primary);"></i> إدارة المواد وجلسات الدراسة</h2>
+                            <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">أضف موادك الدراسية وتابع الجلسات الخاصة بكل مادة على حدة.</p>
+                        </div>
+                        <button id="toggleSubjectFormBtn" class="btn" style="width: auto; padding: 12px 20px;">
+                            <i class="fa-solid fa-plus"></i> إضافة مادة جديدة
+                        </button>
                     </div>
 
-                    <!-- نموذج إضافة مادة (مخفي افتراضياً أو يظهر عند الحاجة) -->
-                    <div id="subjectFormContainer" class="module-box" style="margin-bottom: 24px; display: none;">
-                        <h3 style="margin-bottom: 12px; font-size: 16px;">إضافة مادة دراسية جديدة</h3>
+                    <!-- نموذج إضافة مادة (يفتح ويغلق عبر الزر) -->
+                    <div id="subjectFormContainer" class="module-box" style="margin-bottom: 28px; display: none; background: var(--bg-main); border: 1.5px dashed var(--primary);">
+                        <h3 style="margin-bottom: 14px; font-size: 17px; color: var(--text-main);"><i class="fa-solid fa-folder-plus"></i> إنشاء مادة دراسية جديدة</h3>
                         <form id="newSubjectForm">
                             <div class="form-group">
-                                <input type="text" id="subjectNameInput" placeholder="اسم المادة (مثال: شبكات حاسوب، رياضيات...)" required>
+                                <label for="subjectNameInput">اسم المادة الدراسية</label>
+                                <input type="text" id="subjectNameInput" placeholder="مثال: شبكات الحاسوب، منطق رقمي، رياضيات..." required>
                             </div>
-                            <button type="submit">حفظ المادة</button>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn" style="flex: 1;">حفظ المادة</button>
+                                <button type="button" id="cancelSubjectBtn" class="btn-secondary" style="flex: 1;">إلغاء</button>
+                            </div>
                         </form>
                     </div>
 
-                    <!-- قائمة المواد مع الجلسات الخاصة بها -->
-                    <div id="subjectsListContainer">
-                        <!-- سيتم تعبئة المواد والجلسات ديناميكياً من ملف app.js -->
-                        <div class="module-box">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <h3>الرياضيات المتقدمة</h3>
-                                <button class="btn-secondary" style="width: auto; padding: 6px 12px; font-size: 13px;"><i class="fa-solid fa-plus"></i> إضافة جلسة</button>
+                    <!-- نافذة منبثقة أو قسم مصغر لإضافة جلسة (مخفي افتراضياً، يتم إظهاره ديناميكياً) -->
+                    <div id="sessionFormModal" class="module-box" style="margin-bottom: 28px; display: none; background: var(--bg-main); border: 1.5px solid var(--accent);">
+                        <h3 style="margin-bottom: 14px; font-size: 17px; color: var(--accent);"><i class="fa-solid fa-stopwatch"></i> إضافة جلسة دراسية جديدة للمادة</h3>
+                        <form id="newSessionForm">
+                            <input type="hidden" id="currentSubjectIdForSession">
+                            <div class="form-group">
+                                <label for="sessionTitleInput">عنوان أو موضوع الجلسة</label>
+                                <input type="text" id="sessionTitleInput" placeholder="مثال: مراجعة الشابتر الأول، حل تمارين..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sessionDurationInput">المدة الزمنية (بالدقائق أو الساعات)</label>
+                                <input type="text" id="sessionDurationInput" placeholder="مثال: 45 دقيقة / ساعتان" required>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn" style="flex: 1; background: var(--accent-gradient);">حفظ الجلسة</button>
+                                <button type="button" id="cancelSessionBtn" class="btn-secondary" style="flex: 1;">إلغاء</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- حاوية عرض المواد والجلسات التابعة لها -->
+                    <div id="subjectsListContainer" style="display: flex; flex-direction: column; gap: 16px;">
+                        <!-- يتم حقن المواد والجلسات هنا برمجياً من app.js -->
+                        <div class="module-box" style="border: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                <h3 style="font-size: 18px; color: var(--text-main);"><i class="fa-solid fa-book" style="color: var(--primary); margin-left: 8px;"></i> نظام الديجيتال والدوائر المنطقية</h3>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn-secondary" style="width: auto; padding: 8px 14px; font-size: 13px;"><i class="fa-solid fa-plus"></i> إضافة جلسة</button>
+                                    <button class="btn-danger" style="width: auto; padding: 8px 12px; font-size: 13px;"><i class="fa-solid fa-trash"></i></button>
+                                </div>
                             </div>
                             <!-- قائمة الجلسات التابعة للمادة -->
-                            <div style="margin-top: 14px; border-top: 1px solid var(--border); pt: 10px;">
-                                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">جلسات الدراسة المسجلة:</p>
+                            <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
+                                <p style="font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px;">الجلسات الدراسية المسجلة:</p>
                                 <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-                                    <li style="background: var(--bg-main); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                        <span>جلسة حل تفاضل وتكامل (45 دقيقة)</span>
-                                        <span style="color: var(--success); font-size: 12px; font-weight: bold;"><i class="fa-solid fa-check"></i> مكتملة</span>
+                                    <li style="background: var(--bg-main); padding: 12px 16px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <i class="fa-solid fa-circle-check" style="color: var(--success); font-size: 16px;"></i>
+                                            <div>
+                                                <span style="font-weight: 600; font-size: 14px; display: block;">دراسة شرائح 74HC73 Flip-Flop</span>
+                                                <span style="font-size: 12px; color: var(--text-muted);">المدة: 60 دقيقة</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 11px;"><i class="fa-solid fa-xmark"></i></button>
                                     </li>
                                 </ul>
                             </div>
@@ -123,30 +211,31 @@
                 </div>
             </section>
 
-            <!-- قسم التقدم -->
+            <!-- ج) قسم التقدم والإحصائيات -->
             <section id="progressSection" class="content-section" style="display: none;">
                 <div class="card">
-                    <h2><i class="fa-solid fa-chart-pie"></i> إحصائيات الأداء</h2>
-                    <p style="color: var(--text-muted); margin-top: 8px;">تابع عدد الساعات والجلسات التي أنجزتها خلال الأسبوع.</p>
+                    <h2><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> تقرير التقدم والإحصائيات</h2>
+                    <p style="color: var(--text-muted); margin-top: 8px; font-size: 15px;">رؤى تحليلية حول إنجازك الدراسي ومعدل التزامك بالجلسات الدراسية المسجلة.</p>
                 </div>
             </section>
 
-            <!-- قسم الإعدادات -->
+            <!-- د) قسم الإعدادات -->
             <section id="settingsSection" class="content-section" style="display: none;">
                 <div class="card">
-                    <h2><i class="fa-solid fa-sliders"></i> إعدادات التطبيق</h2>
-                    <p style="color: var(--text-muted); margin-top: 8px;">تخصيص المظهر وتفضيلات الحساب.</p>
+                    <h2><i class="fa-solid fa-sliders" style="color: var(--primary);"></i> إعدادات المنصة والمظهر</h2>
+                    <p style="color: var(--text-muted); margin-top: 8px; font-size: 15px;">تخصيص تفضيلات الحساب والمظهر العام لتجربة استخدام مريحة.</p>
                 </div>
             </section>
 
         </main>
     </div>
 
-    <!-- ربط ملفات سكربت Firebase والتشغيل -->
+    <!-- مكتبات Firebase الأساسية (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
+    <!-- ملفات التهيئة وكود التطبيق -->
     <script src="firebase-config.js"></script>
     <script src="app.js"></script>
 </body>
