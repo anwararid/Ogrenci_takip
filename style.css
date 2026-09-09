@@ -17,6 +17,14 @@
     --radius: 16px;
 }
 
+body.dark-mode {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -29,6 +37,7 @@ body {
     color: var(--text-main);
     direction: rtl;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* =========================
@@ -40,7 +49,7 @@ body {
 }
 
 /* =========================
-   3. الشريط الجانبي (Sidebar)
+   3. الشريط الجانبي (Sidebar) والإزاحة
    ========================================== */
 .sidebar {
     width: 260px;
@@ -53,6 +62,24 @@ body {
     position: fixed;
     height: 100vh;
     z-index: 10;
+    transition: transform 0.3s ease, width 0.3s ease, background-color 0.3s ease;
+}
+
+.main {
+    flex: 1;
+    margin-right: 260px;
+    padding: 32px;
+    max-width: 1200px;
+    transition: margin-right 0.3s ease;
+}
+
+/* كلاسات التبديل والإزاحة للشريط الجانبي */
+.sidebar.collapsed {
+    transform: translateX(100%);
+}
+
+.main.expanded {
+    margin-right: 0;
 }
 
 .logo {
@@ -154,16 +181,8 @@ body {
 }
 
 /* =========================
-   4. المحتوى الرئيسي (Main Content)
+   4. المحتوى الرئيسي والعناصر
    ========================================== */
-.main {
-    flex: 1;
-    margin-right: 260px;
-    padding: 32px;
-    max-width: 1200px;
-}
-
-/* الشريط العلوي */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -206,6 +225,7 @@ body {
     justify-content: center;
     position: relative;
     transition: 0.2s;
+    color: var(--text-main);
 }
 
 .icon-button:hover {
@@ -222,7 +242,6 @@ body {
     border-radius: 50%;
 }
 
-/* الصفحات (Pages) */
 .page {
     display: none;
 }
@@ -231,9 +250,7 @@ body {
     display: block;
 }
 
-/* =========================
-   5. لوحة التحكم الرئيسية (Home Section)
-   ========================================== */
+/* Hero Section */
 .hero-card {
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
     color: white;
@@ -301,7 +318,7 @@ body {
     opacity: 0.2;
 }
 
-/* رؤوس الاقسام */
+/* Sections & Tasks */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -337,7 +354,6 @@ body {
     color: white;
 }
 
-/* بطاقات المهام (Tasks) */
 .tasks {
     display: flex;
     flex-direction: column;
@@ -381,7 +397,6 @@ body {
 
 .subject-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
 .subject-icon.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-.subject-icon.green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
 
 .task-info {
     flex: 1;
@@ -396,7 +411,6 @@ body {
 
 .purple-text { color: #8b5cf6; }
 .blue-text { color: #3b82f6; }
-.green-text { color: #10b981; }
 
 .task-card h3 {
     font-size: 15px;
@@ -427,9 +441,7 @@ body {
 .blue-button { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
 .blue-button:hover { background: #3b82f6; color: white; }
 
-.completed-button { background: var(--bg-main); color: var(--text-muted); cursor: not-allowed; }
-
-/* بطاقة الـ Streak */
+/* Streak & Stats */
 .streak-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -448,7 +460,6 @@ body {
 .streak-info span { font-size: 13px; color: var(--text-muted); }
 .rocket { font-size: 24px; }
 
-/* شبكة الإحصائيات */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -482,17 +493,9 @@ body {
 .stat-card strong { display: block; font-size: 20px; margin-bottom: 2px; }
 .stat-card span { font-size: 13px; color: var(--text-muted); }
 
-/* =========================
-   6. باقي الصفحات (المواد، التقدم، الإعدادات)
-   ========================================== */
-.page-title {
-    margin-bottom: 24px;
-}
-
-.page-title h2 {
-    font-size: 22px;
-    margin: 4px 0;
-}
+/* Subjects & Progress pages */
+.page-title { margin-bottom: 24px; }
+.page-title h2 { font-size: 22px; margin: 4px 0; }
 
 .subjects-grid {
     display: grid;
@@ -527,7 +530,6 @@ body {
 .subject-large strong { font-size: 24px; display: block; margin-bottom: 12px; }
 .subject-large span { font-size: 13px; color: var(--text-muted); display: block; margin-top: 8px; }
 
-/* بطاقة التقدم الكبيرة */
 .progress-big-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -572,7 +574,7 @@ body {
 .chart-bar.selected { background: var(--primary); }
 .chart-bar.selected span { color: white; font-weight: bold; }
 
-/* بطاقة الإعدادات */
+/* Settings */
 .settings-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -593,43 +595,33 @@ body {
 .setting-row strong { display: block; font-size: 15px; margin-bottom: 2px; }
 .setting-row span { font-size: 13px; color: var(--text-muted); }
 
-/* زر التبديل (Switch) */
+/* Switch */
 .switch {
     position: relative;
     display: inline-block;
     width: 48px;
     height: 24px;
 }
-
 .switch input { opacity: 0; width: 0; height: 0; }
-
 .slider {
-    position: absolute;
-    cursor: pointer;
+    position: absolute; cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: var(--border);
     transition: .3s;
     border-radius: 24px;
 }
-
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
+    position: absolute; content: "";
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
     background-color: white;
     transition: .3s;
     border-radius: 50%;
 }
-
 input:checked + .slider { background-color: var(--primary); }
 input:checked + .slider:before { transform: translateX(24px); }
 
-/* =========================
-   7. النوافذ المنبثقة (Modals & Timers)
-   ========================================== */
+/* Modals & Timers */
 .modal-overlay, .timer-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -654,12 +646,9 @@ input:checked + .slider:before { transform: translateX(24px); }
 
 .modal-close {
     position: absolute;
-    top: 16px;
-    left: 16px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+    top: 16px; left: 16px;
+    background: none; border: none;
+    font-size: 20px; cursor: pointer;
     color: var(--text-muted);
 }
 
@@ -676,9 +665,10 @@ input:checked + .slider:before { transform: translateX(24px); }
     margin-bottom: 16px;
     font-size: 14px;
     outline: none;
+    background: var(--bg-card);
+    color: var(--text-main);
     transition: 0.2s;
 }
-
 .modal form input:focus, .modal form select:focus { border-color: var(--primary); }
 
 .submit-button {
@@ -692,46 +682,42 @@ input:checked + .slider:before { transform: translateX(24px); }
     cursor: pointer;
     transition: 0.2s;
 }
-
 .submit-button:hover { background: var(--primary-hover); }
 
-/* تصميم التايمر */
+/* Timer */
 .timer-modal { text-align: center; }
 .timer-label { font-size: 12px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
 .timer-modal h2 { font-size: 20px; margin: 8px 0 24px 0; }
 
 .timer-circle {
-    width: 180px;
-    height: 180px;
+    width: 180px; height: 180px;
     border: 6px solid var(--primary-light);
     border-radius: 50%;
     margin: 0 auto 24px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
 }
-
 .timer-circle strong { font-size: 36px; display: block; color: var(--primary); }
 .timer-circle span { font-size: 12px; color: var(--text-muted); }
 
 .timer-buttons { display: flex; gap: 10px; }
 .timer-start {
-    flex: 1;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
+    flex: 1; background: var(--primary); color: white;
+    border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer;
 }
 .timer-finish {
-    flex: 1;
-    background: var(--bg-main);
-    color: var(--danger);
-    border: 1px solid var(--border);
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
+    flex: 1; background: var(--bg-main); color: var(--danger);
+    border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer;
+}
+
+/* Responsive sidebar support */
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(100%);
+    }
+    .sidebar.mobile-show {
+        transform: translateX(0);
+    }
+    .main {
+        margin-right: 0 !important;
+    }
 }
