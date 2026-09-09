@@ -3,1111 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>StudyDay | خطتك للدراسة</title>
+    <title>StudyDay | خطتك للدراسة الشخصية</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<div class="app">
-
     <!-- =========================
-         SIDEBAR
+         AUTH SCREEN (LOGIN / REGISTER)
     ========================== -->
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-card">
+            <div class="logo-icon" style="margin: 0 auto 20px;">S</div>
+            <h2 id="authTitle">تسجيل الدخول</h2>
+            <p id="authSubtitle">أهلاً بك مجدداً، أدخل بيانات حسابك للمتابعة</p>
 
-    <aside class="sidebar">
+            <form id="authForm">
+                <label for="authEmail">البريد الإلكتروني</label>
+                <input type="email" id="authEmail" placeholder="name@example.com" required>
 
-        <div class="logo">
+                <label for="authPassword">كلمة المرور</label>
+                <input type="password" id="authPassword" placeholder="••••••••" required>
 
-            <div class="logo-icon">S</div>
+                <button type="submit" id="authSubmitBtn" class="submit-button">دخول</button>
+            </form>
 
-            <div>
-                <strong>StudyDay</strong>
-                <span>Study smarter</span>
-            </div>
-
+            <p class="auth-switch-text">
+                <span id="authToggleText">ليس لديك حساب؟</span>
+                <button type="button" id="authToggleBtn" class="text-link-btn">أنشئ حساباً جديداً</button>
+            </p>
+            <div id="authError" class="auth-error"></div>
         </div>
-
-
-        <nav class="navigation">
-
-            <button
-                class="nav-item active"
-                data-page="home"
-                type="button"
-            >
-                <span>⌂</span>
-                <label>الرئيسية</label>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-page="subjects"
-                type="button"
-            >
-                <span>▣</span>
-                <label>المواد</label>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-page="progress"
-                type="button"
-            >
-                <span>◒</span>
-                <label>التقدم</label>
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-page="settings"
-                type="button"
-            >
-                <span>⚙</span>
-                <label>الإعدادات</label>
-            </button>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <div class="mini-profile">
-
-                <div class="avatar">أ</div>
-
-                <div>
-                    <strong>أحمد</strong>
-                    <span>طالب جامعي</span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </aside>
-
-
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main class="main">
-
-        <!-- =========================
-             TOPBAR
-        ========================== -->
-
-        <header class="topbar">
-
-            <div>
-
-                <p
-                    class="small-date"
-                    id="currentDate"
-                ></p>
-
-                <h1>
-                    صباح الخير، أحمد
-                    <span>👋</span>
-                </h1>
-
-                <p class="subtitle">
-                    جاهز تحقق إنجاز جديد اليوم؟
-                </p>
-
-            </div>
-
-
-            <div class="top-actions">
-
-                <button
-                    class="icon-button"
-                    type="button"
-                    aria-label="الإشعارات"
-                >
-                    🔔
-                    <span class="notification-dot"></span>
-                </button>
-
-
-                <button
-                    class="profile-button"
-                    type="button"
-                    aria-label="الملف الشخصي"
-                >
-                    <div class="avatar">أ</div>
-                </button>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =========================
-             HOME PAGE
-        ========================== -->
-
-        <section
-            id="home"
-            class="page active-page"
-        >
-
-            <!-- HERO -->
-
-            <div class="hero-card">
-
-                <div class="hero-content">
-
-                    <div class="hero-badge">
-                        🎯 هدف اليوم
-                    </div>
-
-                    <h2>
-                        ركّز على هدفك اليوم
-                    </h2>
-
-                    <p>
-                        كل يوم دراسة هو خطوة نحو مستقبلك.
-                    </p>
-
-
-                    <div class="hero-progress">
-
-                        <div class="progress-info">
-
-                            <span>
-                                أنجزت 2 من 3 جلسات
-                            </span>
-
-                            <strong>
-                                80%
-                            </strong>
-
-                        </div>
-
-
-                        <div class="progress-track">
-
-                            <div
-                                class="progress-fill"
-                                style="width:80%"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="hero-decoration">
-                    ✨
-                </div>
-
-            </div>
-
-
-
-            <!-- TODAY'S PLAN -->
-
-            <div class="section-header">
-
-                <div>
-
-                    <span class="section-kicker">
-                        TODAY
-                    </span>
-
-                    <h2>
-                        خطتك لليوم 📚
-                    </h2>
-
-                </div>
-
-
-                <button
-                    class="add-task-small"
-                    type="button"
-                    onclick="openModal()"
-                >
-                    + إضافة جلسة
-                </button>
-
-            </div>
-
-
-
-            <!-- TASKS -->
-
-            <div
-                id="tasksContainer"
-                class="tasks"
-            >
-
-                <!-- TASK 1 -->
-
-                <article class="task-card">
-
-                    <div class="task-number">
-                        01
-                    </div>
-
-
-                    <div class="subject-icon purple">
-                        ∫
-                    </div>
-
-
-                    <div class="task-info">
-
-                        <span class="subject-name purple-text">
-                            رياضيات
-                        </span>
-
-                        <h3>
-                            التكامل والتفاضل
-                        </h3>
-
-                        <span class="task-time">
-                            ◷ 45 دقيقة
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        class="start-button purple-button"
-                        type="button"
-                        onclick="startStudy('التكامل والتفاضل',45)"
-                    >
-                        ابدأ الدراسة
-                        <span>▶</span>
-                    </button>
-
-                </article>
-
-
-
-                <!-- TASK 2 -->
-
-                <article class="task-card">
-
-                    <div class="task-number">
-                        02
-                    </div>
-
-
-                    <div class="subject-icon blue">
-                        &lt;/&gt;
-                    </div>
-
-
-                    <div class="task-info">
-
-                        <span class="subject-name blue-text">
-                            برمجة
-                        </span>
-
-                        <h3>
-                            Arrays
-                        </h3>
-
-                        <span class="task-time">
-                            ◷ 30 دقيقة
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        class="start-button blue-button"
-                        type="button"
-                        onclick="startStudy('Arrays',30)"
-                    >
-                        ابدأ الدراسة
-                        <span>▶</span>
-                    </button>
-
-                </article>
-
-
-
-                <!-- TASK 3 -->
-
-                <article class="task-card completed">
-
-                    <div class="task-number">
-                        03
-                    </div>
-
-
-                    <div class="subject-icon green">
-                        A
-                    </div>
-
-
-                    <div class="task-info">
-
-                        <span class="subject-name green-text">
-                            إنجليزي
-                        </span>
-
-                        <h3>
-                            Vocabulary
-                        </h3>
-
-                        <span class="task-time">
-                            ✓ تم الإنجاز
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        class="start-button completed-button"
-                        type="button"
-                        disabled
-                    >
-                        مكتملة ✓
-                    </button>
-
-                </article>
-
-            </div>
-
-
-
-            <!-- STREAK -->
-
-            <div class="streak-card">
-
-                <div class="streak-icon">
-                    🔥
-                </div>
-
-
-                <div class="streak-info">
-
-                    <strong>
-                        4 أيام متتالية
-                    </strong>
-
-                    <span>
-                        استمر هكذا! أنت على الطريق الصحيح 💪
-                    </span>
-
-                </div>
-
-
-                <div class="rocket">
-                    🚀
-                </div>
-
-            </div>
-
-
-
-            <!-- STATISTICS HEADER -->
-
-            <div class="section-header statistics-header">
-
-                <div>
-
-                    <span class="section-kicker">
-                        YOUR WEEK
-                    </span>
-
-                    <h2>
-                        ملخص الأسبوع 📈
-                    </h2>
-
-                </div>
-
-
-                <span class="week-label">
-                    هذا الأسبوع
-                </span>
-
-            </div>
-
-
-
-            <!-- STATISTICS -->
-
-            <div class="stats-grid">
-
-                <!-- STAT 1 -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon purple-bg">
-                        ◷
-                    </div>
-
-                    <strong>
-                        4س 35د
-                    </strong>
-
-                    <span>
-                        وقت الدراسة
-                    </span>
-
-                </div>
-
-
-                <!-- STAT 2 -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon green-bg">
-                        ✓
-                    </div>
-
-                    <strong>
-                        12
-                    </strong>
-
-                    <span>
-                        جلسة مكتملة
-                    </span>
-
-                </div>
-
-
-                <!-- STAT 3 -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon orange-bg">
-                        🎯
-                    </div>
-
-                    <strong>
-                        86%
-                    </strong>
-
-                    <span>
-                        تحقيق الهدف
-                    </span>
-
-                </div>
-
-
-                <!-- STAT 4 -->
-
-                <div class="stat-card">
-
-                    <div class="stat-icon pink-bg">
-                        ★
-                    </div>
-
-                    <strong>
-                        320
-                    </strong>
-
-                    <span>
-                        نقطة XP
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =========================
-             SUBJECTS PAGE
-        ========================== -->
-
-        <section
-            id="subjects"
-            class="page"
-        >
-
-            <div class="page-title">
-
-                <span class="section-kicker">
-                    MY SUBJECTS
-                </span>
-
-                <h2>
-                    المواد 📚
-                </h2>
-
-                <p>
-                    تابع مستواك في كل مادة بسهولة.
-                </p>
-
-            </div>
-
-
-            <div class="subjects-grid">
-
-                <!-- MATH -->
-
-                <div class="subject-large purple-card">
-
-                    <div class="subject-large-icon">
-                        ∫
-                    </div>
-
-                    <h3>
-                        رياضيات
-                    </h3>
-
-                    <strong>
-                        68%
-                    </strong>
-
-
-                    <div class="progress-track">
-
-                        <div
-                            class="progress-fill"
-                            style="width:68%"
-                        ></div>
-
-                    </div>
-
-
-                    <span>
-                        170 دقيقة من 250
-                    </span>
-
-                </div>
-
-
-
-                <!-- PROGRAMMING -->
-
-                <div class="subject-large blue-card">
-
-                    <div class="subject-large-icon">
-                        &lt;/&gt;
-                    </div>
-
-                    <h3>
-                        برمجة
-                    </h3>
-
-                    <strong>
-                        91%
-                    </strong>
-
-
-                    <div class="progress-track">
-
-                        <div
-                            class="progress-fill"
-                            style="width:91%"
-                        ></div>
-
-                    </div>
-
-
-                    <span>
-                        230 دقيقة من 300
-                    </span>
-
-                </div>
-
-
-
-                <!-- ENGLISH -->
-
-                <div class="subject-large green-card">
-
-                    <div class="subject-large-icon">
-                        A
-                    </div>
-
-                    <h3>
-                        إنجليزي
-                    </h3>
-
-                    <strong>
-                        82%
-                    </strong>
-
-
-                    <div class="progress-track">
-
-                        <div
-                            class="progress-fill"
-                            style="width:82%"
-                        ></div>
-
-                    </div>
-
-
-                    <span>
-                        120 دقيقة من 180
-                    </span>
-
-                </div>
-
-
-
-                <!-- PHYSICS -->
-
-                <div class="subject-large orange-card">
-
-                    <div class="subject-large-icon">
-                        ⚛
-                    </div>
-
-                    <h3>
-                        فيزياء
-                    </h3>
-
-                    <strong>
-                        54%
-                    </strong>
-
-
-                    <div class="progress-track">
-
-                        <div
-                            class="progress-fill"
-                            style="width:54%"
-                        ></div>
-
-                    </div>
-
-
-                    <span>
-                        95 دقيقة من 200
-                    </span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =========================
-             PROGRESS PAGE
-        ========================== -->
-
-        <section
-            id="progress"
-            class="page"
-        >
-
-            <div class="page-title">
-
-                <span class="section-kicker">
-                    PROGRESS
-                </span>
-
-                <h2>
-                    تقدمي 📈
-                </h2>
-
-                <p>
-                    أنت لا تنافس أحدًا. أنت تبني نسخة أفضل من نفسك.
-                </p>
-
-            </div>
-
-
-            <div class="progress-big-card">
-
-                <div class="progress-heading">
-
-                    <div>
-
-                        <span>
-                            وقت الدراسة هذا الأسبوع
-                        </span>
-
-                        <strong>
-                            4س 35د
-                        </strong>
-
-                    </div>
-
-
-                    <div class="growth">
-                        +23%
-                    </div>
-
-                </div>
-
-
-
-                <div class="chart">
-
-                    <div
-                        class="chart-bar"
-                        style="height:35%"
-                    >
-                        <span>س</span>
-                    </div>
-
-
-                    <div
-                        class="chart-bar"
-                        style="height:58%"
-                    >
-                        <span>ح</span>
-                    </div>
-
-
-                    <div
-                        class="chart-bar"
-                        style="height:42%"
-                    >
-                        <span>ن</span>
-                    </div>
-
-
-                    <div
-                        class="chart-bar"
-                        style="height:78%"
-                    >
-                        <span>ث</span>
-                    </div>
-
-
-                    <div
-                        class="chart-bar selected"
-                        style="height:92%"
-                    >
-                        <span>ر</span>
-                    </div>
-
-
-                    <div
-                        class="chart-bar"
-                        style="height:55%"
-                    >
-                        <span>خ</span>
-                    </div>
-
-
-                    <div
-                        class="chart-bar"
-                        style="height:28%"
-                    >
-                        <span>ج</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =========================
-             SETTINGS PAGE
-        ========================== -->
-
-        <section
-            id="settings"
-            class="page"
-        >
-
-            <div class="page-title">
-
-                <span class="section-kicker">
-                    SETTINGS
-                </span>
-
-                <h2>
-                    الإعدادات ⚙️
-                </h2>
-
-            </div>
-
-
-            <div class="settings-card">
-
-                <!-- DARK MODE -->
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <strong>
-                            الوضع الداكن
-                        </strong>
-
-                        <span>
-                            استخدم المظهر الداكن ليلًا
-                        </span>
-
-                    </div>
-
-
-                    <label class="switch">
-
-                        <input
-                            type="checkbox"
-                            id="darkModeToggle"
-                        >
-
-                        <span class="slider"></span>
-
-                    </label>
-
-                </div>
-
-
-
-                <!-- REMINDERS -->
-
-                <div class="setting-row">
-
-                    <div>
-
-                        <strong>
-                            التذكيرات
-                        </strong>
-
-                        <span>
-                            ذكّرني بجلسات الدراسة
-                        </span>
-
-                    </div>
-
-
-                    <label class="switch">
-
-                        <input
-                            type="checkbox"
-                            checked
-                        >
-
-                        <span class="slider"></span>
-
-                    </label>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
-
-
-<!-- =========================
-     ADD TASK MODAL
-========================== -->
-
-<div
-    class="modal-overlay"
-    id="taskModal"
-    onclick="closeModalOutside(event)"
->
-
-    <div
-        class="modal"
-        onclick="event.stopPropagation()"
-    >
-
-        <button
-            class="modal-close"
-            type="button"
-            onclick="closeModal()"
-            aria-label="إغلاق"
-        >
-            ×
-        </button>
-
-
-        <div class="modal-icon">
-            ✨
-        </div>
-
-
-        <h2>
-            أضف جلسة جديدة
-        </h2>
-
-
-        <p>
-            ماذا تريد أن تدرس اليوم؟
-        </p>
-
-
-        <form id="taskForm">
-
-            <label for="taskTitle">
-                اسم المهمة
-            </label>
-
-            <input
-                id="taskTitle"
-                type="text"
-                placeholder="مثلاً: مراجعة الفصل الثالث"
-                required
-            >
-
-
-            <label for="taskSubject">
-                المادة
-            </label>
-
-            <select id="taskSubject">
-
-                <option value="رياضيات">
-                    رياضيات
-                </option>
-
-                <option value="برمجة">
-                    برمجة
-                </option>
-
-                <option value="إنجليزي">
-                    إنجليزي
-                </option>
-
-                <option value="فيزياء">
-                    فيزياء
-                </option>
-
-            </select>
-
-
-            <label for="taskMinutes">
-                مدة الدراسة
-            </label>
-
-            <input
-                id="taskMinutes"
-                type="number"
-                value="30"
-                min="1"
-                max="300"
-                required
-            >
-
-
-            <button
-                type="submit"
-                class="submit-button"
-            >
-                إضافة الجلسة
-            </button>
-
-        </form>
-
     </div>
 
-</div>
+    <!-- =========================
+         MAIN APP (HIDDEN UNTIL LOGIN)
+    ========================== -->
+    <div class="app" id="mainApp" style="display: none;">
 
-
-
-<!-- =========================
-     STUDY TIMER
-========================== -->
-
-<div
-    class="timer-overlay"
-    id="timerOverlay"
->
-
-    <div class="timer-modal">
-
-        <button
-            class="modal-close"
-            type="button"
-            onclick="closeTimer()"
-            aria-label="إغلاق"
-        >
-            ×
-        </button>
-
-
-        <span class="timer-label">
-            جلسة الدراسة
-        </span>
-
-
-        <h2 id="timerTitle">
-            التكامل والتفاضل
-        </h2>
-
-
-        <div class="timer-circle">
-
-            <div>
-
-                <strong id="timerDisplay">
-                    45:00
-                </strong>
-
-                <span>
-                    ركّز الآن
-                </span>
-
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <div>
+                    <strong>StudyDay</strong>
+                    <span>Personal Planner</span>
+                </div>
             </div>
 
-        </div>
+            <nav class="navigation">
+                <button class="nav-item active" data-page="home" type="button">
+                    <span>⌂</span>
+                    <label>الرئيسية</label>
+                </button>
+                <button class="nav-item" data-page="subjects" type="button">
+                    <span>▣</span>
+                    <label>موادي</label>
+                </button>
+                <button class="nav-item" data-page="progress" type="button">
+                    <span>◒</span>
+                    <label>التقدم</label>
+                </button>
+                <button class="nav-item" data-page="settings" type="button">
+                    <span>⚙</span>
+                    <label>الإعدادات</label>
+                </button>
+            </nav>
 
+            <div class="sidebar-bottom">
+                <div class="mini-profile">
+                    <div class="avatar" id="userAvatar">ط</div>
+                    <div>
+                        <strong id="userNameDisplay">طالب</strong>
+                        <span id="userEmailDisplay">user@email.com</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-        <div class="timer-buttons">
+        <!-- MAIN CONTENT AREA -->
+        <main class="main">
+            
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div>
+                    <p class="small-date" id="currentDate"></p>
+                    <h1>مرحباً بك، <span id="welcomeName">طالبنا العزيز</span> 👋</h1>
+                    <p class="subtitle">نظم موادك ودروسك وابدأ التركيز الآن.</p>
+                </div>
+                <div class="top-actions">
+                    <button class="icon-button" type="button" id="logoutBtn" title="تسجيل الخروج">🚪</button>
+                </div>
+            </header>
 
-            <button
-                id="timerStart"
-                class="timer-start"
-                type="button"
-                onclick="toggleTimer()"
-            >
-                ▶ ابدأ التركيز
-            </button>
+            <!-- 1. HOME PAGE -->
+            <section id="home" class="page active-page">
+                <div class="hero-card">
+                    <div class="hero-content">
+                        <div class="hero-badge">🎯 هدفك اليومي</div>
+                        <h2>تابع إنجازاتك الدراسية</h2>
+                        <p>كل دقيقة تركز فيها تقربك خطوة نحو هدفك ومستقبلك.</p>
+                        <div class="hero-progress">
+                            <div class="progress-info">
+                                <span>المهام المنجزة</span>
+                                <strong id="heroPercentage">0%</strong>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="heroProgressFill" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-decoration">✨</div>
+                </div>
 
+                <div class="section-header">
+                    <div>
+                        <span class="section-kicker">TASKS</span>
+                        <h2>جلسات ودروس اليوم 📚</h2>
+                    </div>
+                    <button class="add-task-small" type="button" onclick="openTaskModal()">+ إضافة جلسة</button>
+                </div>
 
-            <button
-                class="timer-finish"
-                type="button"
-                onclick="finishTimer()"
-            >
-                إنهاء
-            </button>
+                <!-- TASKS CONTAINER -->
+                <div id="tasksContainer" class="tasks">
+                    <!-- سيتم تعبئتها ديناميكياً من قاعدة البيانات -->
+                </div>
+            </section>
 
-        </div>
+            <!-- 2. SUBJECTS PAGE (MY SUBJECTS) -->
+            <section id="subjects" class="page">
+                <div class="page-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span class="section-kicker">MY SUBJECTS</span>
+                        <h2>موادي الدراسية ▣</h2>
+                        <p>أضف موادك الخاصة وانقر على أي مادة لإدارة دروسها وجلساتها.</p>
+                    </div>
+                    <button class="add-task-small" type="button" onclick="openSubjectModal()" style="padding: 12px 20px;">+ إضافة مادة جديدة</button>
+                </div>
 
+                <div class="subjects-grid" id="subjectsGrid">
+                    <!-- المواد المضافة ستظهر هنا ديناميكياً -->
+                </div>
+            </section>
+
+            <!-- 3. SUBJECT DETAILS PAGE (HIDDEN BY DEFAULT, SHOWN WHEN CLICKING A SUBJECT) -->
+            <section id="subjectDetailsPage" class="page">
+                <div class="page-title" style="display: flex; align-items: center; gap: 15px;">
+                    <button class="add-task-small" type="button" onclick="backToSubjects()">← رجوع للمواد</button>
+                    <div>
+                        <span class="section-kicker" id="detailSubjectKicker">SUBJECT</span>
+                        <h2 id="detailSubjectTitle">اسم المادة</h2>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <div>
+                        <h2>دروس وجلسات هذه المادة</h2>
+                    </div>
+                    <button class="add-task-small" type="button" onclick="openLessonModal()">+ إضافة درس للمادة</button>
+                </div>
+
+                <div id="subjectLessonsContainer" class="tasks">
+                    <!-- دروس هذه المادة ستظهر هنا -->
+                </div>
+            </section>
+
+            <!-- 4. PROGRESS PAGE -->
+            <section id="progress" class="page">
+                <div class="page-title">
+                    <span class="section-kicker">PROGRESS</span>
+                    <h2>تقدمي الإجمالي 📈</h2>
+                    <p>أنت تبني نسخة أفضل وأكثر تنظيماً من نفسك كل يوم.</p>
+                </div>
+                <div class="progress-big-card">
+                    <div class="progress-heading">
+                        <div>
+                            <span>إجمالي الوقت المدروس</span>
+                            <strong id="totalStudyTime">0 دقيقة</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. SETTINGS PAGE -->
+            <section id="settings" class="page">
+                <div class="page-title">
+                    <span class="section-kicker">SETTINGS</span>
+                    <h2>الإعدادات ⚙️</h2>
+                </div>
+                <div class="settings-card">
+                    <div class="setting-row">
+                        <div>
+                            <strong>الوضع الداكن</strong>
+                            <span>تفعيل المظهر الداكن لراحة عينيك</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-</div>
+    <!-- =========================
+         MODALS (ADD TASK / ADD SUBJECT / TIMER)
+    ========================== -->
 
+    <!-- ADD SUBJECT MODAL -->
+    <div class="modal-overlay" id="subjectModal" onclick="closeSubjectModalOutside(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" type="button" onclick="closeSubjectModal()">×</button>
+            <div class="modal-icon">▣</div>
+            <h2>إضافة مادة جديدة</h2>
+            <p>أدخل اسم المادة واللون المفضل لها</p>
+            <form id="subjectForm">
+                <label for="subName">اسم المادة</label>
+                <input type="text" id="subName" placeholder="مثلاً: شبكات حاسوب" required>
+                
+                <label for="subColor">لون المادة / أيقونة</label>
+                <select id="subColor">
+                    <option value="purple">بنفسجي</option>
+                    <option value="blue">أزرق</option>
+                    <option value="green">أخضر</option>
+                    <option value="orange">برتقالي</option>
+                </select>
 
+                <button type="submit" class="submit-button">حفظ المادة</button>
+            </form>
+        </div>
+    </div>
 
-<!-- =========================
-     JAVASCRIPT
-========================== -->
+    <!-- ADD TASK / LESSON MODAL -->
+    <div class="modal-overlay" id="taskModal" onclick="closeTaskModalOutside(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" type="button" onclick="closeTaskModal()">×</button>
+            <div class="modal-icon">✨</div>
+            <h2 id="taskModalTitle">أضف جلسة دراسية</h2>
+            <p>اختر المادة وحدد مدة التركيز</p>
+            <form id="taskForm">
+                <label for="taskTitleInput">عنوان الدرس أو المهمة</label>
+                <input type="text" id="taskTitleInput" placeholder="مثلاً: دراسة الفصل الأول" required>
 
-<script src="app.js"></script>
+                <label for="taskSubjectSelect">المادة الدراسية</label>
+                <select id="taskSubjectSelect">
+                    <!-- سيتم تعبئتها من مواد المستخدم الحقيقية -->
+                </select>
 
+                <label for="taskMinutesInput">مدة الدراسة (بالدقائق)</label>
+                <input type="number" id="taskMinutesInput" value="30" min="1" max="300" required>
+
+                <button type="submit" class="submit-button">إضافة الجلسة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- STUDY TIMER OVERLAY -->
+    <div class="timer-overlay" id="timerOverlay">
+        <div class="timer-modal">
+            <button class="modal-close" type="button" onclick="closeTimer()">×</button>
+            <span class="timer-label">جلسة التركيز</span>
+            <h2 id="timerTitle">عنوان الدرس</h2>
+            <div class="timer-circle">
+                <div>
+                    <strong id="timerDisplay">25:00</strong>
+                    <span>ركّز الآن</span>
+                </div>
+            </div>
+            <div class="timer-buttons">
+                <button id="timerStart" class="timer-start" type="button" onclick="toggleTimer()">▶ ابدأ التركيز</button>
+                <button class="timer-finish" type="button" onclick="finishTimer()">إنهاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- Project Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
