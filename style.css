@@ -721,3 +721,8 @@ input:checked + .slider:before { transform: translateX(24px); }
         margin-right: 0 !important;
     }
 }
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
